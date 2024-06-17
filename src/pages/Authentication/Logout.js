@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
+  console.log(":i am calling");
   const history = useNavigate();
   const dispatch = useDispatch();
 

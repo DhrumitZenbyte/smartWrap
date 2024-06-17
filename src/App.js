@@ -1,62 +1,31 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import { layoutTypes } from "./constants/layout";
-// Import Routes all
 import { authProtectedRoutes, publicRoutes } from "./routes";
-
-// Import all middleware
 import Authmiddleware from "./routes/route";
-
-// layouts Format
 import VerticalLayout from "./components/VerticalLayout/";
 import HorizontalLayout from "./components/HorizontalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
-
-// Import scss
 import "./assets/scss/theme.scss";
-
-// Import Firebase Configuration file
-// import { initFirebaseBackend } from "./helpers/firebase_helper";
-
 import fakeBackend from "./helpers/AuthType/fakeBackend";
+import "./App.css";
 
-// Activating fake backend
+// Activate fake backend
 fakeBackend();
 
-// const firebaseConfig = {
-//   apiKey: process.env.REACT_APP_APIKEY,
-//   authDomain: process.env.REACT_APP_AUTHDOMAIN,
-//   databaseURL: process.env.REACT_APP_DATABASEURL,
-//   projectId: process.env.REACT_APP_PROJECTID,
-//   storageBucket: process.env.REACT_APP_STORAGEBUCKET,
-//   messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
-//   appId: process.env.REACT_APP_APPID,
-//   measurementId: process.env.REACT_APP_MEASUREMENTID,
-// };
-
-// init firebase backend
-// initFirebaseBackend(firebaseConfig);
-
-
 const getLayout = (layoutType) => {
-  let Layout = VerticalLayout;
   switch (layoutType) {
-    case layoutTypes.VERTICAL:
-      Layout = VerticalLayout;
-      break;
     case layoutTypes.HORIZONTAL:
-      Layout = HorizontalLayout;
-      break;
+      return HorizontalLayout;
+    case layoutTypes.VERTICAL:
     default:
-      break;
+      return VerticalLayout;
   }
-  return Layout;
 };
 
 const App = () => {
-
   const { layoutType } = useSelector((state) => ({
     layoutType: state.Layout.layoutType,
   }));
@@ -71,11 +40,10 @@ const App = () => {
             path={route.path}
             element={
               <NonAuthLayout>
-                {route.component}
-              </NonAuthLayout>
-            }
+                {route.element}
+              </NonAuthLayout>}
             key={idx}
-            exact={true}
+            exact
           />
         ))}
 
@@ -84,11 +52,29 @@ const App = () => {
             path={route.path}
             element={
               <Authmiddleware>
-                <Layout>{route.component}</Layout>
-              </Authmiddleware>}
+                <Layout>
+                  {route.element}
+                </Layout>
+              </Authmiddleware>
+            }
             key={idx}
-            exact={true}
-          />
+          >
+            {route.children &&
+              route.children.map((childRoute, childIdx) => (
+                <Route
+                  path={childRoute.path}
+                  element={
+                    <Authmiddleware>
+                      {/* <Layout> */}
+                        {childRoute.element}
+                      {/* </Layout> */}
+                    </Authmiddleware>
+                  }
+                  key={childIdx}
+                  exact
+                />
+              ))}
+          </Route>
         ))}
       </Routes>
     </React.Fragment>
@@ -96,7 +82,7 @@ const App = () => {
 };
 
 App.propTypes = {
-  layout: PropTypes.any
+  layout: PropTypes.any,
 };
 
 export default App;

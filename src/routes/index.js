@@ -12,28 +12,31 @@ import ForgetPwd from "../pages/Authentication/ForgetPassword"
 
 // Dashboard
 import Dashboard from "../pages/Dashboard/index"
+import CompanyProfile from "pages/Dashboard/core/masters/CompanyProfile"
+import ProfileSettings from "pages/Dashboard/core/masters/ProfileSettings"
+import Products from "pages/Dashboard/core/masters/products/Products"
+import Sizes from "pages/Dashboard/core/masters/sizes/Sizes"
 
 const authProtectedRoutes = [
-  { path: "/dashboard", component: <Dashboard/> },
-
-  // //profile
-  { path: "/profile", component: <UserProfile/> },
-
-  // this route should be at the end of all other routes
-  // eslint-disable-next-line react/display-name
-   {
-    path: "/",
-    exact: true,
-    component: < Navigate to="/dashboard" />,
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      { path: "company-profile", element: <CompanyProfile /> },
+      { path: "profile-settings", element: <ProfileSettings /> },
+      { path: "products", element: <Products /> },
+      {path: "sizes", element: <Sizes/>},
+    ],
   },
-]
+  { path: "/profile", element: <UserProfile /> },
+  { path: "/", exact: true, element: <Navigate to="/dashboard" /> },
+];
 
 const publicRoutes = [
-  { path: "/logout", component: <Logout /> },
-  { path: "/login", component: <Login /> },
-  { path: "/forgot-password", component: <ForgetPwd /> },
-  { path: "/register", component: <Register /> },
-]
+  { path: "/logout", element: <Logout /> },
+  { path: "/login", element: <Login /> },
+  { path: "/forgot-password", element: <ForgetPwd /> },
+  { path: "/register", element: <Register /> },
+];
 
-export { authProtectedRoutes, publicRoutes }
-
+export { authProtectedRoutes, publicRoutes };

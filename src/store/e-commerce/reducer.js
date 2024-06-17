@@ -29,6 +29,10 @@ import {
   ON_LIKE_REPLY_SUCCESS,
   ON_ADD_REPLY_SUCCESS,
   ON_ADD_COMMENT_SUCCESS,
+  GET_PRODUCTS,
+  ADD_NEW_PRODUCT,
+  UPDATE_PRODUCT,
+  DELETE_PRODUCT,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -214,6 +218,32 @@ const Ecommerce = (state = INIT_STATE, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    case GET_PRODUCTS:
+      return {
+        ...state,
+        products: action.payload,
+      };
+    case ADD_NEW_PRODUCT:
+      return {
+        ...state,
+        products: [...state.products, action.payload],
+      };
+    case UPDATE_PRODUCT:
+      return {
+        ...state,
+        products: state.products.map((product) =>
+          product.id === action.payload.id
+            ? { ...product, ...action.payload }
+            : product
+        ),
+      };
+    case DELETE_PRODUCT:  
+      return {
+        ...state,
+        products: state.products.filter(
+          (product) => product.id !== action.payload
+        ),
       };
 
     default:

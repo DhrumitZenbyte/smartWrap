@@ -49,12 +49,31 @@ import {
   ON_ADD_REPLY_FAIL,
   ON_ADD_COMMENT,
   ON_ADD_COMMENT_SUCCESS,
-  ON_ADD_COMMENT_FAIL
+  ON_ADD_COMMENT_FAIL,
+  ADD_NEW_PRODUCT,
+  UPDATE_PRODUCT,
+  DELETE_PRODUCT
 } from "./actionTypes"
 
 export const getProducts = () => ({
   type: GET_PRODUCTS,
 })
+
+
+export const addNewProduct = (product) => ({
+  type: ADD_NEW_PRODUCT,
+  payload: product,
+});
+
+export const updateProduct = (product) => ({
+  type: UPDATE_PRODUCT,
+  payload: product,
+});
+
+export const deleteProduct = (productId) => ({
+  type: DELETE_PRODUCT,
+  payload: productId,
+});
 
 export const getProductsSuccess = products => ({
   type: GET_PRODUCTS_SUCCESS,
