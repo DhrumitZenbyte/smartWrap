@@ -55,8 +55,9 @@ import {
   DELETE_PRODUCT
 } from "./actionTypes"
 
-export const getProducts = () => ({
+export const getProducts = (product) => ({
   type: GET_PRODUCTS,
+  payload: product,
 })
 
 

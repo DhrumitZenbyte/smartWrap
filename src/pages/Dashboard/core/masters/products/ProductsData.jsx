@@ -70,3 +70,20 @@ const ProductsData = ({ products, onEdit, onDelete }) => {
 }
 
 export default ProductsData
+
+
+// import React from "react"
+// import { Link } from "react-router-dom"
+// const HSNCode = cell => {
+//   return cell.value ? cell.value : ""
+// }
+// const ProductName = cell => {
+//   return cell.value ? cell.value : ""
+// }
+// const Purchase = cell => {
+//   return cell.value ? cell.value : ""
+// }
+// const Sell = cell => {
+//   return cell.value ? cell.value : ""
+// }
+// export { HSNCode, ProductName, Purchase, Sell }

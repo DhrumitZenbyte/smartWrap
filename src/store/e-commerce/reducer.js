@@ -48,16 +48,17 @@ const INIT_STATE = {
 
 const Ecommerce = (state = INIT_STATE, action) => {
   switch (action.type) {
-    case GET_PRODUCTS_SUCCESS:
-      return {
-        ...state,
-        products: action.payload,
-      };
 
     case GET_PRODUCTS_FAIL:
       return {
         ...state,
         error: action.payload,
+      };
+
+    case GET_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        products: action.payload,
       };
 
     case GET_PRODUCT_DETAIL_SUCCESS:
@@ -238,7 +239,7 @@ const Ecommerce = (state = INIT_STATE, action) => {
             : product
         ),
       };
-    case DELETE_PRODUCT:  
+    case DELETE_PRODUCT:
       return {
         ...state,
         products: state.products.filter(
