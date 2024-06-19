@@ -238,7 +238,6 @@ const ProfileSettings = () => {
           value={formData.companyType}
           onChange={handleChange}
         />
-       
 
         {/* company registrartion details */}
         <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
@@ -420,49 +419,49 @@ const ProfileSettings = () => {
           type="text"
         />
         <FormInput
-          label="termsOfDelivery"
+          label="Terms Of Delivery"
           name="termsOfDelivery"
           value={formData.termsOfDelivery}
           onChange={handleChange}
           type="text"
         />
         <FormInput
-          label="placeOfReceipt"
+          label="Place Of Receipt"
           name="placeOfReceipt"
           value={formData.placeOfReceipt}
           onChange={handleChange}
           type="text"
         />
         <FormInput
-          label="portOfLoading"
+          label="Port Of Loading"
           name="portOfLoading"
           value={formData.portOfLoading}
           onChange={handleChange}
           type="text"
         />
         <FormInput
-          label="partialShipment"
+          label="Partial Shipment"
           name="partialShipment"
           value={formData.partialShipment}
           onChange={handleChange}
           type="text"
         />
         <FormInput
-          label="districtOfOrigin"
+          label="District Of Origin"
           name="districtOfOrigin"
           value={formData.districtOfOrigin}
           onChange={handleChange}
           type="text"
         />
         <FormInput
-          label="transshipment"
+          label="Trans Shipment"
           name="transshipment"
           value={formData.transshipment}
           onChange={handleChange}
           type="text"
         />
         <FormInput
-          label="varietyOfQuality"
+          label="Variety Of Quality"
           name="varietyOfQuality"
           value={formData.varietyOfQuality}
           onChange={handleChange}
@@ -580,32 +579,7 @@ const ProfileSettings = () => {
           onChange={handleChange}
           type="text"
         />
-        <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
-          <p className="text-2xl font-bold mb-4">Export Details</p>
-        </div>
-        <FormInput
-          label="Export Under Detail 1"
-          name="ExportUnderDetail1"
-          value={formData.ExportUnderDetail1}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Export Under Detail 2"
-          name="ExportUnderDetail2"
-          value={formData.ExportUnderDetail2}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Export Remarks"
-          name="ExportRemarks"
-          value={formData.ExportRemarks}
-          onChange={handleChange}
-          type="text"
-        />
-
-        {/* Example for Bank Details */}
+        {/* Bank Details */}
         <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <p className="text-2xl font-bold mb-4">Bank Details</p>
           <div className="flex items-center mb-4">
@@ -676,7 +650,31 @@ const ProfileSettings = () => {
           handleAddBank={handleAddBank}
         />
         {/* End Bank Popup */}
-        {/* Your existing form ends */}
+
+        <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
+          <p className="text-2xl font-bold mb-4">Export Details</p>
+        </div>
+        <FormInput
+          label="Export Under Detail 1"
+          name="ExportUnderDetail1"
+          value={formData.ExportUnderDetail1}
+          onChange={handleChange}
+          type="text"
+        />
+        <FormInput
+          label="Export Under Detail 2"
+          name="ExportUnderDetail2"
+          value={formData.ExportUnderDetail2}
+          onChange={handleChange}
+          type="text"
+        />
+        <FormInput
+          label="Export Remarks"
+          name="ExportRemarks"
+          value={formData.ExportRemarks}
+          onChange={handleChange}
+          type="text"
+        />
 
         <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <button
