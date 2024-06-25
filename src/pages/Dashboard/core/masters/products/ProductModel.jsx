@@ -78,3 +78,5 @@ const ProductModal = ({ isOpen, onClose, onAddProduct }) => {
 }
 
 export default ProductModal
+
+

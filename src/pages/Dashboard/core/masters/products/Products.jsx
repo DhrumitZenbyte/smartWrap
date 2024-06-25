@@ -1,7 +1,8 @@
 // // ------------------------------ 33333333333
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ProductsTable from "./ProductsData"
 import ProductModal from "./ProductModel"
+import { useSelector } from "react-redux"
 
 const Products = () => {
   const [products, setProducts] = useState([
@@ -30,7 +31,10 @@ const Products = () => {
   ])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-
+ const { email, name } = useSelector(state => ({
+   email: state.Login.email,
+   name: state.Login.name,
+ }))
   const handleEdit = id => {
     console.log(`Edit product with id ${id}`)
   }
@@ -42,6 +46,7 @@ const Products = () => {
   const handleAddProduct = product => {
     setProducts([...products, { ...product, id: products.length + 1 }])
   }
+
 
   return (
     <div className="container mx-auto px-4">
@@ -71,3 +76,4 @@ const Products = () => {
 }
 
 export default Products
+

@@ -6,12 +6,14 @@ import { BrowserRouter } from "react-router-dom";
 import "./i18n";
 import { Provider } from "react-redux";
 import store from "./store";
+import { Toaster } from "react-hot-toast";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <Provider store={store}>
       <React.Fragment>
-        <BrowserRouter>
+      <BrowserRouter>
+        <Toaster />
           <App />
         </BrowserRouter>
       </React.Fragment>

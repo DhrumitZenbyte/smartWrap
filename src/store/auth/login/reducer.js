@@ -4,14 +4,20 @@ import {
   LOGOUT_USER,
   LOGOUT_USER_SUCCESS,
   API_ERROR,
+  TOKEN
 } from "./actionTypes"
 
 const initialState = {
   error: "",
   loading: false,
+  token: null,
+  email: "",
+  name: "",
 }
 
 const login = (state = initialState, action) => {
+  console.log("Reducer received action:", action);
+
   switch (action.type) {
     case LOGIN_USER:
       state = {
@@ -19,6 +25,15 @@ const login = (state = initialState, action) => {
         loading: true,
       }
       break
+    case TOKEN:
+      console.log("Updating state with:", action.payload);
+
+      return {
+        ...state,
+        email: action.payload.email,
+        name: action.payload.name,
+        token: action.payload.token,
+      };
     case LOGIN_SUCCESS:
       state = {
         ...state,

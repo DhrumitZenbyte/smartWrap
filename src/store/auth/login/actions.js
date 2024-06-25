@@ -5,6 +5,7 @@ import {
   LOGOUT_USER_SUCCESS,
   API_ERROR,
   SOCIAL_LOGIN,
+  TOKEN,
 } from "./actionTypes"
 
 export const loginUser = (user, history) => {
@@ -12,6 +13,14 @@ export const loginUser = (user, history) => {
     type: LOGIN_USER,
     payload: { user, history },
   }
+}
+
+export const LoginToken = ({ token, email, name }) => {
+  console.log("Dispatching LoginToken with:", { token, email, name });
+  return {
+    type: TOKEN,
+    payload: { token, email, name },
+    }
 }
 
 export const loginSuccess = user => {

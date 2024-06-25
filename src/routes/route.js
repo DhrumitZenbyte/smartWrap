@@ -1,14 +1,12 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 const Authmiddleware = ({ children }) => {
-  const authUser = localStorage.getItem("authUser");
+  const token = localStorage.getItem('token');
 
-  if (!authUser) {
-    return <Navigate to="/login" />;
-  }
-
-  return <React.Fragment>{children}</React.Fragment>;
+  return token ? children : <Navigate to="/login" />;
 };
+
 
 export default Authmiddleware;
