@@ -8,6 +8,7 @@ const FinishGoods = () => {
       id: 1,
       product: "Product 1",
       hsnCode: "1234",
+      micron : "",
       size: "10x10",
       sqmPerRoll: "50",
       rollQuantity: "20",
@@ -20,6 +21,7 @@ const FinishGoods = () => {
     {
       id: 2,
       product: "Product 2",
+      micron : "",
       hsnCode: "5678",
       size: "5x5",
       sqmPerRoll: "30",
@@ -64,6 +66,7 @@ const FinishGoods = () => {
             <tr className="bg-gray-100">
               <th className="text-left py-2 px-4">Product</th>
               <th className="text-left py-2 px-4">Size</th>
+              <th className="text-left py-2 px-4">Micron</th>
               <th className="text-left py-2 px-4">Sqm per Roll</th>
               <th className="text-left py-2 px-4">Roll Quantity</th>
               <th className="text-left py-2 px-4">Total Sqm</th>
@@ -79,6 +82,7 @@ const FinishGoods = () => {
               <tr key={item.id} className="border-t border-gray-200">
                 <td className="py-2 px-4">{item.product}</td>
                 <td className="py-2 px-4">{item.size}</td>
+                <td className="py-2 px-4">{item.micron}</td>
                 <td className="py-2 px-4">{item.sqmPerRoll}</td>
                 <td className="py-2 px-4">{item.rollQuantity}</td>
                 <td className="py-2 px-4">{item.totalSqm}</td>

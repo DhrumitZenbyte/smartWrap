@@ -8,7 +8,7 @@ import profile from "assets/images/profile-img.png";
 import logo from "assets/images/logo.svg";
 import { loginFailure, loginStart, loginSuccess, setToken } from "slices/userSlice";
 import { post } from "../../helpers/api_helper";
-import { POST_FAKE_LOGIN } from "../../helpers/url_helper";
+import { POST_LOGIN } from "../../helpers/url_helper";
 import { LoginToken, loginUser } from "store/actions";
 import { toast } from "react-hot-toast"
 
@@ -69,7 +69,7 @@ const Login = (props) => {
     dispatch(loginStart());
     try {
       const toastId = toast.loading("Loading...")
-      const response = await post(POST_FAKE_LOGIN, { email, password });
+      const response = await post(POST_LOGIN, { email, password });
       console.log(response);
       if (response.status === "success") {
         const user = response.data.user.name;

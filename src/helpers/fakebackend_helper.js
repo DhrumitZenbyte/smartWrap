@@ -46,7 +46,7 @@ const postFakeRegister = data => {
 };
 
 // Login Method
-const postFakeLogin = data => post(url.POST_FAKE_LOGIN, data);
+const postFakeLogin = data => post(url.POST_LOGIN, data);
 
 // postForgetPwd
 const postFakeForgetPwd = data => post(url.POST_FAKE_PASSWORD_FORGET, data);

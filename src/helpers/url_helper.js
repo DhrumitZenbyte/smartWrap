@@ -2,7 +2,7 @@
 export const POST_FAKE_REGISTER = "/post-fake-register";
 
 //LOGIN
-export const POST_FAKE_LOGIN = "http://127.0.0.1:8000/api/login";
+export const POST_LOGIN = "http://127.0.0.1:8000/api/login";
 export const POST_FAKE_JWT_LOGIN = "/post-jwt-login";
 export const POST_FAKE_PASSWORD_FORGET = "/fake-forget-pwd";
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd";

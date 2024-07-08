@@ -1,6 +1,10 @@
 import React from "react"
 
 const SizesTable = ({ sizes, onEdit, onDelete }) => {
+  if (!sizes || sizes.length === 0) {
+    return <p className="text-center">No sizes found.</p>
+  }
+
   return (
     <table className="min-w-full bg-white">
       <thead>
@@ -11,6 +15,9 @@ const SizesTable = ({ sizes, onEdit, onDelete }) => {
           <th className="py-2">Product Name</th>
           <th className="py-2">HSN Code</th>
           <th className="py-2">Thickness</th>
+          <th className="py-2">Micron</th>
+          <th className="py-2">Grade</th>
+          <th className="py-2">Width</th>
           <th className="py-2">Action</th>
         </tr>
       </thead>
@@ -18,11 +25,14 @@ const SizesTable = ({ sizes, onEdit, onDelete }) => {
         {sizes.map((size, index) => (
           <tr key={size.id}>
             <td className="border px-4 py-2">{index + 1}</td>
-            <td className="border px-4 py-2">{size.sizeCm}</td>
-            <td className="border px-4 py-2">{size.sizeMm}</td>
-            <td className="border px-4 py-2">{size.productName}</td>
-            <td className="border px-4 py-2">{size.hsnCode}</td>
+            <td className="border px-4 py-2">{size.size_in_cm}</td>
+            <td className="border px-4 py-2">{size.size_in_mm}</td>
+            <td className="border px-4 py-2">{size.product_name}</td>
+            <td className="border px-4 py-2">{size.hsn_code}</td>
             <td className="border px-4 py-2">{size.thickness}</td>
+            <td className="border px-4 py-2">{size.micron}</td>
+            <td className="border px-4 py-2">{size.grade}</td>
+            <td className="border px-4 py-2">{size.width}</td>
             <td className="border px-4 py-2">
               <button
                 onClick={() => onEdit(size.id)}

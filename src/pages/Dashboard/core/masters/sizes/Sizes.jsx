@@ -1,41 +1,64 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import SizesTable from "./SizesTable"
 import SizeModal from "./SizeModal"
+import { useSelector } from "react-redux"
+import {
+  addSize,
+  deleteSize,
+  getSizes,
+} from "services/operations/SizeOps/SizeApi"
 
 const Sizes = () => {
-  const [sizes, setSizes] = useState([
-    {
-      id: 1,
-      sizeCm: "30",
-      sizeMm: "300",
-      productName: "Product A",
-      hsnCode: "1234",
-      thickness: "5mm",
-    },
-    {
-      id: 2,
-      sizeCm: "50",
-      sizeMm: "500",
-      productName: "Product B",
-      hsnCode: "5678",
-      thickness: "10mm",
-    },
-    // Add more sizes here
-  ])
-
+  const [sizes, setSizes] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const token = localStorage.getItem("token");
 
+  // Function to fetch sizes from API
+  const fetchSizes = async () => {
+    try {
+      const response = await getSizes(token)
+      setSizes(response) // Assuming response structure matches your provided example
+    } catch (error) {
+      console.error("Error fetching sizes:", error)
+    }
+  }
+
+  // Initial fetch of sizes when component mounts
+  useEffect(() => {
+    fetchSizes()
+  }, [])
+
+  // Function to handle edit action
   const handleEdit = id => {
     console.log(`Edit size with id ${id}`)
   }
 
-  const handleDelete = id => {
-    setSizes(sizes.filter(size => size.id !== id))
-    console.log(`Delete size with id ${id}`)
+  // Function to handle delete action
+  const handleDelete = async (id) => {
+    try {
+      await deleteSize(id, token)
+      fetchSizes() // Fetch sizes again to get the updated list after deletion
+      console.log(`Deleted size with id ${id}`)
+    } catch (error) {
+      console.error("Error deleting size:", error)
+    }
   }
 
-  const handleAddSize = size => {
-    setSizes([...sizes, { ...size, id: sizes.length + 1 }])
+  // Function to handle add size action
+  const handleAddSize = async sizeData => {
+    try {
+      const response = await addSize(sizeData, token)
+      if (response.status === "success") {
+        // Fetch sizes again to get the updated list after adding
+        fetchSizes()
+        console.log("Added size:", response.message)
+        setIsModalOpen(false) // Close the modal after successful addition
+      } else {
+        console.error("Error adding size:", response.message)
+      }
+    } catch (error) {
+      console.error("Error adding size:", error)
+    }
   }
 
   return (

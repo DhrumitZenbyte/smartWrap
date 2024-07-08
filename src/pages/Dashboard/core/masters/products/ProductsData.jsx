@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 
 const ProductsData = ({ products, onEdit, onDelete }) => {
   const { t } = useTranslation()
-
+  console.log(products, "@@@productsssssssssssssssss");
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-200">
@@ -25,6 +25,10 @@ const ProductsData = ({ products, onEdit, onDelete }) => {
               {t("Purchase (unit)")}
             </th>
             <th className="py-2 px-4 border-b border-gray-200">
+              {t("Water Absorption")}
+            </th>
+            <th className="py-2 px-4 border-b border-gray-200">{t("Field")}</th>
+            <th className="py-2 px-4 border-b border-gray-200">
               {t("Action")}
             </th>
           </tr>
@@ -36,16 +40,22 @@ const ProductsData = ({ products, onEdit, onDelete }) => {
                 {index + 1}
               </td>
               <td className="py-2 px-4 border-b border-gray-200">
-                {product.hsnCode}
+                {product.hsn_code}
               </td>
               <td className="py-2 px-4 border-b border-gray-200">
-                {product.name}
+                {product.product_name}
               </td>
               <td className="py-2 px-4 border-b border-gray-200">
-                {product.saleUnit}
+                {product.sales}
               </td>
               <td className="py-2 px-4 border-b border-gray-200">
-                {product.purchaseUnit}
+                {product.purchase}
+              </td>
+              <td className="py-2 px-4 border-b border-gray-200">
+                {product.water_absorption}
+              </td>
+              <td className="py-2 px-4 border-b border-gray-200">
+                {product.field}
               </td>
               <td className="py-2 px-4 border-b border-gray-200">
                 <button
