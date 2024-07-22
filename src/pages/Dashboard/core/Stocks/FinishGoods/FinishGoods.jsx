@@ -162,9 +162,6 @@ useEffect(() => {
       const toastid = toast.loading("Loading Finish Goods Data...")
       const response = await fetchFinishGoods(token)
 
-      // Log the response to inspect its structure
-      console.log("Response:", response)
-
       // Ensure response data structure matches your expectations
       if (response && response.finishGoods) {
         setProducts(response.finishGoods)
