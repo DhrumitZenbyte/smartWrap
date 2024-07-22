@@ -581,7 +581,6 @@ const RawMaterials = () => {
 
         // Example of saving edited data to API (you should implement this logic)
         // const response = await editRawMaterial(newCompany.id, newCompany, token);
-        // console.log("Edited raw material:", response.message);
       } else {
         await handleAddCompany(newCompany)
       }
