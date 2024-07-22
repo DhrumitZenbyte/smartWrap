@@ -19,6 +19,8 @@ import Sizes from "pages/Dashboard/core/masters/sizes/Sizes"
 import { element } from "prop-types"
 import RawMaterials from "pages/Dashboard/core/Stocks/RawMaterials/RawMaterials"
 import FinishGoods from "pages/Dashboard/core/Stocks/FinishGoods/FinishGoods"
+import PurchaseOrder from "pages/Dashboard/core/Purchase/PurchaseOrder"
+import Production from "pages/Dashboard/core/Production/Production"
 
 const authProtectedRoutes = [
   {
@@ -30,7 +32,10 @@ const authProtectedRoutes = [
       { path: "products", element: <Products /> },
       { path: "sizes", element: <Sizes /> },
       { path: "raw-materials", element: <RawMaterials /> },
-      { path: "finish-goods", element: <FinishGoods />}
+      { path: "finish-goods", element: <FinishGoods /> },
+      { path: "purchase-order", element: <PurchaseOrder /> },
+      { path: "production", element: <Production /> }
+      
     ],
   },
   { path: "/profile", element: <UserProfile /> },

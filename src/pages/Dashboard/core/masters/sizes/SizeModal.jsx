@@ -43,7 +43,7 @@ const SizeModal = ({ isOpen, onClose, onAddSize }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center ${
+      className={`fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex items-center justify-center ${
         isOpen ? "" : "hidden"
       }`}
     >

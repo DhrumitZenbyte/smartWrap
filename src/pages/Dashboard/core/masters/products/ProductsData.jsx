@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 
 const ProductsData = ({ products, onEdit, onDelete }) => {
   const { t } = useTranslation()
-  console.log(products, "@@@productsssssssssssssssss");
+  console.log(products, "@@@productsssssssssssssssss")
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-200">
@@ -59,7 +59,7 @@ const ProductsData = ({ products, onEdit, onDelete }) => {
               </td>
               <td className="py-2 px-4 border-b border-gray-200">
                 <button
-                  onClick={() => onEdit(product.id)}
+                  onClick={() => onEdit(product)}
                   className="text-blue-500 hover:text-blue-700 mr-2"
                 >
                   {t("Edit")}
@@ -80,20 +80,3 @@ const ProductsData = ({ products, onEdit, onDelete }) => {
 }
 
 export default ProductsData
-
-
-// import React from "react"
-// import { Link } from "react-router-dom"
-// const HSNCode = cell => {
-//   return cell.value ? cell.value : ""
-// }
-// const ProductName = cell => {
-//   return cell.value ? cell.value : ""
-// }
-// const Purchase = cell => {
-//   return cell.value ? cell.value : ""
-// }
-// const Sell = cell => {
-//   return cell.value ? cell.value : ""
-// }
-// export { HSNCode, ProductName, Purchase, Sell }

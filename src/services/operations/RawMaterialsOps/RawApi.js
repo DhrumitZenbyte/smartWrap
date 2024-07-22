@@ -18,6 +18,17 @@ export async function addRawMaterial(rawMaterialData, token) {
             total_bag: parseInt(rawMaterialData.totalBag, 10),
             weight_per_bag: parseFloat(rawMaterialData.weightPerBag),
             total_weight: parseFloat(rawMaterialData.totalWeight),
+            supplier_name: rawMaterialData.supplierName,
+            purchase_order_no: rawMaterialData.purchaseOrderNo,
+            sales_order_no: rawMaterialData.salesOrderNo,
+            description_of_goods: rawMaterialData.descriptionOfGoods,
+            qty: parseInt(rawMaterialData.qty, 10),
+            weight_per_pcs: parseFloat(rawMaterialData.weightPerPcs),
+            payment_terms: rawMaterialData.paymentTerms,
+            invoice_date: rawMaterialData.invoiceDate,
+            status: rawMaterialData.status,
+            received_date: rawMaterialData.receivedDate,
+
         };
 
         // Log the processed data being sent
@@ -100,7 +111,8 @@ export async function updateRawMaterial(rawMaterialData, token) {
         };
 
         console.log("Processed Raw Material Data being sent:", processedData);
-
+        
+        console.log(UPDATE_RAW_MATERIAL_API(id), "@@UPDATE_RAW_MATERIAL_API");
         const response = await apiconnector("PUT", UPDATE_RAW_MATERIAL_API(id), processedData, {
             Authorization: `Bearer ${token}`,
         });
@@ -110,7 +122,6 @@ export async function updateRawMaterial(rawMaterialData, token) {
         if (response.status !== "success" && response.status !== 200) {
             throw new Error(response.data.message || "Unknown error occurred");
         }
-
         toast.success("Raw material updated successfully!");
         return response.data;
     } catch (error) {

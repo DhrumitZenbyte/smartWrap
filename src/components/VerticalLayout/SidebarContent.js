@@ -361,6 +361,19 @@ const SidebarContent = (props) => {
                 </li>
               </ul>
             </li>
+
+            <li>
+              <Link to="/dashboard/purchase-order">
+                {/* <i className="bx bx-home-circle"></i> */}
+                <span>{props.t("Purchase Order")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/dashboard/production">
+                {/* <i className="bx bx-home-circle"></i> */}
+                <span>{props.t("production")}</span>
+              </Link>
+            </li>
           </ul>
         </div>
       </SimpleBar>

@@ -123,8 +123,6 @@
 //   )
 // }
 
-
-
 // import React, { useState, useEffect } from "react"
 // import Modal from "./Modal"
 // import {
@@ -482,11 +480,11 @@
 
 // export default RawMaterials
 
-
-
 // export default RawMaterials
 import React, { useState, useEffect } from "react"
 import Modal from "./Modal"
+import { useNavigate } from "react-router-dom"
+
 import {
   addRawMaterial,
   deleteRawMaterial,
@@ -507,17 +505,27 @@ const RawMaterials = () => {
     totalBag: "",
     weightPerBag: "",
     totalWeight: "",
+    supplierName: "",
+    purchaseOrderNo: "",
+    salesOrderNo: "",
+    descriptionOfGoods: "",
+    qty: "",
+    weightPerPcs: "",
+    paymentTerms: "",
+    invoiceDate: "",
+    status: "",
+    receivedDate: "",
   })
   const [editingIndex, setEditingIndex] = useState(null)
   const token = localStorage.getItem("token")
   useEffect(() => {
     fetchRawMaterials()
   }, [token])
-  const fetchRawMaterials = async () => {
+  const fetchRawMaterials = async()=>{
     try {
       const rawMaterials = await getRawMaterials(token)
       setCompanies(rawMaterials)
-      console.log(companies,"@Companies");
+      console.log(companies, "@Companies")
       const uniqueCompanyNames = [
         ...new Set(rawMaterials.map(material => material.company_name)),
       ]
@@ -539,32 +547,20 @@ const RawMaterials = () => {
       console.error("Error adding raw material:", error)
     }
   }
-  const handleEditCompany = async() => {
+  const handleEditCompany = async () => {
     // setNewCompany({ ...companies[index] }) // Copying the company data properly
     // setEditingIndex(index)
-    
-    
-    
+
     try {
-       setShowModal(true)
+      setShowModal(true)
       const processedData = {
         id: newCompany.id,
         company_name: newCompany.companyName,
-        total_pallet: parseInt(
-          newCompany. newCompany.totalPallet,
-          10
-        ),
-        bag_per_pallet: parseInt(
-          newCompany. newCompany.bagPerPallet,
-          10
-        ),
+        total_pallet: parseInt(newCompany.newCompany.totalPallet, 10),
+        bag_per_pallet: parseInt(newCompany.newCompany.bagPerPallet, 10),
         total_bag: parseInt(newCompany.total_bag || newCompany.totalBag, 10),
-        weight_per_bag: parseFloat(
-          newCompany. newCompany.weightPerBag
-        ),
-        total_weight: parseFloat(
-          newCompany. newCompany.totalWeight
-        ),
+        weight_per_bag: parseFloat(newCompany.newCompany.weightPerBag),
+        total_weight: parseFloat(newCompany.newCompany.totalWeight),
       }
       await updateRawMaterial(processedData, token)
       alert("Company updated successfully!")
@@ -583,7 +579,7 @@ const RawMaterials = () => {
         updatedCompanies[editingIndex] = newCompany
         setCompanies(updatedCompanies)
         setEditingIndex(null)
-        
+
         // Example of saving edited data to API (you should implement this logic)
         // const response = await editRawMaterial(newCompany.id, newCompany, token);
         // console.log("Edited raw material:", response.message);
@@ -603,14 +599,14 @@ const RawMaterials = () => {
       console.error("Error saving company:", error)
     }
   }
- const handleDeleteCompany = async id => {
-   try {
-     await deleteRawMaterial(id, token)
-     await fetchRawMaterials();
-   } catch (error) {
-     console.error("Error deleting raw material:", error)
-   }
- }
+  const handleDeleteCompany = async id => {
+    try {
+      await deleteRawMaterial(id, token)
+      await fetchRawMaterials()
+    } catch (error) {
+      console.error("Error deleting raw material:", error)
+    }
+  }
   const handleCompanyChange = companyName => {
     const selectedCompany = companies.find(
       company => company.company_name === companyName
@@ -628,66 +624,73 @@ const RawMaterials = () => {
       })
     }
   }
- const handleGeneratePDF = () => {
-   const doc = new jsPDF()
-   // Extract data from the companies state
-   const data = companies.map(company => [
-     company.company_name,
-     company.total_pallet,
-     company.bag_per_pallet,
-     company.total_bag,
-     company.weight_per_bag,
-     company.total_weight,
-   ])
-   // Calculate totals
-   const totals = companies.reduce(
-     (acc, company) => {
-       acc.total_pallet += company.total_pallet
-       acc.total_bag += company.total_bag
-       acc.weight_per_bag += company.weight_per_bag
-       acc.total_weight += company.total_weight
-       return acc
-     },
-     {
-       total_pallet: 0,
-       total_bag: 0,
-       weight_per_bag: 0,
-       total_weight: 0,
-     }
-   )
-   // Add totals row to the data
-   data.push([
-     "Total",
-     totals.total_pallet,
-     "",
-     totals.total_bag,
-     totals.weight_per_bag,
-     totals.total_weight,
-   ])
-   // Define table columns
-   const columns = [
-     "Company Name",
-     "Total Pallet",
-     "Bag per Pallet",
-     "Total Bag",
-     "Weight per Bag",
-     "Total Weight",
-   ]
-   // Generate PDF with autoTable
-   doc.autoTable({
-     head: [columns],
-     body: data,
-     startY: 10,
-     headStyles: { fillColor: [255, 0, 0] },
-     theme: "striped",
-   })
-   doc.save("raw-materials-report.pdf")
- }
+  const handleGeneratePDF = () => {
+    const doc = new jsPDF()
+    // Extract data from the companies state
+    const data = companies.map(company => [
+      company.company_name,
+      company.total_pallet,
+      company.bag_per_pallet,
+      company.total_bag,
+      company.weight_per_bag,
+      company.total_weight,
+    ])
+    // Calculate totals
+    const totals = companies.reduce(
+      (acc, company) => {
+        acc.total_pallet += company.total_pallet
+        acc.total_bag += company.total_bag
+        acc.weight_per_bag += company.weight_per_bag
+        acc.total_weight += company.total_weight
+        return acc
+      },
+      {
+        total_pallet: 0,
+        total_bag: 0,
+        weight_per_bag: 0,
+        total_weight: 0,
+      }
+    )
+    // Add totals row to the data
+    data.push([
+      "Total",
+      totals.total_pallet,
+      "",
+      totals.total_bag,
+      totals.weight_per_bag,
+      totals.total_weight,
+    ])
+    // Define table columns
+    const columns = [
+      "Company Name",
+      "Total Pallet",
+      "Bag per Pallet",
+      "Total Bag",
+      "Weight per Bag",
+      "Total Weight",
+    ]
+    // Generate PDF with autoTable
+    doc.autoTable({
+      head: [columns],
+      body: data,
+      startY: 10,
+      headStyles: { fillColor: [255, 0, 0] },
+      theme: "striped",
+    })
+    doc.save("raw-materials-report.pdf")
+  }
+
+  const navigate = useNavigate()
+
+  const handleRedirect = () => {
+    navigate("/dashboard/purchase-order");
+  }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Raw Materials</h1>
       <button
-        onClick={() => setShowModal(true)}
+        onClick={handleRedirect}
         className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
       >
         Add & Edit RawMaterial
@@ -709,6 +712,22 @@ const RawMaterials = () => {
               <th className="px-4 py-2 border-b">Total Bag</th>
               <th className="px-4 py-2 border-b">Weight per Bag</th>
               <th className="px-4 py-2 border-b">Total Weight</th>
+
+              <th className="px-4 py-2 border-b">Supplier Name</th>
+              <th className="px-4 py-2 border-b">Purchase Order No </th>
+              <th className="px-4 py-2 border-b">Sales Order No </th>
+              <th className="px-4 py-2 border-b">
+                Material / Grade / Discription of Goods{" "}
+              </th>
+              <th className="px-4 py-2 border-b">Qty</th>
+              <th className="px-4 py-2 border-b">Weight/Pcs</th>
+              <th className="px-4 py-2 border-b">Payment Terms</th>
+              <th className="px-4 py-2 border-b">
+                From (Invoice Date / BL Date)
+              </th>
+              <th className="px-4 py-2 border-b">Status</th>
+              <th className="px-4 py-2 border-b">Received Date</th>
+
               <th className="px-4 py-2 border-b">Actions</th>
             </tr>
           </thead>
@@ -722,6 +741,21 @@ const RawMaterials = () => {
                 <td className="px-4 py-2">{company.total_bag}</td>
                 <td className="px-4 py-2">{company.weight_per_bag}</td>
                 <td className="px-4 py-2">{company.total_weight}</td>
+                <td className="px-4 py-2 border-b">{company.supplier_name}</td>
+                <td className="px-4 py-2 border-b">
+                  {company.purchase_order_no}
+                </td>
+                <td className="px-4 py-2 border-b">{company.sales_order_no}</td>
+                <td className="px-4 py-2 border-b">
+                  {company.description_of_goods}
+                </td>
+                <td className="px-4 py-2 border-b">{company.qty}</td>
+                <td className="px-4 py-2 border-b">{company.weight_per_pcs}</td>
+                <td className="px-4 py-2 border-b">{company.payment_terms}</td>
+                <td className="px-4 py-2 border-b">{company.invoice_date}</td>
+                <td className="px-4 py-2 border-b">{company.status}</td>
+                <td className="px-4 py-2 border-b">{company.received_date}</td>
+
                 <td className="px-4 py-2">
                   {/* <button
                     onClick={() => handleEditCompany(index)}
@@ -741,7 +775,7 @@ const RawMaterials = () => {
           </tbody>
         </table>
       </div>
-      {showModal && (
+      {/* {showModal && (
         <Modal
           showModal={showModal}
           setShowModal={setShowModal}
@@ -753,7 +787,7 @@ const RawMaterials = () => {
           handleCompanyChange={handleCompanyChange}
           fetchRawMaterials={fetchRawMaterials} // Pass fetchRawMaterials
         />
-      )}
+      )} */}
     </div>
   )
 }

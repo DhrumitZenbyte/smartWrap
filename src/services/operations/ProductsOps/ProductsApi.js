@@ -3,7 +3,7 @@ import { apiconnector } from "../apiconnector";
 import { productEndpoints } from "../api";
 
 const { ADD_PRODUCT_API } = productEndpoints;
-const { GET_PRODUCTS_API, DELETE_PRODUCT_API } = productEndpoints;
+const { GET_PRODUCTS_API, DELETE_PRODUCT_API, EDIT_PRODUCTS_API } = productEndpoints;
 export async function addProduct(product, token) {
     const toastId = toast.loading("Adding product...");
 
@@ -77,3 +77,29 @@ export const deleteProduct = async (id, token) => {
         throw error;
     }
 };
+
+export async function editProduct(id, product, token) {
+    const toastId = toast.loading("Updating product...");
+
+    try {
+        const response = await apiconnector("PUT", EDIT_PRODUCTS_API(id), product, {
+            Authorization: `Bearer ${token}`,
+        });
+
+        console.log("EDIT PRODUCT API RESPONSE:", response);
+
+        if (response.status !== 200) {
+            throw new Error(response.data.message);
+        }
+
+        toast.success("Product updated successfully!");
+        return response.data;
+    } catch (error) {
+        console.error("EDIT PRODUCT API ERROR:", error);
+        toast.error("Failed to update product. Please try again.");
+
+        throw error;
+    } finally {
+        toast.dismiss(toastId);
+    }
+}
