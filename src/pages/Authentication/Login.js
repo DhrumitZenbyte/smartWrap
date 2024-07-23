@@ -21,8 +21,9 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("smartwrap.admin@gmail.com");
+  const [password, setPassword] = useState("smartwrap@admin2610");
+
   const [error, setError] = useState(null);
   const [touched, setTouched] = useState({
     email: false,
