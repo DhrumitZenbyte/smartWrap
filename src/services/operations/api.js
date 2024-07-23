@@ -1,4 +1,4 @@
-const BASE_URL = "http://127.0.0.1:8000"
+const BASE_URL = "https://api.smartwrapfilms.com"
 
 // PROFILE ENDPOINTS
 export const profileEndpoints = {
@@ -29,4 +29,9 @@ export const rawEndpoints = {
 
 export const finishGoodsEndpoints = {
     ADD_FINISH_GOODS_API: `${BASE_URL}/api/finish-goods`,
+}
+
+
+export const authEndpoints = {
+    LOGIN_URL: `${BASE_URL}/api/login`,
 }

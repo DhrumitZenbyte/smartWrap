@@ -12,6 +12,9 @@ import { POST_LOGIN } from "../../helpers/url_helper";
 import { LoginToken, loginUser } from "store/actions";
 import { toast } from "react-hot-toast"
 
+import { authEndpoints } from "../../services/operations/api";
+const { LOGIN_URL } = authEndpoints;
+
 const Login = (props) => {
   document.title = "Login | Skote - React Admin & Dashboard Template";
 
@@ -69,7 +72,7 @@ const Login = (props) => {
     dispatch(loginStart());
     try {
       const toastId = toast.loading("Loading...")
-      const response = await post(POST_LOGIN, { email, password });
+      const response = await post(LOGIN_URL, { email, password });
       console.log(response);
       if (response.status === "success") {
         const user = response.data.user.name;
