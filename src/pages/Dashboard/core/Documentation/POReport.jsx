@@ -16,9 +16,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
+    // margin: 10,
+    // padding: 10,
+    // flexGrow: 1, 
   },
   table: {
     display: "table",
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   tableCell: {
     margin: "auto",
     marginTop: 5,
-    fontSize: 10,
+    fontSize: 8,
   },
 })
 
@@ -51,7 +51,7 @@ const POReport = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
-        <Text style={{ fontSize: 20, textAlign: "center" }}>
+        <Text style={{ fontSize: 17, textAlign: "center" }}>
           Purchase Order
         </Text>
       </View>
