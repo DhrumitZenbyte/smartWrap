@@ -16,6 +16,7 @@ export const productEndpoints = {
 export const sizeEndpoints = {
     ADD_SIZE_API: BASE_URL + "/api/sizes",
     GET_SIZES_API: BASE_URL + "/api/sizes",
+    EDIT_SIZES_API: (id) => `${BASE_URL}/api/sizes/${id}`,
     DELETE_SIZES_API: (id) => `${BASE_URL}/api/sizes/${id}`,
 }
 
