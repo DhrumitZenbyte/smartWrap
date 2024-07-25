@@ -10,6 +10,7 @@
     "@fullcalendar/daygrid": "^5.11.2",
     "@fullcalendar/interaction": "^5.11.2",
     "@fullcalendar/react": "^5.11.2",
+    "@react-pdf/renderer": "^3.4.4",
     "@reduxjs/toolkit": "^2.2.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.4.0",

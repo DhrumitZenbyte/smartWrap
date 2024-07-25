@@ -4,7 +4,7 @@ import { apiconnector } from '../apiconnector';
 
 // const ADD_FINISH_GOODS_API = "http://127.0.0.1:8000/api/finish-goods";
 import { finishGoodsEndpoints } from "../api";
-const { ADD_FINISH_GOODS_API } = finishGoodsEndpoints;
+const { ADD_FINISH_GOODS_API, GET_FINISH_GOODS_API } = finishGoodsEndpoints;
 
 export async function addFinishGoods(finishGoodsData, token) {
     const toastId = toast.loading("Adding finish goods...");
@@ -45,7 +45,7 @@ const BASE_URL = 'http://127.0.0.1:8000/api';
 
 export const fetchFinishGoods = async (token) => {
     try {
-        const response = await apiconnector("GET", `${BASE_URL}/finish-goods`, null, {
+        const response = await apiconnector("GET", GET_FINISH_GOODS_API, null, {
             Authorization: `Bearer ${token}`,
         });
         return response.data;

@@ -37,12 +37,12 @@ const LanguageDropdown = () => {
     <>
       <Dropdown isOpen={menu} toggle={toggle} className="d-inline-block">
         <DropdownToggle className="btn header-item " tag="button">
-          <img
+          {/* <img
             src={get(languages, `${selectedLang}.flag`)}
             alt="Skote"
             height="16"
             className="me-1"
-          />
+          /> */}
         </DropdownToggle>
         <DropdownMenu className="language-switch dropdown-menu-end">
           {map(Object.keys(languages), key => (
@@ -52,12 +52,12 @@ const LanguageDropdown = () => {
               className={`notify-item ${selectedLang === key ? "active" : "none"
                 }`}
             >
-              <img
+              {/* <img
                 src={get(languages, `${key}.flag`)}
                 alt="Skote"
                 className="me-1"
                 height="12"
-              />
+              /> */}
               <span className="align-middle">
                 {get(languages, `${key}.label`)}
               </span>

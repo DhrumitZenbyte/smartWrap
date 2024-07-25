@@ -21,6 +21,7 @@ import RawMaterials from "pages/Dashboard/core/Stocks/RawMaterials/RawMaterials"
 import FinishGoods from "pages/Dashboard/core/Stocks/FinishGoods/FinishGoods"
 import PurchaseOrder from "pages/Dashboard/core/Purchase/PurchaseOrder"
 import Production from "pages/Dashboard/core/Production/Production"
+import POReportComponent from "pages/Dashboard/core/Documentation/POReport"
 
 const authProtectedRoutes = [
   {
@@ -34,8 +35,8 @@ const authProtectedRoutes = [
       { path: "raw-materials", element: <RawMaterials /> },
       { path: "finish-goods", element: <FinishGoods /> },
       { path: "purchase-order", element: <PurchaseOrder /> },
-      { path: "production", element: <Production /> }
-      
+      { path: "production", element: <Production /> },
+      { path: "po-report", element: <POReportComponent/>}
     ],
   },
   { path: "/profile", element: <UserProfile /> },

@@ -10,9 +10,9 @@ import SidebarContent from "./SidebarContent";
 import { Link } from "react-router-dom";
 
 import logo from "../../assets/images/logo.svg";
-import logoLightPng from "../../assets/images/logo-light.png";
-import logoLightSvg from "../../assets/images/logo-light.svg";
-import logoDark from "../../assets/images/logo-dark.png";
+import logoLightPng from "../../assets/images/brands/smartWrap.jpeg";
+import logoLightSvg from "../../assets/images/brands/smartWrap.jpeg";
+import logoDark from "../../assets/images/brands/smartWrap.jpeg";
 
 const Sidebar = props => {
 
@@ -34,7 +34,7 @@ const Sidebar = props => {
               <img src={logoLightSvg} alt="" height="22" />
             </span>
             <span className="logo-lg">
-              <img src={logoLightPng} alt="" height="19" />
+              <img src={logoLightPng} alt=""  />
             </span>
           </Link>
         </div>

@@ -118,7 +118,7 @@ const Login = (props) => {
                     <Col xs={7}>
                       <div className="text-primary p-4">
                         <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to Skote.</p>
+                        <p>Sign in to continue to SMartWrap.</p>
                       </div>
                     </Col>
                     <Col className="col-5 align-self-end">
@@ -178,24 +178,11 @@ const Login = (props) => {
                           Log In
                         </button>
                       </div>
-
-                      <div className="mt-4 text-center">
-                        <Link to="/forgot-password" className="text-muted">
-                          <i className="mdi mdi-lock me-1" />
-                          Forgot your password?
-                        </Link>
-                      </div>
                     </Form>
                   </div>
                 </CardBody>
               </Card>
               <div className="mt-5 text-center">
-                <p>
-                  Don't have an account?{" "}
-                  <Link to="/register" className="fw-medium text-primary">
-                    Signup now
-                  </Link>
-                </p>
                 <p>
                   © {new Date().getFullYear()} Skote. Crafted with{" "}
                   <i className="mdi mdi-heart text-danger" /> by ZenByte Technology
