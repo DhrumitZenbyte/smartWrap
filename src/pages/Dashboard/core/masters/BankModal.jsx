@@ -165,8 +165,10 @@
 // export default BankModal
 
 import React, { useState } from "react"
-import axios from "axios"
+import { addBankDetails } from "services/operations/ProfileOps/ProfileApi"
 
+
+const token = localStorage.getItem("token");
 const BankModal = ({
   showBankPopup,
   setShowBankPopup,
@@ -187,69 +189,30 @@ const BankModal = ({
       ibanNo: "",
     })
   }
-    
-    
-//     const token =
-//   "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YzU5NjE3OC1mMjExLTRmNDUtYjZhOS1hOTUyOTQxN2I0MTYiLCJqdGkiOiIwYWJiYTI3MDA2ZTM4YzBlNzUxMzc0MDU0ZTg4MzRlYjZhZDE0NGJmMWViMmVmNTQyM2RhNDUwN2JhNTVhNjc5YmQxNWE5MDRhYjFjMjZlOCIsImlhdCI6MTcxOTMzNDQ5Ny42NDUyNjYsIm5iZiI6MTcxOTMzNDQ5Ny42NDUyNzEsImV4cCI6MTczNTE0NTY5Ny4xNzM3NTIsInN1YiI6ImM2MzljZDdiLTgyMTctNGU3OS1iNjhlLTM4ZjI4ODJjOTJjMCIsInNjb3BlcyI6W119.NHpWJZxnnGGlvg7KHMJy_tUtHxWNOf-5AKtBl1jckcpX0eujNMtIG007dgEfAKrrFesc814myaMBHG2MhnaQQLrnikmAFaeQXiqxdGqdLB8VSeZ_zr_YTW0AxRb5FcDL3FS2Uwrtdxhv0Ur6ENRp_H-1sWCufvFYsYUNX07ub_GVdgghT4URzLmtemMGGtvcHG6uzwWhhfNRk_QjiVSIACsCQiaVVjeK_J01-U74S4jQtmw4NQH6JIJhXoOgYRwQ6P6yyKfuCZCdSorewH-3Kv8GimhCn7X_ySPmIoIh1Uqj7pnuwkQaaloLfw7jtKC2-LqXBxGY1ZVycEWf_Y3G9dwrTpNd_3iCKx7IonL5nabRUDvHmVCxl2MIctg1D7ai8g756FA6wW4UNxvbCwC-h4Zalb_RlssR_uuAghs9ZXe-nkOojHCbEPi4a62y-BeM8fRG6epgyMP8mMu7EQ51f2ti4KsNc7B1tl5KpSjzs18_gRXBNuQ6zq0sr9UcknlOy9BMszimiZDIMRUYq_XdzOhlmhHvci-sqb_EKpaqsoNDIx6oTQvRFRFKFYllWTh93fl4vqeOFYjkXbZTOY4b0Xfw9Ciz_XMGwwz6yVz24vHxY6wlgiewbKDNAxUOjeNAKeAQ1w-bgDZCLh8RGSrl02gMH5FsTdQ3HwtZIGebdFM"
 
-// try {
-//       const response = await axios.post(
-//         "http://127.0.0.1:8000/api/banks",
-//         {
-//           bank_name: newBank.bankName,
-//           bank_address: newBank.bankAddress,
-//           account_name: newBank.accountName,
-//           account_no: newBank.accountNo,
-//           ifsc_code: newBank.ifscCode,
-//           swift_code: newBank.swiftCode,
-//         bank_ad_code_no: newBank.bankAdCodeNo,
-//       iban_no: newBank.ibanNo,
-//     },
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       )
-
-//       console.log("Bank added successfully:", response)
-//       handleCloseModal() // Close the modal after successful addition
-//     } catch (error) {
-//       console.error("Error adding bank:", error)
-//     }
-  //     }
-  
-  const handleAddBankNew = async()=> {
-    const token = localStorage.getItem("token");    
+  const handleAddBankNew = async () => {
+    const token = localStorage.getItem("token")
     try {
-          const response = await axios.post(
-            "http://127.0.0.1:8000/api/banks",
-            {
-              bank_name: newBank.bankName,
-              bank_address: newBank.bankAddress,
-              account_name: newBank.accountName,
-              account_no: newBank.accountNo,
-              ifsc_code: newBank.ifscCode,
-              swift_code: newBank.swiftCode,
-            bank_ad_code_no: newBank.bankAdCodeNo,
+      await addBankDetails(
+        token,
+        {
+          bank_name: newBank.bankName,
+          bank_address: newBank.bankAddress,
+          account_name: newBank.accountName,
+          account_no: newBank.accountNo,
+          ifsc_code: newBank.ifscCode,
+          swift_code: newBank.swiftCode,
+          bank_ad_code_no: newBank.bankAdCodeNo,
           iban_no: newBank.ibanNo,
-        },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          console.log("Bank added successfully:", response)
-          handleCloseModal() // Close the modal after successful addition
-        } catch (error) {
-          console.error("Error adding bank:", error)
         }
+      )
+      handleCloseModal() // Close the modal after successful addition
+    } catch (error) {
+      console.error("Error adding bank:", error)
+    }
   }
-  
-  
+
+
   return (
     showBankPopup && (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 md:p-0 overflow-y-scroll md:overflow-y-hidden">

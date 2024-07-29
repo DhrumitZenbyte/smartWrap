@@ -496,6 +496,7 @@ import {
   View,
   StyleSheet,
   Image,
+  pdf,
 } from "@react-pdf/renderer"
 import companylogo from "../../../../../assets/images/brands/smartWrap.jpeg"
 
@@ -522,6 +523,139 @@ const RawMaterials = () => {
     receivedDate: "",
   })
   const [editingIndex, setEditingIndex] = useState(null)
+  const [selectedDate, setSelectedDate] = useState("")
+
+  // Function to handle the date change
+  const handleDateChange = event => {
+    setSelectedDate(event.target.value)
+  }
+
+
+  // Function to generate PDF by date
+  const handleGeneratePdfByDate = async () => {
+    try {
+      if (!selectedDate) {
+        alert("Please select a date.")
+        return
+      }
+
+      const token = localStorage.getItem("token") // Get the token from localStorage
+
+      if (!token) {
+        alert("Token is missing. Please log in.")
+        return
+      }
+
+      // Append the date as a query parameter
+      const response = await fetch(
+        `https://api.smartwrapfilms.com/api/company-raw-material-calculation?date_filter=${encodeURIComponent(
+          selectedDate
+        )}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`, // Add the token in the Authorization header
+          },
+        }
+      )
+
+      const data = await response.json()
+      if (data.status === "success") {
+        // Use the fetched data to generate the PDF
+        const MyDocumentWithDate = () => {
+          return (
+            <Document>
+              <Page size="A3" style={styles.page}>
+                <View style={styles.header}>
+                  <Image style={styles.logo} src={companylogo} />
+                  <View style={styles.address}>
+                    <Text>
+                      Address: Vaishnavi Summit, Ground Floor, 7th Main,362001
+                    </Text>
+                  </View>
+                </View>
+                <Text style={styles.title}>
+                  Purchase Order Receipt for {selectedDate}
+                </Text>
+                <View style={styles.table}>
+                  <View style={styles.tableRow}>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>Company Name</Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>Total Pallet</Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>Bag per Pallet</Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>Total Bag</Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>Weight per Bag</Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>Total Weight</Text>
+                    </View>
+                  </View>
+                  {data.company_raw_materials.map((company, index) => (
+                    <View key={index} style={styles.tableRow}>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>
+                          {company.company_name}
+                        </Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>
+                          {company.total_pallet}
+                        </Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>
+                          {company.bag_per_pallet}
+                        </Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>
+                          {company.total_bag}
+                        </Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>
+                          {company.weight_per_bag}
+                        </Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>
+                          {company.total_weight}
+                        </Text>
+                      </View>
+                    </View>
+                  ))}
+                  {/* Add total calculations if needed */}
+                </View>
+              </Page>
+            </Document>
+          )
+        }
+
+        // Generate and download PDF
+        const pdfBlob = await pdf(<MyDocumentWithDate />).toBlob()
+        const url = URL.createObjectURL(pdfBlob)
+        const link = document.createElement("a")
+        link.href = url
+        link.download = `raw-materials-report-${selectedDate}.pdf`
+        link.click()
+      } else {
+        alert("Failed to fetch data for the selected date.")
+      }
+    } catch (error) {
+      console.error("Error generating PDF by date:", error)
+    }
+  }
+
   const token = localStorage.getItem("token")
 
   useEffect(() => {
@@ -668,112 +802,109 @@ const RawMaterials = () => {
     tableCell: { margin: 5 },
   })
 
+  const MyDocument = () => {
+    // Calculate totals
+    const totalPalletSum = companies.reduce(
+      (sum, company) => sum + (company.total_pallet || 0),
+      0
+    )
+    const bagPerPalletSum = companies.reduce(
+      (sum, company) => sum + (company.bag_per_pallet || 0),
+      0
+    )
+    const totalBagSum = companies.reduce(
+      (sum, company) => sum + (company.total_bag || 0),
+      0
+    )
+    const weightPerBagSum = companies.reduce(
+      (sum, company) => sum + (company.weight_per_bag || 0),
+      0
+    )
+    const totalWeightSum = companies.reduce(
+      (sum, company) => sum + (company.total_weight || 0),
+      0
+    )
 
-const MyDocument = () => {
-  // Calculate totals
-  const totalPalletSum = companies.reduce(
-    (sum, company) => sum + (company.total_pallet || 0),
-    0
-  )
-  const bagPerPalletSum = companies.reduce(
-    (sum, company) => sum + (company.bag_per_pallet || 0),
-    0
-  )
-  const totalBagSum = companies.reduce(
-    (sum, company) => sum + (company.total_bag || 0),
-    0
-  )
-  const weightPerBagSum = companies.reduce(
-    (sum, company) => sum + (company.weight_per_bag || 0),
-    0
-  )
-  const totalWeightSum = companies.reduce(
-    (sum, company) => sum + (company.total_weight || 0),
-    0
-  )
-
-  return (
-    <Document>
-      <Page size="A3" style={styles.page}>
-        <View style={styles.header}>
-          <Image style={styles.logo} src={companylogo} />
-          <View style={styles.address}>
-            <Text>
-              Address: Vaishnavi Summit, Ground Floor, 7th Main,362001
-            </Text>
-          </View>
-        </View>
-        <Text style={styles.title}>Purchase Order Receipt</Text>
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Company Name</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Total Pallet</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Bag per Pallet</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Total Bag</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Weight per Bag</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Total Weight</Text>
+    return (
+      <Document>
+        <Page size="A3" style={styles.page}>
+          <View style={styles.header}>
+            <Image style={styles.logo} src={companylogo} />
+            <View style={styles.address}>
+              <Text>
+                Address: Vaishnavi Summit, Ground Floor, 7th Main,362001
+              </Text>
             </View>
           </View>
-          {companies.map((company, index) => (
-            <View key={index} style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{company.company_name}</Text>
+          <Text style={styles.title}>Purchase Order Receipt</Text>
+          <View style={styles.table}>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Company Name</Text>
               </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{company.total_pallet}</Text>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Total Pallet</Text>
               </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{company.bag_per_pallet}</Text>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Bag per Pallet</Text>
               </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{company.total_bag}</Text>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Total Bag</Text>
               </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{company.weight_per_bag}</Text>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Weight per Bag</Text>
               </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{company.total_weight}</Text>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Total Weight</Text>
               </View>
             </View>
-          ))}
-          <View style={styles.tableRow}>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Total</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>{totalPalletSum}</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>{bagPerPalletSum}</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>{totalBagSum}</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>{weightPerBagSum}</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>{totalWeightSum}</Text>
+            {companies.map((company, index) => (
+              <View key={index} style={styles.tableRow}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.company_name}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.total_pallet}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.bag_per_pallet}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.total_bag}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.weight_per_bag}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.total_weight}</Text>
+                </View>
+              </View>
+            ))}
+            <View style={styles.tableRow}>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Total</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>{totalPalletSum}</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>{bagPerPalletSum}</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>{totalBagSum}</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>{weightPerBagSum}</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>{totalWeightSum}</Text>
+              </View>
             </View>
           </View>
-        </View>
-      </Page>
-    </Document>
-  )
-}
-
-
+        </Page>
+      </Document>
+    )
+  }
 
   const navigate = useNavigate()
 
@@ -806,6 +937,22 @@ const MyDocument = () => {
           )
         }
       </PDFDownloadLink>
+      <label className="block mb-2">
+        Select Date:
+        <input
+          type="date"
+          value={selectedDate}
+          onChange={handleDateChange}
+          className="border rounded-md p-2"
+        />
+      </label>
+      <button
+        onClick={handleGeneratePdfByDate}
+        className="mb-4 px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-700"
+      >
+        Generate PDF by Date
+      </button>
+
       <div id="pdfContent" className="overflow-x-auto">
         <table className="min-w-full bg-white">
           <thead>

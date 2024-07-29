@@ -752,6 +752,7 @@ import React, { useEffect, useState } from "react"
 import BankModal from "./BankModal"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { getBankDetails } from "services/operations/ProfileOps/ProfileApi"
 
 const FormInput = ({ label, name, type, value, onChange }) => {
   const commonClasses =
@@ -932,25 +933,24 @@ const ProfileSettings = () => {
     fetchCompanyProfile()
   }, [])
 
-  useEffect(() => {
-    const fetchBanks = async () => {
-      const token =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YzU5NjE3OC1mMjExLTRmNDUtYjZhOS1hOTUyOTQxN2I0MTYiLCJqdGkiOiI0YjRiNTI5YTRkZDA0OTUwNDBmOGFjMjI2OTZhNjNlNjY3ODgyNzAxNTJkZDkxNTY1NDg4ZGQwNTgzZTI5MmJhNGRmMDVhYzAyOTc0YjY2NyIsImlhdCI6MTcxOTQyNzk5Ny43NDc4NTYsIm5iZiI6MTcxOTQyNzk5Ny43NDc4NiwiZXhwIjoxNzM1MjM5MTk3LjU5NzMxNiwic3ViIjoiYzYzOWNkN2ItODIxNy00ZTc5LWI2OGUtMzhmMjg4MmM5MmMwIiwic2NvcGVzIjpbXX0.KQ_fcWBeCw7gP7d_i6pz4blAAOlvSQFWQsshb-VnEOAtpL2Q6SV-8fWBS9wA12drJAke8lbk8SN6Y28jBqffZ_LgJl9CZa7W8wGUmWs9iIVwOyotXhfwBQMWFofPU-ofe8-3UKcVbL8OZ5S1PNwptzALNwyRpzed1egwx3F3G3BZxmsksy08W83wqqDn_fXt1BGSswFaoqiOEptQex57QsOwaQ0lYaX-Hw6VWwjjb8mv4O5a9Ain6Bu0yDinKP7GMENvdGBplq1BA2erc1_HIjFnp0RJct-95JLAIiOj6vpB7GJ8_bWVMGdR_b4sigw5EiOV_GmPz5gMcQjITZUQtwI713bmtKduofCHdz_mwxz80jlbDtO91LqoxQstftLIqq01mAZRzaqjbg_3om7_Uy5S7fvpZfsvT1Elz5OvikgaaSanRvRqLPYusg7nz0MA0fHZ7Org7YuywTxohIAw6aN6wYjh4MSIP2ir2ThECphWF5Q8u1-Hc4_UTtSKWbX8V9NY6YFy67fRlor2M44kATQPr_bReH48o8cfhapemrAAJGqNSGvwQRahZnnGB1NQSwAD5qr0z7Hor3QqoIaw1flFNBJg4uv4tVeuj2BriBIH9ovJG1PxKJ9Jyc34nHMhXf4EtBLUooX06IJBJoxKaP_gRUNJosHERSpW5pyV6D4"
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/api/banks", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+useEffect(() => {
+  const fetchBanks = async () => {
+    const token = localStorage.getItem("token")
+    try {
+      const response = await getBankDetails(token)
+      if (response?.status === 200) {
         setBanks(response.data.banks) // Set banks data
-        console.log("Banks fetched:", response)
-      } catch (error) {
-        console.error("Error fetching banks:", error)
+        console.log("Banks fetched:", response.data.banks)
       }
+    } catch (error) {
+      console.error("Error fetching banks:", error)
     }
+  }
 
-    fetchBanks()
-  }, [])
+  fetchBanks()
+}, [])
+
+        console.log("Banks fetched:", banks)
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -964,7 +964,7 @@ const ProfileSettings = () => {
         },
       })
       if (response.status === 200) {
-        navigate("/dashboard/company-profile") // Navigate to the company profile page
+        // navigate("/dashboard/company-profile") // Navigate to the company profile page
       }
       console.log("Company profile updated successfully:", response)
       // Handle success as per your application's requirement (e.g., show a success message)

@@ -4,6 +4,10 @@ const BASE_URL = "https://api.smartwrapfilms.com"
 export const profileEndpoints = {
     GET_PROFILE_DETAILS_API: BASE_URL + "/api/company-profile-get",
     POST_PROFILE_API: BASE_URL + "/api/company-profile",
+
+    //bank endpoints 
+    ADD_BANK_DETAILS: BASE_URL + "/api/banks",
+    GET_BANK_DETAILS: BASE_URL + "/api/banks"
 }
 
 export const productEndpoints = {
