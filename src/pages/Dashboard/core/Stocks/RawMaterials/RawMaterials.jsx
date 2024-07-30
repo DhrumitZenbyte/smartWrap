@@ -497,6 +497,7 @@ import {
   StyleSheet,
   Image,
   pdf,
+  Font,
 } from "@react-pdf/renderer"
 import companylogo from "../../../../../assets/images/brands/smartWrap.jpeg"
 
@@ -529,6 +530,55 @@ const RawMaterials = () => {
   const handleDateChange = event => {
     setSelectedDate(event.target.value)
   }
+  
+Font.register({
+  family: "Times-Bold",
+  src: "https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2",
+  fontStyle: "normal",
+  fontWeight: "ultrabold",
+})
+
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: "column",
+    backgroundColor: "#FFF",
+    padding: 10,
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    borderBottom: "1px solid #EEE",
+  },
+  title: {
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 10,
+    marginTop: 10,
+    fontWeight: "bold",
+  },
+  logo: {
+    width: 100,
+    height: 50,
+  },
+  address: {
+    textAlign: "right",
+    fontSize: 12,
+  },
+  table: { display: "table", width: "auto", margin: 10 },
+  tableRow: { flexDirection: "row" },
+  tableColHeader: {
+    width: "16%",
+    borderStyle: "solid",
+    borderWidth: 1,
+    backgroundColor: "#DCDCDC",
+  },
+  tableCol: { width: "16%", borderStyle: "solid", borderWidth: 1 },
+  tableCellHeader: { margin: 5, fontWeight: "bold" },
+  tableCell: { margin: 5 },
+})
 
 
   // Function to generate PDF by date
@@ -762,46 +812,10 @@ const RawMaterials = () => {
     }
   }
 
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: "column",
-      backgroundColor: "#FFF",
-      padding: 10,
-    },
-    header: {
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: 10,
-      borderBottom: "1px solid #EEE",
-    },
-    title: {
-      fontSize: 16,
-      textAlign: "center",
-      marginBottom: 10,
-      marginTop: 10,
-    },
-    logo: {
-      width: 100,
-      height: 50,
-    },
-    address: {
-      textAlign: "right",
-    },
-    table: { display: "table", width: "auto", margin: 10 },
-    tableRow: { flexDirection: "row" },
-    tableColHeader: {
-      width: "16%",
-      borderStyle: "solid",
-      borderWidth: 1,
-      backgroundColor: "#DCDCDC",
-    },
-    tableCol: { width: "16%", borderStyle: "solid", borderWidth: 1 },
-    tableCellHeader: { margin: 5, fontWeight: "bold" },
-    tableCell: { margin: 5 },
-  })
+  // Register a font that supports bold
 
+
+  
   const MyDocument = () => {
     // Calculate totals
     const totalPalletSum = companies.reduce(

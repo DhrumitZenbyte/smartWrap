@@ -403,66 +403,131 @@
 // }
 
 // export default CompanyProfile
-
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import DisplayField from "./DisplayField"
-import axios from "axios"
-import toast from "react-hot-toast"
 import { getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
-import { useSelector } from "react-redux"
 
 const CompanyProfile = () => {
   const navigate = useNavigate()
   const [companyProfile, setCompanyProfile] = useState(null) // State to hold company profile data
-  
-  const token = localStorage.getItem("token");
-  console.log(token, "@@token from companyprofile");
+
+  const token = localStorage.getItem("token")
+
   useEffect(() => {
-    // fetchCompanyProfile();
-    getProfileDetails(token, setCompanyProfile);
-  }, []);
+    getProfileDetails(token, setCompanyProfile)
+  }, [token])
 
   const handleEditClick = () => {
     navigate("/dashboard/profile-settings")
   }
 
-  console.log("Rendered company profile:", companyProfile) // Log the company profile on render
-
   if (!companyProfile) {
     return <p>Loading...</p>
   }
 
-  console.log(companyProfile, "@@companyProfileeeeee")
+  const profileSections = [
+    {
+      title: "Company Registration Details",
+      fields: [
+        "gst_no",
+        "lut_no",
+        "cin",
+        "gst_circular_no",
+        "state_code",
+        "lei_no",
+        "field_3",
+        "pan_no",
+        "lut_expiry",
+        "rcmc_no",
+        "date_of_filling_rex_number",
+        "field_1",
+        "field_4",
+        "iec_no",
+        "bin_no",
+        "rcmc_expiry",
+        "circular_no",
+        "aeo_no",
+        "field_2",
+        "field_5",
+      ],
+    },
+    {
+      title: "Company Settings",
+      fields: [
+        "pre_carriage_by",
+        "state_of_origin",
+        "delivery_period",
+        "terms_of_delivery",
+        "place_of_receipt",
+        "part_of_loading",
+        "partial_shipement",
+        "district_of_origin",
+        "trans_shipement",
+        "variety_of_quality",
+        "company_logo",
+        "signature_upload",
+      ],
+    },
+    {
+      title: "Annexure Details",
+      fields: [
+        "range",
+        "division",
+        "commissionerate",
+        "location_code",
+        "annexure_remark",
+      ],
+    },
+    {
+      title: "VGM Details",
+      fields: [
+        "shipper_name",
+        "method_used_for_vgm",
+        "weighbridge_slip_no",
+        "name_and_designation_of_office",
+        "weighbridge_registration_no",
+        "shipper_address",
+        "vgm_remarks",
+      ],
+    },
+    {
+      title: "Export Details",
+      fields: [
+        "bank_id",
+        "export_under_detail_1",
+        "export_under_detail_2",
+        "export_remarks",
+      ],
+    },
+  ]
 
   return (
-    <div className="">
-      {companyProfile && (
-        <div className="container mx-auto p-4">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">Company Profile</h2>
-            <button
-              onClick={handleEditClick}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Edit
-            </button>
-          </div>
+    <div className="container mx-auto p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">Company Profile</h2>
+        <button
+          onClick={handleEditClick}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Edit
+        </button>
+      </div>
 
-         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {Object.entries(companyProfile)
-              .filter(([key]) => !["id", "created_at", "updated_at", "deleted_at"].includes(key))
-              .map(([key, value]) => (
-                <DisplayField
-                  key={key}
-                  label={key.replace(/_/g, " ")} // Replace underscores with spaces
-                  value={value || "-"} // Handle null values
-                />
-              ))}
+      {profileSections.map(section => (
+        <div key={section.title} className="mb-12">
+          <h3 className="text-2xl font-semibold mb-3">{section.title}</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {section.fields.map(field => (
+              <DisplayField
+                key={field}
+                label={field.replace(/_/g, " ")} // Replace underscores with spaces
+                value={companyProfile[field] || "-"} // Handle null values
+              />
+            ))}
           </div>
         </div>
-      )}
-      {!companyProfile && <p>Loading...</p>}
+      ))}
     </div>
   )
 }

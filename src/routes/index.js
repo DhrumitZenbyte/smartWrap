@@ -22,6 +22,10 @@ import FinishGoods from "pages/Dashboard/core/Stocks/FinishGoods/FinishGoods"
 import PurchaseOrder from "pages/Dashboard/core/Purchase/PurchaseOrder"
 import Production from "pages/Dashboard/core/Production/Production"
 import POReportComponent from "pages/Dashboard/core/Documentation/POReport"
+import PoReportForm from "pages/Dashboard/core/Documentation/PoReportForm"
+import PiReport from "pages/Dashboard/core/Documentation/PI/PiReport"
+import PiExportForm from "pages/Dashboard/core/Documentation/PI/PiForms/PiExport/PiExportForm"
+import PiDomesticForm from "pages/Dashboard/core/Documentation/PI/PiForms/PiDomestic/PiDomesticForm"
 
 const authProtectedRoutes = [
   {
@@ -36,7 +40,11 @@ const authProtectedRoutes = [
       { path: "finish-goods", element: <FinishGoods /> },
       { path: "purchase-order", element: <PurchaseOrder /> },
       { path: "production", element: <Production /> },
-      { path: "po-report", element: <POReportComponent/>}
+      { path: "po-report", element: <POReportComponent/>},
+      { path: "po-report/generate", element: <PoReportForm/>},
+      { path: "pi-report", element: <PiReport/>},
+      { path: "pi-export-report/generate", element: <PiExportForm/>},
+      { path: "pi-domestic-report/generate", element: <PiDomesticForm/>},
     ],
   },
   { path: "/profile", element: <UserProfile /> },
