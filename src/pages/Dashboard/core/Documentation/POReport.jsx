@@ -7,6 +7,7 @@ import {
   StyleSheet,
   PDFDownloadLink,
   Image,
+  PDFViewer,
 } from "@react-pdf/renderer"
 import { useForm } from "react-hook-form"
 import { useNavigate, useNavigation } from "react-router-dom"
@@ -17,8 +18,9 @@ import logo from "../../../../assets/images/brands/smartWrap.jpeg" // Adjust the
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
-    backgroundColor: "#FFF",
+    backgroundColor: "#ffffff",
     padding: 10,
+    border: "2px solid #3c3c3c",
   },
   header: {
     display: "flex",
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
     marginTop: 10,
-    fontWeight: "800"
+    fontWeight: "800",
   },
   sectionContainer: {
     display: "flex",
@@ -155,101 +157,103 @@ const POReport = ({ data }) => {
     <>
       <Document>
         <Page size="A4" style={styles.page}>
-          <View style={styles.header}>
-            <Image style={styles.logo} src={logo} />
-            <Text style={styles.address}>
-              Address: Vaishnavi Summit, Ground Floor, Bangalore KA IN 560034.
-            </Text>
-          </View>
-          <Text style={styles.title}>Raw Material Invoice</Text>
-          <View style={styles.sectionContainer}>
-            <View style={styles.sectionRow}>
-              <View style={styles.section}>
-                <Text style={styles.sectionHeader}>Buyer Details</Text>
-                {Object.entries(data.buyer).map(([field, value]) => (
-                  <View key={field} style={styles.fieldValueContainer}>
-                    <Text style={styles.field}>{`${field}:`}</Text>
-                    <View style={styles.verticalLine} />
-                    <Text style={styles.field}>{value}</Text>
+          <View style={styles.pageborder}>
+            <View style={styles.header}>
+              <Image style={styles.logo} src={logo} />
+              <Text style={styles.address}>
+                Address: Vaishnavi Summit, Ground Floor, Bangalore KA IN 560034.
+              </Text>
+            </View>
+            <Text style={styles.title}>Raw Material Invoice</Text>
+            <View style={styles.sectionContainer}>
+              <View style={styles.sectionRow}>
+                <View style={styles.section}>
+                  <Text style={styles.sectionHeader}>Buyer Details</Text>
+                  {Object.entries(data.buyer).map(([field, value]) => (
+                    <View key={field} style={styles.fieldValueContainer}>
+                      <Text style={styles.field}>{`${field}:`}</Text>
+                      <View style={styles.verticalLine} />
+                      <Text style={styles.field}>{value}</Text>
+                    </View>
+                  ))}
+                </View>
+                <View style={styles.separator} />
+                <View style={styles.section}>
+                  <Text style={styles.sectionHeader}>Supplier Details</Text>
+                  {Object.entries(data.supplier).map(([field, value]) => (
+                    <View key={field} style={styles.fieldValueContainer}>
+                      <Text style={styles.field}>{`${field}:`}</Text>
+                      <View style={styles.verticalLine} />
+                      <Text style={styles.field}>{value}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+            <View style={styles.table}>
+              <View style={[styles.tableRow, styles.tableHeader]}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Sr No</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Product Description</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>HSN Code</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Qty</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Unit</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Rate</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Amount</Text>
+                </View>
+              </View>
+              {data.products.map((product, index) => (
+                <View style={styles.tableRow} key={index}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{index + 1}</Text>
                   </View>
-                ))}
-              </View>
-              <View style={styles.separator} />
-              <View style={styles.section}>
-                <Text style={styles.sectionHeader}>Supplier Details</Text>
-                {Object.entries(data.supplier).map(([field, value]) => (
-                  <View key={field} style={styles.fieldValueContainer}>
-                    <Text style={styles.field}>{`${field}:`}</Text>
-                    <View style={styles.verticalLine} />
-                    <Text style={styles.field}>{value}</Text>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.description}</Text>
                   </View>
-                ))}
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.hsn}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.qty}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.unit}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.rate}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.amount}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+            <View style={styles.tableFooter}>
+              <View style={styles.totalAmount}>
+                <Text>Total Amount: {totalAmount}</Text>
+                <Text>IGST: {totalIGST}</Text>
+                <Text>SGST: {totalSGST}</Text>
+                <Text>CGST: {totalCGST}</Text>
+                <Text>Grand Total: {grandTotal}</Text>
               </View>
             </View>
-          </View>
-          <View style={styles.table}>
-            <View style={[styles.tableRow, styles.tableHeader]}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Sr No</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Product Description</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>HSN Code</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Qty</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Unit</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Rate</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Amount</Text>
-              </View>
+            <View style={styles.paymentSection}>
+              <Text>Payment Terms: {data.paymentTerms}</Text>
+              <Text>Time of Delivery: {data.timeOfDelivery}</Text>
+              <Text>Terms of Delivery: {data.termsOfDelivery}</Text>
             </View>
-            {data.products.map((product, index) => (
-              <View style={styles.tableRow} key={index}>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{index + 1}</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{product.description}</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{product.hsn}</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{product.qty}</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{product.unit}</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{product.rate}</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{product.amount}</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-          <View style={styles.tableFooter}>
-            <View style={styles.totalAmount}>
-              <Text>Total Amount: {totalAmount}</Text>
-              <Text>IGST: {totalIGST}</Text>
-              <Text>SGST: {totalSGST}</Text>
-              <Text>CGST: {totalCGST}</Text>
-              <Text>Grand Total: {grandTotal}</Text>
-            </View>
-          </View>
-          <View style={styles.paymentSection}>
-            <Text>Payment Terms: {data.paymentTerms}</Text>
-            <Text>Time of Delivery: {data.timeOfDelivery}</Text>
-            <Text>Terms of Delivery: {data.termsOfDelivery}</Text>
           </View>
         </Page>
       </Document>
@@ -350,6 +354,12 @@ const POReportComponent = () => {
         <button onClick={handleGeneratePdf}>Generate pdf</button>
         <button>get pdf</button>
       </div>
+      <div className="flex mx-auto justify-center items-center"> 
+         <span className="text-3xl">View Pdf</span>
+      </div>
+      <PDFViewer width="100%" height="600px">
+        <POReport data={poData} />
+      </PDFViewer>
     </div>
   )
 }
