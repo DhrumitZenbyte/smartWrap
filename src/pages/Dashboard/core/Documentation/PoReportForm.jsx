@@ -329,6 +329,7 @@ import { PDFViewer } from "@react-pdf/renderer"
 import PoReportPdf from "./PoReportPdf"
 import axios from "axios"
 import { pdf } from "@react-pdf/renderer"
+import { useNavigate } from "react-router-dom"
 
 const PoReportForm = () => {
   const { register, handleSubmit, control } = useForm()
@@ -338,6 +339,8 @@ const PoReportForm = () => {
     control,
     name: "products",
   })
+
+  const navigate = useNavigate()
 
   const calculateTotals = (products, igst, sgst, cgst) => {
     let subtotal = 0
@@ -367,15 +370,14 @@ const PoReportForm = () => {
     }
   }
 
-  const onSubmit = async (data, shouldHitApi) => {
-    setFormData(data)
-
+const onSubmit = async (data, shouldHitApi) => {
+    setFormData(data);
     const totals = calculateTotals(
       data.products || [],
       data.igst || 0,
       data.sgst || 0,
       data.cgst || 0
-    )
+    );
 
     const postData = {
       po_no: data.poNo,
@@ -395,7 +397,7 @@ const PoReportForm = () => {
       cgst: data.cgst,
       total_value: totals.grandTotal,
       amount_in_words: data.amountInWords,
-      products: data.products.map(product => ({
+      products: data.products.map((product) => ({
         product_description: product.product_description,
         hsn_code: product.hsn_code,
         quantity: product.quantity,
@@ -407,47 +409,41 @@ const PoReportForm = () => {
       notes_2: data.note2,
       notes_3: data.note3,
       notes_4: data.note4,
-    }
+    };
 
     if (shouldHitApi) {
-      const token = localStorage.getItem("token")
-
+      const token = localStorage.getItem("token");
+      
       try {
-        const response = await axios.post(
-          "https://api.smartwrapfilms.com/api/po-reports",
-          postData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        alert("PDF generated and API called successfully!")
+        await axios.post("https://api.smartwrapfilms.com/api/po-reports", postData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        // Generate and download the PDF
+        const blob = await generatePdf(data);
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "PurchaseOrder.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        navigate("/dashboard/po-report");
       } catch (error) {
-        console.error("Error while calling the API:", error.response?.data)
-        alert("Failed to generate PDF or call the API.")
+        console.error("Error while calling the API:", error.response?.data);
       }
     }
+  };
 
-    const blob = await generatePdf(data)
-    const url = URL.createObjectURL(blob)
-    setDownloadLink(
-      <a
-        href={url}
-        download="PurchaseOrder.pdf"
-        className="px-6 py-2 ml-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
-      >
-        Download PDF
-      </a>
-    )
-  }
-
-  const generatePdf = async data => {
-    const doc = <PoReportPdf formData={data} />
-    const blob = await pdf(doc).toBlob()
-    return blob
-  }
+  const generatePdf = async (data) => {
+    const doc = <PoReportPdf formData={data} />;
+    const blob = await pdf(doc).toBlob();
+    return blob;
+  };
 
   const handleEdit = () => {
     setFormData(null)
@@ -462,7 +458,6 @@ const PoReportForm = () => {
             <PoReportPdf formData={formData} />
           </PDFViewer>
           <div className="flex justify-end mt-6">
-            {downloadLink}
             <button
               onClick={handleEdit}
               className="px-6 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 transition duration-200"
@@ -721,7 +716,8 @@ const PoReportForm = () => {
 
           <h2 className="text-xl font-semibold my-4">Taxes</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
+              <div>
+                
               <label className="block mb-2 font-semibold">IGST:</label>
               <input
                 type="number"

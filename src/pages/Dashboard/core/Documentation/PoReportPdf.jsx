@@ -256,7 +256,7 @@ const PoReportPdf = ({ formData }) => {
             Address: Vaishnavi Summit, Ground Floor, Bangalore KA IN 560034.
           </Text>
         </View>
-        <Text style={styles.title}>Raw Material Invoice</Text>
+        <Text style={styles.title}>Purchase Order</Text>
 
         <View style={styles.sectionContainer}>
           <View style={styles.sectionRow}>
@@ -342,9 +342,15 @@ const PoReportPdf = ({ formData }) => {
         <View style={styles.tableFooter}>
           <View style={styles.totalAmount}>
             <Text>Total Amount: {totalAmount.toFixed(2)}</Text>
-            <Text>Total IGST: {totalIGST.toFixed(2)}</Text>
-            <Text>Total SGST: {totalSGST.toFixed(2)}</Text>
-            <Text>Total CGST: {totalCGST.toFixed(2)}</Text>
+            <Text>
+              Total IGST {`(${igst}%)`}: {totalIGST.toFixed(2)}
+            </Text>
+            <Text>
+              Total SGST {`(${sgst}%)`}: {totalSGST.toFixed(2)}
+            </Text>
+            <Text>
+              Total CGST {`(${cgst}%)`}: {totalCGST.toFixed(2)}
+            </Text>
             <Text>Grand Total: {grandTotal.toFixed(2)}</Text>
           </View>
         </View>

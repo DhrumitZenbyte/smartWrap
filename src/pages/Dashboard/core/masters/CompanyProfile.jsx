@@ -406,17 +406,42 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import DisplayField from "./DisplayField"
-import { getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
+import { getBankDetails, getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
 
 const CompanyProfile = () => {
   const navigate = useNavigate()
-  const [companyProfile, setCompanyProfile] = useState(null) // State to hold company profile data
+  const [companyProfile, setCompanyProfile] = useState(null)
+  const [banks, setBanks] = useState([])
+  const [selectedBank, setSelectedBank] = useState(null)
 
   const token = localStorage.getItem("token")
 
   useEffect(() => {
     getProfileDetails(token, setCompanyProfile)
-  }, [token])
+
+    // bank detail fetching logic :
+    const fetchBanks = async () => {
+      const token = localStorage.getItem("token")
+      try {
+        const response = await getBankDetails(token)
+        if (response?.status === 200) {
+          setBanks(response.data.banks) // Set banks data
+          console.log("Banks fetched:", response.data.banks)
+        }
+      } catch (error) {
+        console.error("Error fetching banks:", error)
+      }
+    }
+
+    fetchBanks()
+  }, [])
+
+  // Function to handle changes in bank selection
+  const handleBankChange = bankName => {
+    // Find the selected bank from the banks array
+    const selected = banks.find(bank => bank.bank_name === bankName)
+    setSelectedBank(selected)
+  }
 
   const handleEditClick = () => {
     navigate("/dashboard/profile-settings")
@@ -528,6 +553,82 @@ const CompanyProfile = () => {
           </div>
         </div>
       ))}
+
+      {/* Bank Details */}
+      <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8 p-6 bg-white rounded-lg shadow-md">
+        <p className="text-2xl font-bold mb-4">Bank Details</p>
+        <div className="flex flex-col sm:flex-row sm:items-center mb-4">
+          <label className="mb-2 sm:mb-0 sm:mr-2 font-medium">
+            Select Bank For Details:
+          </label>
+          <select
+            className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            onChange={e => handleBankChange(e.target.value)}
+          >
+            <option value="">Select Bank</option>
+            {banks?.map((bank, index) => (
+              <option key={index} value={bank?.bank_name}>
+                {bank?.bank_name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* Render selected bank details */}
+        {selectedBank && (
+          <div className="space-y-4 p-4 bg-gray-50 rounded-lg shadow-inner">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span className="font-medium text-black text-base">
+                Bank Name:
+              </span>
+              <span className="text-gray-900">{selectedBank.bank_name}</span>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span className="font-medium text-black text-base">
+                Bank Address:
+              </span>
+              <span className="text-gray-900">{selectedBank.bank_address}</span>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span className="font-medium text-black text-base">
+                Account Name:
+              </span>
+              <span className="text-gray-900">{selectedBank.account_name}</span>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span className="font-medium text-black text-base">
+                Account No:
+              </span>
+              <span className="text-gray-900">{selectedBank.account_no}</span>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span className="font-medium text-black text-base">
+                IFSC Code:
+              </span>
+              <span className="text-gray-900">{selectedBank.ifsc_code}</span>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span className="font-medium text-black text-base">
+                Swift Code:
+              </span>
+              <span className="text-gray-900">{selectedBank.swift_code}</span>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span className="font-medium text-black text-base">
+                Bank Ad Code No:
+              </span>
+              <span className="text-gray-900">
+                {selectedBank.bank_ad_code_no}
+              </span>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span className="font-medium text-black text-base">IBAN No:</span>
+              <span className="text-gray-900">{selectedBank.iban_no}</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* End Bank Popup */}
     </div>
   )
 }
