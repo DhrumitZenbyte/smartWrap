@@ -272,7 +272,8 @@ const PiExportForm = () => {
 
   // Initialize React Hook Form
   const { register, control, handleSubmit, setValue } = useForm({
-    defaultValues: {
+      defaultValues: {
+      pi_no:"",  
       date: "",
       buyer_order_no: "",
       buyer_order_date: "",
@@ -334,23 +335,23 @@ const PiExportForm = () => {
     name: "products",
   })
 
-  const generatePiNumber = async () => {
-    const currentYear = new Date().getFullYear()
-    const currentMonth = new Date().getMonth() + 1
-    const yearSuffix =
-      currentMonth > 4
-        ? `${currentYear}-${currentYear + 1}`
-        : `${currentYear - 1}-${currentYear}`
+//   const generatePiNumber = async () => {
+//     const currentYear = new Date().getFullYear()
+//     const currentMonth = new Date().getMonth() + 1
+//     const yearSuffix =
+//       currentMonth > 4
+//         ? `${currentYear}-${currentYear + 1}`
+//         : `${currentYear - 1}-${currentYear}`
 
-    const piCount = 3 // Example static count, replace with dynamic count
-    const newPiNumber = `SFW/PI/EX/${piCount}/${yearSuffix}`
-    setPiNumber(newPiNumber)
-    setValue("pi_no", newPiNumber) // Set the PI Number value in the form
-  }
+//     const piCount = 3 // Example static count, replace with dynamic count
+//     const newPiNumber = `SFW/PI/EX/${piCount}/${yearSuffix}`
+//     setPiNumber(newPiNumber)
+//     setValue("pi_no", newPiNumber) // Set the PI Number value in the form
+//   }
 
-  useEffect(() => {
-    generatePiNumber()
-  }, [])
+//   useEffect(() => {
+//     generatePiNumber()
+//   }, [])
 
   const onSubmit = async (data, shouldHitApi) => {
     console.log(data, "@@form data")
@@ -436,8 +437,9 @@ const PiExportForm = () => {
                 <label className="block">PI No:</label>
                 <input
                   type="text"
-                  value={piNumber}
-                  readOnly
+                //   value={piNumber}
+                  {...register("pi_no")}
+                //   readOnly
                   className="w-full border border-gray-300 p-2"
                 />
               </div>
