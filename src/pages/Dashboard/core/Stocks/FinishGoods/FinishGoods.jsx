@@ -138,9 +138,12 @@ import React, { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import { fetchFinishGoods } from "services/operations/FinishGoodsOps/FinishGoodsApi"
+import { PDFDownloadLink } from "@react-pdf/renderer"
+import FinishGoodsPDF from "./FinishGoodsPDF"
 
 const FinishGoods = () => {
   const [products, setProducts] = useState([])
+  const [generatePdf, setGeneratePdf] = useState(false)
   const navigate = useNavigate()
 
   const handleEdit = id => {
@@ -155,35 +158,54 @@ const FinishGoods = () => {
     navigate("/dashboard/production")
   }
 
-useEffect(() => {
-  const fetchData = async () => {
-    const token = localStorage.getItem("token") // Replace with your actual token
-    try {
-      const toastid = toast.loading("Loading Finish Goods Data...")
-      const response = await fetchFinishGoods(token)
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token") // Replace with your actual token
+      try {
+        const toastid = toast.loading("Loading Finish Goods Data...")
+        const response = await fetchFinishGoods(token)
 
-      // Ensure response data structure matches your expectations
-      if (response && response.finishGoods) {
-        setProducts(response.finishGoods)
-      } else {
-        console.error("Unexpected response structure:", response)
-        toast.error("Unexpected response structure.")
+        // Ensure response data structure matches your expectations
+        if (response && response.finishGoods) {
+          setProducts(response.finishGoods)
+        } else {
+          console.error("Unexpected response structure:", response)
+          toast.error("Unexpected response structure.")
+        }
+
+        toast.dismiss(toastid)
+      } catch (error) {
+        toast.error("Failed to fetch finish goods data.")
+        console.error("Failed to fetch products:", error)
       }
-
-      toast.dismiss(toastid)
-    } catch (error) {
-      toast.error("Failed to fetch finish goods data.")
-      console.error("Failed to fetch products:", error)
     }
-  }
 
-  fetchData()
-}, [])
-
+    fetchData()
+  }, [])
 
   return (
     <div className="container mx-auto px-4">
-      <h1 className="text-2xl font-bold mb-4">Finish Goods</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Finish Goods</h1>
+        {generatePdf && (
+          <PDFDownloadLink
+            document={<FinishGoodsPDF data={products} />}
+            fileName="finish_goods_report.pdf"
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+            onClick={() => setGeneratePdf(true)}
+          >
+            {({ loading }) => (loading ? "Generating PDF..." : "Download PDF")}
+          </PDFDownloadLink>
+        )}
+        {!generatePdf && (
+          <button
+            onClick={() => setGeneratePdf(true)}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Generate PDF
+          </button>
+        )}
+      </div>
       <div className="mb-4">
         <button
           onClick={handleRedirect}

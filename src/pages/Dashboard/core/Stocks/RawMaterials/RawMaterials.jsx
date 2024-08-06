@@ -530,59 +530,97 @@ const RawMaterials = () => {
   const handleDateChange = event => {
     setSelectedDate(event.target.value)
   }
-  
-Font.register({
-  family: "Times-Bold",
-  src: "https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2",
-  fontStyle: "normal",
-  fontWeight: "ultrabold",
-})
 
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: "column",
-    backgroundColor: "#FFF",
-    padding: 10,
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    borderBottom: "1px solid #EEE",
-  },
-  title: {
-    fontSize: 18,
-    textAlign: "center",
-    marginBottom: 10,
-    marginTop: 10,
-    fontWeight: "bold",
-  },
-  logo: {
-    width: 100,
-    height: 50,
-  },
-  address: {
-    textAlign: "right",
-    fontSize: 12,
-  },
-  table: { display: "table", width: "auto", margin: 10 },
-  tableRow: { flexDirection: "row" },
-  tableColHeader: {
-    width: "16%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    backgroundColor: "#DCDCDC",
-  },
-  tableCol: { width: "16%", borderStyle: "solid", borderWidth: 1 },
-  tableCellHeader: { margin: 5, fontWeight: "bold" },
-  tableCell: { margin: 5 },
-})
+  Font.register({
+    family: "Times-Bold",
+    src: "https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2",
+    fontStyle: "normal",
+    fontWeight: "ultrabold",
+  })
 
+  console.log(companies, "@@companies")
+
+  const styles = StyleSheet.create({
+    page: {
+      flexDirection: "column",
+      backgroundColor: "#FFF",
+      padding: 10,
+    },
+    header: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: 10,
+      borderBottom: "1px solid #EEE",
+    },
+    title: {
+      fontSize: 18,
+      textAlign: "center",
+      marginBottom: 10,
+      marginTop: 10,
+      fontWeight: "bold",
+    },
+    logo: {
+      width: 100,
+      height: 50,
+    },
+    address: {
+      textAlign: "right",
+      fontSize: 12,
+    },
+    table: { display: "table", width: "auto", margin: 10 },
+    tableRow: { flexDirection: "row" },
+    tableColHeader: {
+      width: "6.25%", // Adjusted width to fit all columns within the page
+      borderStyle: "solid",
+      borderWidth: 1,
+      backgroundColor: "#DCDCDC",
+      padding: 2, // Adding padding for better readability
+    },
+    tableCol: {
+      width: "6.25%", // Adjusted width to fit all columns within the page
+      borderStyle: "solid",
+      borderWidth: 1,
+      padding: 2, // Adding padding for better readability
+    },
+    tableCellHeader: {
+      margin: 5,
+      fontWeight: "bold",
+      fontSize: 8,
+      textAlign: "center",
+    },
+    tableCell: {
+      margin: 5,
+      fontSize: 8,
+      textAlign: "center",
+      wordWrap: "break-word",
+    },
+  })
 
   // Function to generate PDF by date
   const handleGeneratePdfByDate = async () => {
+    const totalPalletSum = companies.reduce(
+      (sum, company) => sum + (company.total_pallet || 0),
+      0
+    )
+    const bagPerPalletSum = companies.reduce(
+      (sum, company) => sum + (company.bag_per_pallet || 0),
+      0
+    )
+    const totalBagSum = companies.reduce(
+      (sum, company) => sum + (company.total_bag || 0),
+      0
+    )
+    const weightPerBagSum = companies.reduce(
+      (sum, company) => sum + (company.weight_per_bag || 0),
+      0
+    )
+    const totalWeightSum = companies.reduce(
+      (sum, company) => sum + (company.total_weight || 0),
+      0
+    )
+
     try {
       if (!selectedDate) {
         alert("Please select a date.")
@@ -622,69 +660,90 @@ const styles = StyleSheet.create({
                   <Image style={styles.logo} src={companylogo} />
                   <View style={styles.address}>
                     <Text>
-                      Address: Vaishnavi Summit, Ground Floor, 7th Main,362001
+                      Address: Vaishnavi Summit, Ground Floor, 7th Main, 362001
                     </Text>
                   </View>
                 </View>
-                <Text style={styles.title}>
-                  Purchase Order Receipt for {selectedDate}
-                </Text>
+                <Text style={styles.title}>Purchase Order Receipt</Text>
                 <View style={styles.table}>
                   <View style={styles.tableRow}>
-                    <View style={styles.tableColHeader}>
-                      <Text style={styles.tableCellHeader}>Company Name</Text>
-                    </View>
-                    <View style={styles.tableColHeader}>
-                      <Text style={styles.tableCellHeader}>Total Pallet</Text>
-                    </View>
-                    <View style={styles.tableColHeader}>
-                      <Text style={styles.tableCellHeader}>Bag per Pallet</Text>
-                    </View>
-                    <View style={styles.tableColHeader}>
-                      <Text style={styles.tableCellHeader}>Total Bag</Text>
-                    </View>
-                    <View style={styles.tableColHeader}>
-                      <Text style={styles.tableCellHeader}>Weight per Bag</Text>
-                    </View>
-                    <View style={styles.tableColHeader}>
-                      <Text style={styles.tableCellHeader}>Total Weight</Text>
-                    </View>
+                    {[
+                      "Company Name",
+                      "Total Pallet",
+                      "Bag per Pallet",
+                      "Total Bag",
+                      "Weight per Bag",
+                      "Total Weight",
+                      "Supplier Name",
+                      "Purchase Order No",
+                      "Sales Order No",
+                      "Description of Goods",
+                      "Qty",
+                      "Weight per Pcs",
+                      "Payment Terms",
+                      "Invoice Date",
+                      "Status",
+                      "Received Date",
+                    ].map(header => (
+                      <View style={styles.tableColHeader} key={header}>
+                        <Text style={styles.tableCellHeader}>{header}</Text>
+                      </View>
+                    ))}
                   </View>
-                  {data.company_raw_materials.map((company, index) => (
+                  {companies.map((company, index) => (
                     <View key={index} style={styles.tableRow}>
-                      <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                          {company.company_name}
-                        </Text>
-                      </View>
-                      <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                          {company.total_pallet}
-                        </Text>
-                      </View>
-                      <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                          {company.bag_per_pallet}
-                        </Text>
-                      </View>
-                      <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                          {company.total_bag}
-                        </Text>
-                      </View>
-                      <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                          {company.weight_per_bag}
-                        </Text>
-                      </View>
-                      <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                          {company.total_weight}
-                        </Text>
-                      </View>
+                      {[
+                        company.company_name,
+                        company.total_pallet,
+                        company.bag_per_pallet,
+                        company.total_bag,
+                        company.weight_per_bag,
+                        company.total_weight,
+                        company.supplier_name,
+                        company.purchase_order_no,
+                        company.sales_order_no,
+                        company.description_of_goods,
+                        company.qty,
+                        company.weight_per_pcs,
+                        company.payment_terms,
+                        company.invoice_date,
+                        company.status,
+                        company.received_date,
+                      ].map((cell, cellIndex) => (
+                        <View style={styles.tableCol} key={cellIndex}>
+                          <Text style={styles.tableCell}>{cell}</Text>
+                        </View>
+                      ))}
                     </View>
                   ))}
-                  {/* Add total calculations if needed */}
+                  <View style={styles.tableRow}>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>Total</Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>
+                        {totalPalletSum}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>
+                        {bagPerPalletSum}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>{totalBagSum}</Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>
+                        {weightPerBagSum}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeader}>
+                      <Text style={styles.tableCellHeader}>
+                        {totalWeightSum}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
               </Page>
             </Document>
@@ -814,9 +873,8 @@ const styles = StyleSheet.create({
 
   // Register a font that supports bold
 
-
-  
   const MyDocument = () => {
+    // Calculate totals
     // Calculate totals
     const totalPalletSum = companies.reduce(
       (sum, company) => sum + (company.total_pallet || 0),
@@ -836,6 +894,14 @@ const styles = StyleSheet.create({
     )
     const totalWeightSum = companies.reduce(
       (sum, company) => sum + (company.total_weight || 0),
+      0
+    )
+    const totalQtySum = companies.reduce(
+      (sum, company) => sum + (company.qty || 0),
+      0
+    )
+    const weightPerPcsSum = companies.reduce(
+      (sum, company) => sum + (company.weight_per_pcs || 0),
       0
     )
 
@@ -871,6 +937,36 @@ const styles = StyleSheet.create({
               <View style={styles.tableColHeader}>
                 <Text style={styles.tableCellHeader}>Total Weight</Text>
               </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Supplier Name</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Purchase Order No</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Sales Order No</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Description of Goods</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Qty</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Weight per Pcs</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Payment Terms</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Invoice Date</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Status</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Received Date</Text>
+              </View>
             </View>
             {companies.map((company, index) => (
               <View key={index} style={styles.tableRow}>
@@ -892,26 +988,90 @@ const styles = StyleSheet.create({
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>{company.total_weight}</Text>
                 </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.supplier_name}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>
+                    {company.purchase_order_no}
+                  </Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.sales_order_no}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>
+                    {company.description_of_goods}
+                  </Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.qty}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.weight_per_pcs}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.payment_terms}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.invoice_date}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.status}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{company.received_date}</Text>
+                </View>
               </View>
             ))}
             <View style={styles.tableRow}>
-              <View style={styles.tableColHeader}>
+              <View style={styles.tableCol}>
                 <Text style={styles.tableCellHeader}>Total</Text>
               </View>
-              <View style={styles.tableColHeader}>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}></Text>
+              </View>
+              <View style={styles.tableCol}>
                 <Text style={styles.tableCellHeader}>{totalPalletSum}</Text>
               </View>
-              <View style={styles.tableColHeader}>
+              <View style={styles.tableCol}>
                 <Text style={styles.tableCellHeader}>{bagPerPalletSum}</Text>
               </View>
-              <View style={styles.tableColHeader}>
+              <View style={styles.tableCol}>
                 <Text style={styles.tableCellHeader}>{totalBagSum}</Text>
               </View>
-              <View style={styles.tableColHeader}>
+              <View style={styles.tableCol}>
                 <Text style={styles.tableCellHeader}>{weightPerBagSum}</Text>
               </View>
-              <View style={styles.tableColHeader}>
+              <View style={styles.tableCol}>
                 <Text style={styles.tableCellHeader}>{totalWeightSum}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}></Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}></Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}></Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}>{totalQtySum}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}>{weightPerPcsSum}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}></Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}></Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}></Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}></Text>
               </View>
             </View>
           </View>
@@ -919,7 +1079,6 @@ const styles = StyleSheet.create({
       </Document>
     )
   }
-
   const navigate = useNavigate()
 
   const handleRedirect = () => {
@@ -1012,9 +1171,9 @@ const styles = StyleSheet.create({
                 <td className="px-4 py-2 border-b">{company.qty}</td>
                 <td className="px-4 py-2 border-b">{company.weight_per_pcs}</td>
                 <td className="px-4 py-2 border-b">{company.payment_terms}</td>
-                <td className="px-4 py-2 border-b">{company.invoice_date}</td>
+                <td className="px-1 py-2 border-b">{company.invoice_date}</td>
                 <td className="px-4 py-2 border-b">{company.status}</td>
-                <td className="px-4 py-2 border-b">{company.received_date}</td>
+                <td className="px-1 py-2 border-b">{company.received_date}</td>
                 <td className="px-4 py-2 border-b">
                   <button
                     onClick={() => handleEditCompany(index)}
@@ -1137,7 +1296,7 @@ const styles = StyleSheet.create({
               </label>
               <div className="flex justify-end mt-4">
                 <button
-                  type="button"
+                  type="button" 
                   onClick={handleSaveCompany}
                   className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
                 >

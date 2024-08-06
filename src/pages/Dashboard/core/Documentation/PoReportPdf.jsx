@@ -78,6 +78,7 @@
 //   </Document>
 // )
 
+
 import React from "react"
 import {
   Page,
@@ -247,6 +248,9 @@ const PoReportPdf = ({ formData }) => {
   const { totalAmount, totalIGST, totalSGST, totalCGST, grandTotal } =
     calculateTotals(products || [], igst || 0, sgst || 0, cgst || 0)
 
+  // Helper function to convert text to uppercase
+  const toUpperCase = text => (text ? text.toUpperCase() : "")
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -264,9 +268,9 @@ const PoReportPdf = ({ formData }) => {
               <Text style={styles.sectionHeader}>Buyer Details</Text>
               {Object.entries(buyer || {}).map(([field, value]) => (
                 <View key={field} style={styles.fieldValueContainer}>
-                  <Text style={styles.field}>{`${field}:`}</Text>
+                  <Text style={styles.field}>{`${toUpperCase(field)}:`}</Text>
                   <View style={styles.verticalLine} />
-                  <Text style={styles.field}>{value || ""}</Text>
+                  <Text style={styles.field}>{toUpperCase(value) || ""}</Text>
                 </View>
               ))}
             </View>
@@ -275,9 +279,9 @@ const PoReportPdf = ({ formData }) => {
               <Text style={styles.sectionHeader}>Supplier Details</Text>
               {Object.entries(supplier || {}).map(([field, value]) => (
                 <View key={field} style={styles.fieldValueContainer}>
-                  <Text style={styles.field}>{`${field}:`}</Text>
+                  <Text style={styles.field}>{`${toUpperCase(field)}:`}</Text>
                   <View style={styles.verticalLine} />
-                  <Text style={styles.field}>{value || ""}</Text>
+                  <Text style={styles.field}>{toUpperCase(value) || ""}</Text>
                 </View>
               ))}
             </View>

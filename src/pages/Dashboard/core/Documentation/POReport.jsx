@@ -158,7 +158,6 @@ const POReport = ({ data }) => {
   console.log(data, "@@@data")
   const { totalAmount, totalIGST, totalSGST, totalCGST, grandTotal } =
     calculateTotals(data?.products, data?.igst, data?.sgst, data?.cgst)
-
   return (
     <>
       {data && (
@@ -172,7 +171,7 @@ const POReport = ({ data }) => {
                   560034.
                 </Text>
               </View>
-              <Text style={styles.title}>Raw Material Invoice</Text>
+              <Text style={styles.title}>Purchase Order</Text>
               <View style={styles.sectionContainer}>
                 <View style={styles.sectionRow}>
                   <View style={styles.section}>
@@ -254,10 +253,16 @@ const POReport = ({ data }) => {
               </View>
               <View style={styles.tableFooter}>
                 <View style={styles.totalAmount}>
-                  <Text>Total Amount: {totalAmount}</Text>
-                  <Text>IGST: {data.igst}</Text>
-                  <Text>SGST: {data.sgst}</Text>
-                  <Text>CGST: {data.cgst}</Text>
+                  <Text>Total Amount: 5000</Text>
+                  <Text>
+                    IGST {`(%)`}: {data.igst}
+                  </Text>
+                  <Text>
+                    SGST {`(%)`}: {data.sgst}
+                  </Text>
+                  <Text>
+                    CGST {`(%)`}: {data.cgst}
+                  </Text>
                   <Text>Grand Total: {grandTotal}</Text>
                 </View>
               </View>
@@ -275,13 +280,13 @@ const POReport = ({ data }) => {
 }
 
 const POReportComponent = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [poData, setPoData] = useState(null);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [poNumber, setPoNumber] = useState("");
+  const [poData, setPoData] = useState(null)
+  const [modalIsOpen, setIsOpen] = useState(false)
+  const [poNumber, setPoNumber] = useState("")
 
-    const pdfViewerRef = useRef(null)
+  const pdfViewerRef = useRef(null)
 
   const [poDatatest, setPoDataTest] = useState({
     buyer: {
@@ -354,7 +359,6 @@ const POReportComponent = () => {
     cgst: 9,
   })
 
-
   const handleFetchPOData = async () => {
     const token = localStorage.getItem("token")
     try {
@@ -369,9 +373,8 @@ const POReportComponent = () => {
       )
       console.log(response.data.poReports, "@@responsee")
       if (response.data.status === "success") {
-        
         setPoData(response.data.poReports)
-        
+
         // Generate PDF and trigger download
         const blob = await pdf(
           <POReport data={response.data.poReports} />
@@ -382,8 +385,8 @@ const POReportComponent = () => {
         link.click()
 
         // close the pop up of Generate pdf by po
-        setIsOpen(false);
-        setPoNumber("");
+        setIsOpen(false)
+        setPoNumber("")
       } else {
         alert("Failed to fetch PO data")
       }
@@ -403,7 +406,6 @@ const POReportComponent = () => {
   const closeModal = () => {
     setIsOpen(false)
   }
-
 
   return (
     <div className="p-4">
@@ -476,7 +478,6 @@ const POReportComponent = () => {
       )}
     </div>
   )
-
 }
 
 export default POReportComponent
