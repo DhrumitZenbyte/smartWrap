@@ -272,8 +272,8 @@ const PiExportForm = () => {
 
   // Initialize React Hook Form
   const { register, control, handleSubmit, setValue } = useForm({
-      defaultValues: {
-      pi_no:"",  
+    defaultValues: {
+      pi_no: "",
       date: "",
       buyer_order_no: "",
       buyer_order_date: "",
@@ -335,23 +335,23 @@ const PiExportForm = () => {
     name: "products",
   })
 
-//   const generatePiNumber = async () => {
-//     const currentYear = new Date().getFullYear()
-//     const currentMonth = new Date().getMonth() + 1
-//     const yearSuffix =
-//       currentMonth > 4
-//         ? `${currentYear}-${currentYear + 1}`
-//         : `${currentYear - 1}-${currentYear}`
+  //   const generatePiNumber = async () => {
+  //     const currentYear = new Date().getFullYear()
+  //     const currentMonth = new Date().getMonth() + 1
+  //     const yearSuffix =
+  //       currentMonth > 4
+  //         ? `${currentYear}-${currentYear + 1}`
+  //         : `${currentYear - 1}-${currentYear}`
 
-//     const piCount = 3 // Example static count, replace with dynamic count
-//     const newPiNumber = `SFW/PI/EX/${piCount}/${yearSuffix}`
-//     setPiNumber(newPiNumber)
-//     setValue("pi_no", newPiNumber) // Set the PI Number value in the form
-//   }
+  //     const piCount = 3 // Example static count, replace with dynamic count
+  //     const newPiNumber = `SFW/PI/EX/${piCount}/${yearSuffix}`
+  //     setPiNumber(newPiNumber)
+  //     setValue("pi_no", newPiNumber) // Set the PI Number value in the form
+  //   }
 
-//   useEffect(() => {
-//     generatePiNumber()
-//   }, [])
+  //   useEffect(() => {
+  //     generatePiNumber()
+  //   }, [])
 
   const onSubmit = async (data, shouldHitApi) => {
     console.log(data, "@@form data")
@@ -362,7 +362,7 @@ const PiExportForm = () => {
 
       const dataToSend = {
         ...data,
-        pi_no: piNumber,
+        // pi_no: piNumber,
       }
       console.log(formData, "@@formdata from the godd")
       try {
@@ -386,7 +386,7 @@ const PiExportForm = () => {
         document.body.appendChild(a)
         a.click()
         a.remove()
-        navigate("/dashboard/pi-export-report")
+        navigate("/dashboard/pi-report")
       } catch (error) {
         console.error("Error generating PDF:", error)
       }
@@ -436,10 +436,10 @@ const PiExportForm = () => {
               <div>
                 <label className="block">PI No:</label>
                 <input
-                  type="text"
-                //   value={piNumber}
-                  {...register("pi_no")}
-                //   readOnly
+                  // type="text"
+                  //   value={piNumber}
+                  {...register("pi_no", { required: true })}
+                  //   readOnly
                   className="w-full border border-gray-300 p-2"
                 />
               </div>
@@ -917,7 +917,7 @@ const PiExportForm = () => {
           </section>
 
           {/* Notes Section */}
-          <section className="mb-4">
+          {/* <section className="mb-4">
             <h2 className="text-xl font-semibold mb-2">Notes</h2>
             {noteFields.map((note, index) => (
               <div
@@ -950,14 +950,14 @@ const PiExportForm = () => {
             >
               Add Note
             </button>
-          </section>
+          </section> */}
 
           <div className="flex justify-end">
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
             >
-              Submit
+              Preview Pdf
             </button>
           </div>
         </form>

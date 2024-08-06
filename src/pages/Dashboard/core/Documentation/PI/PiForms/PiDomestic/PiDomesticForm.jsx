@@ -240,773 +240,657 @@
 
 // export default PiDomesticForm
 
-
-
+import { PDFViewer, pdf } from "@react-pdf/renderer"
 import React, { useState } from "react"
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  PDFDownloadLink,
-} from "@react-pdf/renderer"
-
-// Create styles
-const styles = StyleSheet.create({
-  page: {
-    padding: 30,
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    border: "1px solid black",
-  },
-  heading: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  subHeading: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  row: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  column: {
-    flexDirection: "column",
-    width: "48%",
-  },
-  inputField: {
-    fontSize: 12,
-    marginBottom: 5,
-    borderBottom: "1px solid black",
-  },
-  table: {
-    display: "table",
-    width: "auto",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
-  },
-  tableRow: {
-    margin: "auto",
-    flexDirection: "row",
-  },
-  tableColHeader: {
-    width: "25%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
-    backgroundColor: "#e0e0e0",
-  },
-  tableCol: {
-    width: "25%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
-  },
-  tableCellHeader: {
-    margin: 5,
-    fontSize: 10,
-    fontWeight: "bold",
-  },
-  tableCell: {
-    margin: 5,
-    fontSize: 10,
-  },
-  notes: {
-    fontSize: 10,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  footer: {
-    fontSize: 10,
-    textAlign: "center",
-    marginTop: 20,
-  },
-})
-
-// Create Document Component
-const MyDocument = ({ formData, notes }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <Text style={styles.heading}>Proforma Invoice</Text>
-
-      <View style={styles.section}>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>PI No: {formData.piNo}</Text>
-            <Text style={styles.inputField}>
-              Buyer Order No: {formData.buyerOrderNo}
-            </Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>Date: {formData.date}</Text>
-            <Text style={styles.inputField}>
-              Buyer Order Date: {formData.buyerOrderDate}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.subHeading}>Supplier Details</Text>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>Name: {formData.supplierName}</Text>
-            <Text style={styles.inputField}>
-              Address: {formData.supplierAddress}
-            </Text>
-            <Text style={styles.inputField}>PAN: {formData.supplierPAN}</Text>
-            <Text style={styles.inputField}>GST: {formData.supplierGST}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>
-              Mail Id: {formData.supplierMailId}
-            </Text>
-            <Text style={styles.inputField}>
-              Contact Person: {formData.supplierContactPerson}
-            </Text>
-            <Text style={styles.inputField}>
-              Contact No: {formData.supplierContactNo}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.subHeading}>Consignee Details</Text>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>
-              Name: {formData.consigneeName}
-            </Text>
-            <Text style={styles.inputField}>
-              Address: {formData.consigneeAddress}
-            </Text>
-            <Text style={styles.inputField}>PAN: {formData.consigneePAN}</Text>
-            <Text style={styles.inputField}>IEC: {formData.consigneeIEC}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>GST: {formData.consigneeGST}</Text>
-            <Text style={styles.inputField}>
-              Mail Id: {formData.consigneeMailId}
-            </Text>
-            <Text style={styles.inputField}>
-              Contact Person: {formData.consigneeContactPerson}
-            </Text>
-            <Text style={styles.inputField}>
-              Contact No: {formData.consigneeContactNo}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.subHeading}>Main Details</Text>
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Description</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>HSN Code</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>No of Box/Bag</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Quantity</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Unit</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Rate</Text>
-            </View>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Amount</Text>
-            </View>
-          </View>
-          {/* Render table rows dynamically */}
-          {formData.mainDetails.map((item, index) => (
-            <View style={styles.tableRow} key={index}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.description}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.hsnCode}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.noOfBoxBag}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.quantity}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.unit}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.rate}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.amount}</Text>
-              </View>
-            </View>
-          ))}
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.subHeading}>Bank Details</Text>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>
-              Bank Name: {formData.bankName}
-            </Text>
-            <Text style={styles.inputField}>
-              Address: {formData.bankAddress}
-            </Text>
-            <Text style={styles.inputField}>
-              Account No: {formData.accountNo}
-            </Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>
-              IFSC Code: {formData.ifscCode}
-            </Text>
-            <Text style={styles.inputField}>AD Code: {formData.adCode}</Text>
-            <Text style={styles.inputField}>
-              Swift Code: {formData.swiftCode}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.subHeading}>Payment Details</Text>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>
-              Payment Terms: {formData.paymentTerms}
-            </Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.inputField}>
-              Delivery Time: {formData.deliveryTime}
-            </Text>
-            <Text style={styles.inputField}>
-              Delivery Terms: {formData.deliveryTerms}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.notes}>Notes: {notes}</Text>
-      </View>
-
-      <Text style={styles.footer}>Thank you for your business!</Text>
-    </Page>
-  </Document>
-)
+import { useForm, Controller, useFieldArray } from "react-hook-form"
+import PiDomesticPdf from "./PiDomesticPdf"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const PiDomesticForm = () => {
-  const [formData, setFormData] = useState({
-    piNo: "",
-    buyerOrderNo: "",
-    date: "",
-    buyerOrderDate: "",
-    supplierName: "",
-    supplierAddress: "",
-    supplierPAN: "",
-    supplierGST: "",
-    supplierMailId: "",
-    supplierContactPerson: "",
-    supplierContactNo: "",
-    consigneeName: "",
-    consigneeAddress: "",
-    consigneePAN: "",
-    consigneeIEC: "",
-    consigneeGST: "",
-    consigneeMailId: "",
-    consigneeContactPerson: "",
-    consigneeContactNo: "",
-    mainDetails: [
-      {
-        description: "",
-        hsnCode: "",
-        noOfBoxBag: "",
-        quantity: "",
-        unit: "",
-        rate: "",
-        amount: "",
-      },
-    ],
-    bankName: "",
-    bankAddress: "",
-    accountNo: "",
-    ifscCode: "",
-    adCode: "",
-    swiftCode: "",
-    paymentTerms: "",
-    deliveryTime: "",
-    deliveryTerms: "",
+  const [formData, setFormData] = useState(null)
+  const navigate = useNavigate()
+
+  const { control, handleSubmit, watch, register } = useForm({
+    defaultValues: {
+      pi_no: "",
+      date: "",
+      buyer_order_no: "",
+      buyer_order_date: "",
+      supplier_name: "",
+      supplier_address: "",
+      supplier_pan: "",
+      supplier_gst: "",
+      supplier_mail: "",
+      supplier_contact_person: "",
+      supplier_contact_no: "",
+      consignee_name: "",
+      consignee_address: "",
+      consignee_pan: "",
+      consignee_iec: "",
+      consignee_gst: "",
+      consignee_mail: "",
+      consignee_contact_person: "",
+      consignee_contact_no: "",
+      igst: "",
+      sgst: "",
+      cgst: "",
+      total_fob_value: "",
+      amount_in_words: "",
+      bank_name: "",
+      bank_address: "",
+      bank_account_no: "",
+      bank_ifsc_code: "",
+      bank_ad_code: "",
+      bank_swift_code: "",
+      payment_terms: "",
+      payment_delivery_time: "",
+      payment_delivery_terms: "",
+      notes: [
+        {
+          note: "",
+        },
+      ],
+      products: [
+        {
+          description: "",
+          hsn_code: "",
+          no_of_box: "",
+          quantity: "",
+          unit: "",
+          rate_in_usd: "",
+          amount: "",
+        },
+      ],
+    },
   })
 
-  const [notes, setNotes] = useState([{ note: "" }])
+  const {
+    fields: productFields,
+    append: appendProduct,
+    remove: removeProduct,
+  } = useFieldArray({
+    control,
+    name: "products",
+  })
+
+  const {
+    fields: noteFields,
+    append: appendNote,
+    remove: removeNote,
+  } = useFieldArray({
+    control,
+    name: "notes",
+  })
+
+  const onSubmit = async(data, shouldHitApi) => {
+    // Handle form submission here
+    console.log(data, "i am the ops")
+    setFormData(data)
+
+       if (shouldHitApi) {
+      const token = localStorage.getItem("token")
+
+      const dataToSend = {
+        ...data,
+      }
+      console.log(formData, "@@formdata from the godd")
+      try {
+        const response = await axios.post(
+          "https://api.smartwrapfilms.com/api/pi-reports-domestic",
+          dataToSend,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+
+        console.log("API Response:", response.data)
+        // Generate and download the PDF
+        const blob = await generatePdf(data)
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = "pi-domestic.pdf"
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        navigate("/dashboard/pi-domestic-report")
+      } catch (error) {
+        console.error("Error generating PDF:", error)
+      }
+    }
+  }
+
+    
+  const generatePdf = async (data) => {
+    const doc = <PiDomesticPdf formData={data} />
+    const blob = await pdf(doc).toBlob()
+    return blob
+  }
+    
+  const handleAddProduct = () => {
+    appendProduct({
+      description: "",
+      hsn_code: "",
+      no_of_box: "",
+      quantity: "",
+      unit: "",
+      rate_in_usd: "",
+      amount: "",
+    })
+  }
 
   const handleAddNote = () => {
-    setNotes([...notes, { note: "" }])
-  }
-
-  const handleNoteChange = (index, event) => {
-    const newNotes = notes.map((note, noteIndex) => {
-      if (index === noteIndex) {
-        return { ...note, note: event.target.value }
-      }
-      return note
+    appendNote({
+      note: "",
     })
-    setNotes(newNotes)
   }
 
-  const handleFormChange = (field, value) => {
-    setFormData({ ...formData, [field]: value })
-  }
-
-  const handleMainDetailsChange = (index, field, value) => {
-    const newMainDetails = formData.mainDetails.map((detail, detailIndex) => {
-      if (index === detailIndex) {
-        return { ...detail, [field]: value }
-      }
-      return detail
-    })
-    setFormData({ ...formData, mainDetails: newMainDetails })
+  const handleEdit = () => {
+    setFormData(null)
   }
 
   return (
     <div className="max-w-4xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-6">PI Domestic Invoice</h2>
 
-      {/* Proforma Invoice Section */}
-      <div className="mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-2 font-medium">PI No:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("piNo", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Date:</label>
-            <input
-              type="date"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("date", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Buyer Order No:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("buyerOrderNo", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Buyer Order Date:</label>
-            <input
-              type="date"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("buyerOrderDate", e.target.value)}
-            />
+      {formData ? (
+        <div>
+          <PDFViewer style={{ height: "500px" }} className="w-full">
+            <PiDomesticPdf formData={formData} />
+          </PDFViewer>
+          <div className="flex justify-end mt-6">
+            <button
+              onClick={handleEdit}
+              className="px-6 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 transition duration-200"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => onSubmit(formData, true)}
+              className="px-6 py-2 ml-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+            >
+              OK
+            </button>
           </div>
         </div>
-      </div>
-
-      {/* Supplier Details Section */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-4">Supplier Details</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-2 font-medium">Name:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("supplierName", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Address:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e =>
-                handleFormChange("supplierAddress", e.target.value)
-              }
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">PAN:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("supplierPAN", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">GST:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("supplierGST", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Mail Id:</label>
-            <input
-              type="email"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("supplierMailId", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Contact Person:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e =>
-                handleFormChange("supplierContactPerson", e.target.value)
-              }
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Contact No:</label>
-            <input
-              type="tel"
-              className="w-full p-2 border rounded"
-              onChange={e =>
-                handleFormChange("supplierContactNo", e.target.value)
-              }
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Consignee Details Section */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-4">Consignee Details</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-2 font-medium">Name:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("consigneeName", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Address:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e =>
-                handleFormChange("consigneeAddress", e.target.value)
-              }
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">PAN:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("consigneePAN", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">IEC:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("consigneeIEC", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">GST:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("consigneeGST", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Mail Id:</label>
-            <input
-              type="email"
-              className="w-full p-2 border rounded"
-              onChange={e =>
-                handleFormChange("consigneeMailId", e.target.value)
-              }
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Contact Person:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e =>
-                handleFormChange("consigneeContactPerson", e.target.value)
-              }
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Contact No:</label>
-            <input
-              type="tel"
-              className="w-full p-2 border rounded"
-              onChange={e =>
-                handleFormChange("consigneeContactNo", e.target.value)
-              }
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Main Details Section */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-4">Main Details</h3>
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-          {formData.mainDetails.map((item, index) => (
-            <React.Fragment key={index}>
-              <div className="col-span-2">
-                <label className="block mb-2 font-medium">Description:</label>
+      ) : (
+        <form onSubmit={handleSubmit(data => onSubmit(data, false))}>
+          {/* Proforma Invoice Section */}
+          <div className="mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-2 font-medium">PI No:</label>
                 <input
                   type="text"
                   className="w-full p-2 border rounded"
-                  onChange={e =>
-                    handleMainDetailsChange(
-                      index,
-                      "description",
-                      e.target.value
-                    )
-                  }
+                  {...register("pi_no")}
                 />
               </div>
               <div>
-                <label className="block mb-2 font-medium">HSN Code:</label>
+                <label className="block mb-2 font-medium">Date:</label>
+                <input
+                  type="date"
+                  className="w-full p-2 border rounded"
+                  {...register("date")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">
+                  Buyer Order No:
+                </label>
                 <input
                   type="text"
                   className="w-full p-2 border rounded"
-                  onChange={e =>
-                    handleMainDetailsChange(index, "hsnCode", e.target.value)
-                  }
+                  {...register("buyer_order_no")}
                 />
               </div>
               <div>
-                <label className="block mb-2 font-medium">No of Box/Bag:</label>
+                <label className="block mb-2 font-medium">
+                  Buyer Order Date:
+                </label>
                 <input
-                  type="number"
+                  type="date"
                   className="w-full p-2 border rounded"
-                  onChange={e =>
-                    handleMainDetailsChange(index, "noOfBoxBag", e.target.value)
-                  }
+                  {...register("buyer_order_date")}
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Supplier Details Section */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Supplier Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-2 font-medium">Quantity:</label>
-                <input
-                  type="number"
-                  className="w-full p-2 border rounded"
-                  onChange={e =>
-                    handleMainDetailsChange(index, "quantity", e.target.value)
-                  }
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Unit:</label>
+                <label className="block mb-2 font-medium">Name:</label>
                 <input
                   type="text"
                   className="w-full p-2 border rounded"
-                  onChange={e =>
-                    handleMainDetailsChange(index, "unit", e.target.value)
-                  }
+                  {...register("supplier_name")}
                 />
               </div>
               <div>
-                <label className="block mb-2 font-medium">Rate:</label>
+                <label className="block mb-2 font-medium">Address:</label>
                 <input
-                  type="number"
+                  type="text"
                   className="w-full p-2 border rounded"
-                  onChange={e =>
-                    handleMainDetailsChange(index, "rate", e.target.value)
-                  }
+                  {...register("supplier_address")}
                 />
               </div>
               <div>
-                <label className="block mb-2 font-medium">Amount:</label>
+                <label className="block mb-2 font-medium">PAN:</label>
                 <input
-                  type="number"
+                  type="text"
                   className="w-full p-2 border rounded"
-                  onChange={e =>
-                    handleMainDetailsChange(index, "amount", e.target.value)
-                  }
+                  {...register("supplier_pan")}
                 />
               </div>
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
+              <div>
+                <label className="block mb-2 font-medium">GST:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("supplier_gst")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Mail:</label>
+                <input
+                  type="email"
+                  className="w-full p-2 border rounded"
+                  {...register("supplier_mail")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">
+                  Contact Person:
+                </label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("supplier_contact_person")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Contact No:</label>
+                <input
+                  type="tel"
+                  className="w-full p-2 border rounded"
+                  {...register("supplier_contact_no")}
+                />
+              </div>
+            </div>
+          </div>
 
-      {/* Bank Details Section */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-4">Bank Details</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-2 font-medium">Bank Name:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("bankName", e.target.value)}
-            />
+          {/* Consignee Details Section */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Consignee Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-2 font-medium">Name:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("consignee_name")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Address:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("consignee_address")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">PAN:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("consignee_pan")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">IEC:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("consignee_iec")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">GST:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("consignee_gst")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Mail:</label>
+                <input
+                  type="email"
+                  className="w-full p-2 border rounded"
+                  {...register("consignee_mail")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">
+                  Contact Person:
+                </label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("consignee_contact_person")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Contact No:</label>
+                <input
+                  type="tel"
+                  className="w-full p-2 border rounded"
+                  {...register("consignee_contact_no")}
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="block mb-2 font-medium">Address:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("bankAddress", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Account No:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("accountNo", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">IFSC Code:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("ifscCode", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">AD Code:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("adCode", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Swift Code:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("swiftCode", e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
 
-      {/* Payment Details Section */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-4">Payment Details</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-2 font-medium">Payment Terms:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("paymentTerms", e.target.value)}
-            />
+          {/* Tax Details Section */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Tax Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block mb-2 font-medium">IGST:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("igst")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">SGST:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("sgst")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">CGST:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("cgst")}
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="block mb-2 font-medium">Delivery Time:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("deliveryTime", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block mb-2 font-medium">Delivery Terms:</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              onChange={e => handleFormChange("deliveryTerms", e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
 
-      {/* Note Section */}
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Notes</h3>
-        {notes.map((note, index) => (
-          <div key={index} className="mb-2">
-            <label className="block text-sm font-medium mb-1">
-              Note {index + 1}:
-            </label>
-            <input
-              type="text"
-              value={note.note}
-              onChange={e => handleNoteChange(index, e)}
-              className="w-full p-2 border rounded"
-              placeholder={`Enter note ${index + 1}`}
-            />
+          {/* Bank Details Section */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Bank Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-2 font-medium">Bank Name:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_name")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Bank Address:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_address")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Account No:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_account_no")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">IFSC Code:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_ifsc_code")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">AD Code:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_ad_code")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Swift Code:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_swift_code")}
+                />
+              </div>
+            </div>
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={handleAddNote}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Add Note
-        </button>
-      </div>
 
-      {/* Submit Button */}
-      <div className="text-right">
-        <PDFDownloadLink
-          document={
-            <MyDocument
-              formData={formData}
-              notes={notes.map(note => note.note)}
-            />
-          }
-          fileName="ProformaInvoice.pdf"
-        >
-          {({ loading }) =>
-            loading ? (
-              <button className="bg-gray-500 text-white py-2 px-4 rounded">
-                Generating PDF...
-              </button>
-            ) : (
-              <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-                Generate PDF
-              </button>
-            )
-          }
-        </PDFDownloadLink>
-      </div>
+          {/* Payment Details Section */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Payment Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-2 font-medium">Terms:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("payment_terms")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Delivery Time:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("payment_delivery_time")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">
+                  Delivery Terms:
+                </label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("payment_delivery_terms")}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Products Section */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Products</h3>
+            {productFields.map((item, index) => (
+              <div key={item.id} className="border p-4 mb-4 rounded">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block mb-2 font-medium">
+                      Description:
+                    </label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].description`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium">HSN Code:</label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].hsn_code`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium">No of Box:</label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].no_of_box`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium">Quantity:</label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].quantity`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium">Unit:</label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].unit`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium">
+                      Rate in USD:
+                    </label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].rate_in_usd`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium">Amount:</label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].amount`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="mt-4 bg-red-500 text-white p-2 rounded"
+                  onClick={() => removeProduct(index)}
+                >
+                  Remove Product
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              className="bg-blue-500 text-white p-2 rounded"
+              onClick={handleAddProduct}
+            >
+              Add Product
+            </button>
+          </div>
+
+          {/* Notes Section */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Notes</h3>
+            {noteFields.map((item, index) => (
+              <div key={item.id} className="mb-4">
+                <div className="flex gap-4 items-center">
+                  <Controller
+                    control={control}
+                    name={`notes[${index}].note`}
+                    render={({ field }) => (
+                      <input
+                        type="text"
+                        className="w-full p-2 border rounded"
+                        {...field}
+                      />
+                    )}
+                  />
+                  <button
+                    type="button"
+                    className="bg-red-500 text-white p-2 rounded"
+                    onClick={() => removeNote(index)}
+                  >
+                    Remove Note
+                  </button>
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              className="bg-blue-500 text-white p-2 rounded"
+              onClick={handleAddNote}
+            >
+              Add Note
+            </button>
+          </div>
+
+          {/* Submit Button */}
+          <div className="text-right">
+            <button
+              type="submit"
+              className="bg-green-500 text-white p-2 rounded"
+            >
+              Preview Pdf
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   )
 }

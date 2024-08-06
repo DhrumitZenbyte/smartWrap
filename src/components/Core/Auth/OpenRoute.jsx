@@ -4,8 +4,8 @@ import { useSelector } from "react-redux"
 import { Navigate } from "react-router-dom"
 
 function OpenRoute({ children }) {
-  const { token } = useSelector(state => state.auth)
-
+  // const { token } = useSelector(state => state.auth)
+  const token = localStorage.getItem("token");
   if (token === null) {
     return children
   } else {

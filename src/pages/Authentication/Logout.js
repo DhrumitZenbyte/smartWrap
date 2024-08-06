@@ -14,6 +14,40 @@ const Logout = () => {
   console.log(":i am calling");
   const history = useNavigate();
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+
+useEffect(() => {
+    const logout = async () => {
+      try {
+        const toastId = toast.loading("Logging out...");
+        const response = await axios.post(
+          "https://api.smartwrapfilms.com/api/logout",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          dispatch(logoutUserSuccess());
+          localStorage.removeItem("token");
+          toast.success("Logged out successfully");
+          history("/login"); // redirect to login page after logout
+        } else {
+          toast.error("Logout failed. Please try again.");
+        }
+      } catch (error) {
+        toast.error("An error occurred. Please try again.");
+        console.error("Logout error:", error);
+      } finally {
+        toast.dismiss();
+      }
+    };
+
+    logout();
+  }, [dispatch, token, history]);
 
   useEffect(() => {
     dispatch(logoutUser(history));

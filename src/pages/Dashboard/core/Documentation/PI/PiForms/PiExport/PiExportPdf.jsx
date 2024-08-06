@@ -664,7 +664,6 @@ const PiExportPdf = ({ formData }) => {
     total_fob_value = "",
     products = [],
   } = formData
-
   return (
     <Document>
       <Page style={styles.page}>
@@ -866,9 +865,9 @@ const PiExportPdf = ({ formData }) => {
             <View style={styles.separator} />
             <View style={styles.section}>
               <Text style={styles.sectionHeader}>Payment Terms</Text>
-              <Text>Payment Terms</Text>
-              <Text>Payment Terms: 30 days</Text>
-              <Text>Delivery Terms: CIF</Text>
+              <Text>Payment Terms: {payment_terms}</Text>
+              <Text>Delivery Time: {payment_delivery_time}</Text>
+              <Text>Delivery Terms: {payment_delivery_terms}</Text>
             </View>
           </View>
         </View>
