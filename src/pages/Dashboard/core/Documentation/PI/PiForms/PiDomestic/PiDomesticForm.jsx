@@ -356,7 +356,7 @@ const PiDomesticForm = () => {
         document.body.appendChild(a)
         a.click()
         a.remove()
-        navigate("/dashboard/pi-domestic-report")
+        navigate("/dashboard/pi-report")
       } catch (error) {
         console.error("Error generating PDF:", error)
       }
