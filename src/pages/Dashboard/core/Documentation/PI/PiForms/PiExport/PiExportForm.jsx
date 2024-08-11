@@ -312,7 +312,21 @@ const PiExportForm = () => {
       payment_delivery_time: "",
       payment_delivery_terms: "",
       notes: [],
-      products: [],
+      products: [
+        {
+          size: "",
+          type: "",
+          packaging_description: "",
+          rolls_pallet: "",
+          no_of_pallets: "",
+          total_rolls: "",
+          container: "",
+          unit: "",
+          rate_in_usd: "",
+          amount_in_usd: "",
+          quanity: "",
+        },
+      ],
     },
   })
   const navigate = useNavigate()
@@ -359,10 +373,9 @@ const PiExportForm = () => {
 
     if (shouldHitApi) {
       const token = localStorage.getItem("token")
-
+      console.log(data.products, "@@productsss")
       const dataToSend = {
         ...data,
-        // pi_no: piNumber,
       }
       console.log(formData, "@@formdata from the godd")
       try {
@@ -644,7 +657,6 @@ const PiExportForm = () => {
           </section>
 
           {/* Product Details Section */}
-          {/* Product Details Section */}
           <section className="mb-4">
             <h2 className="text-xl font-semibold mb-2">Product Details</h2>
             {productFields.map((product, index) => (
@@ -736,7 +748,7 @@ const PiExportForm = () => {
                   <label className="block">Quantity:</label>
                   <input
                     type="number"
-                    {...register(`products[${index}].quantity`)}
+                    {...register(`products[${index}].quanity`)}
                     className="w-full border border-gray-300 p-2"
                   />
                 </div>
@@ -917,7 +929,7 @@ const PiExportForm = () => {
           </section>
 
           {/* Notes Section */}
-          {/* <section className="mb-4">
+          <section className="mb-4">
             <h2 className="text-xl font-semibold mb-2">Notes</h2>
             {noteFields.map((note, index) => (
               <div
@@ -950,7 +962,7 @@ const PiExportForm = () => {
             >
               Add Note
             </button>
-          </section> */}
+          </section>
 
           <div className="flex justify-end">
             <button

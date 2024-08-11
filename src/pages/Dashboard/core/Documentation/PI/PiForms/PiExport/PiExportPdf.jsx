@@ -664,6 +664,9 @@ const PiExportPdf = ({ formData }) => {
     total_fob_value = "",
     products = [],
   } = formData
+
+  const parsedNotes = typeof notes === "string" ? JSON.parse(notes) : notes
+
   return (
     <Document>
       <Page style={styles.page}>
@@ -875,11 +878,12 @@ const PiExportPdf = ({ formData }) => {
         <View style={styles.notesContainer}>
           <View style={styles.notesSection}>
             <Text style={styles.sectionHeader}>Notes</Text>
-            {/* {notes?.map((note, index) => (
+            <Text style={styles.notesText}>Notes:</Text>
+            {parsedNotes.map((note, index) => (
               <Text key={index} style={styles.notesText}>
-                {note}
+                {note.note}
               </Text>
-            ))} */}
+            ))}
           </View>
           <View style={styles.signatureSection}>
             <View style={styles.signatureItem}>

@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
 })
 
 const PiDomesticPdf = ({ formData }) => {
+  console.log(formData, "@@Formdataa of the pi domestic")
   const {
     pi_no,
     date,
@@ -200,6 +201,7 @@ const PiDomesticPdf = ({ formData }) => {
     consignee_contact_person,
     consignee_contact_no,
     products = [],
+    pi_report_products = [],
     total_fob_value,
     amount_in_words,
     bank_name,
@@ -217,9 +219,13 @@ const PiDomesticPdf = ({ formData }) => {
     cgst,
   } = formData
 
+  const parsedNotes = typeof notes === "string" ? JSON.parse(notes) : notes
+
   if (formData) {
     console.log(formData, "@@formData from #######")
   }
+
+  console.log(pi_report_products, "@@pi_report_products")
 
   return (
     <Document>
@@ -297,34 +303,72 @@ const PiDomesticPdf = ({ formData }) => {
               <Text style={styles.tableCellHeader}>Amount</Text>
             </View>
           </View>
-          {products.map((product, index) => (
-            <View style={styles.tableRow} key={index}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{index + 1}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{product.description}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{product.hsn_code}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{product.no_of_box}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{product.quantity}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{product.unit}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{product.rate_in_usd}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{product.amount}</Text>
-              </View>
+
+          {products && (
+            <View>
+              {products.map((product, index) => (
+                <View style={styles.tableRow} key={index}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{index + 1}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.description}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.hsn_code}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.no_of_box}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.quantity}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.unit}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.rate_in_usd}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.amount}</Text>
+                  </View>
+                </View>
+              ))}
             </View>
-          ))}
+          )}
+
+          {pi_report_products && (
+            <View>
+              {pi_report_products.map((product, index) => (
+                <View style={styles.tableRow} key={index}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{index + 1}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.description}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.hsn_code}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.no_of_box}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.quantity}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.unit}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.rate_in_usd}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{product.amount}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          )}
         </View>
 
         <View style={styles.tableCalculation}>
@@ -368,7 +412,7 @@ const PiDomesticPdf = ({ formData }) => {
         <View style={styles.notesContainer}>
           <View style={styles.notesSection}>
             <Text style={styles.notesText}>Notes:</Text>
-            {notes.map((note, index) => (
+            {parsedNotes.map((note, index) => (
               <Text key={index} style={styles.notesText}>
                 {note.note}
               </Text>

@@ -240,7 +240,7 @@
 // }
 
 // export default PiReport
-import React from "react"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   Page,
@@ -250,8 +250,12 @@ import {
   StyleSheet,
   PDFViewer,
   Image,
+  pdf,
 } from "@react-pdf/renderer"
 import logo from "../../../../../assets/images/brands/smartWrap.jpeg"
+import PiExportPdf from "./PiForms/PiExport/PiExportPdf"
+import axios from "axios"
+import PiDomesticPdf from "./PiForms/PiDomestic/PiDomesticPdf"
 
 const styles = StyleSheet.create({
   page: {
@@ -280,7 +284,7 @@ const styles = StyleSheet.create({
   },
   tableRow: {
     margin: "auto",
-      flexDirection: "row",
+    flexDirection: "row",
   },
   tableCol: {
     width: "9.09%", // Adjusted width to fit 11 columns in the second table
@@ -354,15 +358,15 @@ const styles = StyleSheet.create({
   section: {
     flex: 1,
     padding: 5,
-    fontSize: 10,    
+    fontSize: 10,
   },
   separator: {
     width: 1,
     backgroundColor: "#9c9c9c",
   },
-    gaper: {
-   paddingTop: 18,   
-   },
+  gaper: {
+    paddingTop: 18,
+  },
   // ---
   tableCalculation: {
     display: "flex",
@@ -503,8 +507,8 @@ const PiDocument = () => (
           </View>
         </View>
       </View>
-     
-      <view style= {styles.gaper}></view>      
+
+      <view style={styles.gaper}></view>
       <View style={styles.table}>
         <View style={styles.tableRow}>
           <View style={styles.tableCol}>
@@ -671,7 +675,30 @@ const PiDocument = () => (
 
 const PiReport = () => {
   const navigate = useNavigate()
+  const [modalIsOpenExp, setIsOpenExp] = useState(false)
+  const [modalIsOpenDom, setIsOpenDom] = useState(false)
+  const [PiExpData, setExpPiData] = useState(null)
+  const [loading, setLoading] = useState(false)
 
+  const [PiExpNumber, setPiExpNumber] = useState(null)
+  const [PiDomNumber, setPiDomNumber] = useState(null)
+
+  const token = localStorage.getItem("token")
+  const openModal = () => {
+    setIsOpenExp(true)
+  }
+
+  const openDomModal = () => {
+    setIsOpenDom(true)
+  }
+
+  const closeDomModal = () => {
+    setIsOpenDom(false)
+  }
+
+  const closeModal = () => {
+    setIsOpenExp(false)
+  }
   const handleGenerateDomestic = () => {
     navigate("/dashboard/pi-domestic-report/generate") // Replace with your actual path
   }
@@ -679,23 +706,108 @@ const PiReport = () => {
   const handleGenerateExport = () => {
     navigate("/dashboard/pi-export-report/generate") // Replace with your actual path
   }
+
+  const handleFetchPiData = async () => {
+    console.log(PiExpNumber, "@@#####@@")
+    try {
+      setLoading(true)
+      const response = await axios.post(
+        `https://api.smartwrapfilms.com/api/pi-reports-export-get?pi_no=${PiExpNumber}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace with your actual token
+          },
+        }
+      )
+
+      setExpPiData(response.data.piReportsExport)
+      // Generate PDF and trigger download
+      const blob = await pdf(
+        <PiExportPdf formData={response.data.piReportsExport} />
+      ).toBlob()
+      const link = document.createElement("a")
+      link.href = URL.createObjectURL(blob)
+      link.download = "purchase_order_report.pdf"
+      link.click()
+
+      // close the pop up of Generate pdf by po
+      setIsOpenExp(false)
+      setPiExpNumber("")
+    } catch (error) {
+      console.error("Error fetching PI data:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleFetchPiDomData = async () => {
+    try {
+      setLoading(true)
+      const response = await axios.post(
+        `https://api.smartwrapfilms.com/api/pi-reports-domestic-get?pi_no=${PiDomNumber}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace with your actual token
+          },
+        }
+      )
+      console.log(response, "@@res of pi dommmmm specific")
+      // setExpPiData(response.data.piReportsExport);
+      // Generate PDF and trigger download
+      const blob = await pdf(
+        <PiDomesticPdf formData={response.data.piReportsExport} />
+      ).toBlob()
+      const link = document.createElement("a")
+      link.href = URL.createObjectURL(blob)
+      link.download = `piDomestic${response.data.piReportsExport.date}`
+      link.click()
+
+      // close the pop up of Generate pdf by po
+      setIsOpenDom(false)
+      setPiDomNumber("")
+    } catch (error) {
+      console.error("Error fetching PI data:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Pi Report</h2>{" "}
-        <div className="flex space-x-2">
-          <button
-            onClick={handleGenerateDomestic}
-            className="mr-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
-          >
-            Generate PI Domestic
-          </button>
-          <button
-            onClick={handleGenerateExport}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition duration-200"
-          >
-            Generate PI Export
-          </button>
+        <div className="flec flex-col space-y-3">
+          <div className="flex space-x-2">
+            <button
+              onClick={handleGenerateDomestic}
+              className="mr-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+            >
+              Generate PI Domestic
+            </button>
+            <button
+              onClick={handleGenerateExport}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+            >
+              Generate PI Export
+            </button>
+          </div>
+
+          <div className="flex space-x-2">
+            <button
+              onClick={openDomModal}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Generate PDF by Pi Dom
+            </button>
+            <button
+              onClick={openModal}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              Generate PDF by Pi Exp
+            </button>
+          </div>
         </div>
       </div>
       <div className="flex justify-center items-center flex-col">
@@ -703,6 +815,65 @@ const PiReport = () => {
           <PiDocument />
         </PDFViewer>
       </div>
+
+      {(modalIsOpenExp || modalIsOpenDom) &&
+        (modalIsOpenExp ? (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+              <h2 className="text-xl font-bold mb-4">Enter PI Expert Number</h2>
+              <input
+                type="text"
+                value={PiExpNumber}
+                onChange={e => setPiExpNumber(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded mb-4"
+              />
+              <div className="flex justify-end space-x-2">
+                <button
+                  onClick={closeModal}
+                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleFetchPiData}
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                  {loading ? "Loading..." : "Generate PDF"}
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : modalIsOpenDom ? (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+              <h2 className="text-xl font-bold mb-4">
+                Enter PI Domestic Number
+              </h2>
+              <input
+                type="text"
+                value={PiDomNumber}
+                onChange={e => setPiDomNumber(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded mb-4"
+              />
+              <div className="flex justify-end space-x-2">
+                <button
+                  onClick={closeDomModal}
+                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleFetchPiDomData}
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                  {loading ? "Loading..." : "Generate PDF"}
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <></>
+        ))}
     </div>
   )
 }
