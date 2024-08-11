@@ -16,7 +16,11 @@ const styles = StyleSheet.create({
     borderBottom: "1px solid #EEE",
   },
   tabletitle: {
-    fontSize: 14, bold: true, marginBottom: 20,
+    fontSize: 14, 
+    bold: true, 
+    marginBottom: 20,    
+    textAlign: 'center',
+
   },
   logo: {
     width: 100,
