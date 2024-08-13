@@ -134,54 +134,115 @@
 // export default FinishGoods
 
 
-import React, { useState, useEffect } from "react"
-import toast from "react-hot-toast"
-import { useNavigate } from "react-router-dom"
-import { fetchFinishGoods } from "services/operations/FinishGoodsOps/FinishGoodsApi"
-import { PDFDownloadLink } from "@react-pdf/renderer"
-import FinishGoodsPDF from "./FinishGoodsPDF"
+import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import {
+  addFinishGoods,
+  deleteFinishGoods,
+  fetchFinishGoods,
+  updateFinishGoods,
+} from "services/operations/FinishGoodsOps/FinishGoodsApi";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import FinishGoodsPDF from "./FinishGoodsPDF";
+import FinishGoodsModal from "./FinishGoodsModal";
 
 const FinishGoods = () => {
-  const [products, setProducts] = useState([])
-  const [generatePdf, setGeneratePdf] = useState(false)
-  const navigate = useNavigate()
+  const [products, setProducts] = useState([]);
+  const [generatePdf, setGeneratePdf] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 4; // Show 10 rows by default
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
-  const handleEdit = id => {
-    console.log(`Edit product with id ${id}`)
-  }
+  const fetchData = async () => {
+    try {
+      const toastid = toast.loading("Loading Finish Goods Data...");
+      const response = await fetchFinishGoods(token);
 
-  const handleDelete = id => {
-    console.log(`Delete product with id ${id}`)
-  }
+      console.log(response, "@@response");
+      // Ensure response data structure matches your expectations
+      if (response && response.finishGoods) {
+        setProducts(response.finishGoods);
+      } else {
+        console.error("Unexpected response structure:", response);
+        toast.error("Unexpected response structure.");
+      }
 
-  const handleRedirect = () => {
-    navigate("/dashboard/production")
-  }
+      toast.dismiss(toastid);
+    } catch (error) {
+      toast.error("Failed to fetch finish goods data.");
+      console.error("Failed to fetch products:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem("token") // Replace with your actual token
-      try {
-        const toastid = toast.loading("Loading Finish Goods Data...")
-        const response = await fetchFinishGoods(token)
+    fetchData();
+  }, []);
 
-        // Ensure response data structure matches your expectations
-        if (response && response.finishGoods) {
-          setProducts(response.finishGoods)
-        } else {
-          console.error("Unexpected response structure:", response)
-          toast.error("Unexpected response structure.")
-        }
+  const handleEdit = async (id, product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
 
-        toast.dismiss(toastid)
-      } catch (error) {
-        toast.error("Failed to fetch finish goods data.")
-        console.error("Failed to fetch products:", error)
-      }
+  const handleDelete = async (id) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      await deleteFinishGoods(id, token);
+      toast.success("Product deleted successfully");
+      // Optionally, refetch the data
+      fetchData();
+    } catch (error) {
+      console.error("Failed to delete product:", error);
     }
+  };
 
-    fetchData()
-  }, [])
+  const onAddProduct = async (newProduct) => {
+    const token = localStorage.getItem("token");
+    try {
+      await addFinishGoods(newProduct, token);
+      toast.success("Product added successfully");
+      fetchData();
+    } catch (error) {
+      console.error("Failed to add product:", error);
+    }
+  };
+
+  const onUpdateProduct = async (updatedProduct) => {
+    const token = localStorage.getItem("token");
+    try {
+      await updateFinishGoods(updatedProduct.id, updatedProduct, token);
+      toast.success("Product updated successfully");
+      fetchData();
+    } catch (error) {
+      console.error("Failed to update product:", error);
+    }
+  };
+
+  const handleRedirect = () => {
+    navigate("/dashboard/production");
+  };
+
+  // Pagination calculations
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentProducts = products.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(products.length / rowsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4">
@@ -194,7 +255,9 @@ const FinishGoods = () => {
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
             onClick={() => setGeneratePdf(true)}
           >
-            {({ loading }) => (loading ? "Generating PDF..." : "Download PDF")}
+            {({ loading }) =>
+              loading ? "Generating PDF..." : "Download PDF"
+            }
           </PDFDownloadLink>
         )}
         {!generatePdf && (
@@ -241,7 +304,7 @@ const FinishGoods = () => {
             </tr>
           </thead>
           <tbody>
-            {products?.map(item => (
+            {currentProducts.map((item) => (
               <tr key={item.id} className="border-t border-gray-200">
                 <td className="py-2 px-4">
                   {item.product ? item.product.product_name : "N/A"}
@@ -271,7 +334,7 @@ const FinishGoods = () => {
                 <td className="py-2 px-4">
                   <button
                     className="text-blue-500 hover:text-blue-700 mr-2"
-                    onClick={() => handleEdit(item.id)}
+                    onClick={() => handleEdit(item.id, item)}
                   >
                     Edit
                   </button>
@@ -287,8 +350,37 @@ const FinishGoods = () => {
           </tbody>
         </table>
       </div>
-    </div>
-  )
-}
+      {/* Pagination Controls */}
+      <div className="flex justify-between items-center mt-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Previous
+        </button>
+        <span className="text-gray-700">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Next
+        </button>
+      </div>
 
-export default FinishGoods
+      {/* Finish Goods Modal */}
+      <FinishGoodsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddProduct={onAddProduct}
+        onUpdateProduct={onUpdateProduct}
+        productData={selectedProduct}
+      />
+    </div>
+  );
+};
+
+export default FinishGoods;

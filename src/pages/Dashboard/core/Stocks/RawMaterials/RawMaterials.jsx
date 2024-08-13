@@ -803,12 +803,12 @@ const RawMaterials = () => {
       setShowModal(true)
       const processedData = {
         id: newCompany.id,
-        company_name: newCompany.companyName,
-        total_pallet: parseInt(newCompany.newCompany.totalPallet, 10),
-        bag_per_pallet: parseInt(newCompany.newCompany.bagPerPallet, 10),
-        total_bag: parseInt(newCompany.total_bag || newCompany.totalBag, 10),
-        weight_per_bag: parseFloat(newCompany.newCompany.weightPerBag),
-        total_weight: parseFloat(newCompany.newCompany.totalWeight),
+        company_name: newCompany?.companyName,
+        total_pallet: parseInt(newCompany?.newCompany?.totalPallet, 10),
+        bag_per_pallet: parseInt(newCompany?.newCompany?.bagPerPallet, 10),
+        total_bag: parseInt(newCompany?.total_bag || newCompany?.totalBag, 10),
+        weight_per_bag: parseFloat(newCompany?.newCompany?.weightPerBag),
+        total_weight: parseFloat(newCompany?.newCompany?.totalWeight),
       }
       await updateRawMaterial(processedData, token)
       alert("Company updated successfully!")
@@ -1083,6 +1083,13 @@ const RawMaterials = () => {
 
   const handleRedirect = () => {
     navigate("/dashboard/purchase-order")
+  }
+
+  
+  const handleCloseModal = () => {
+    setShowModal(false)
+    console.log(showModal, "@@showmodal")
+    // Use a timeout to reset form state after modal closes
   }
 
   return (

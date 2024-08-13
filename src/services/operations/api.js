@@ -35,6 +35,10 @@ export const rawEndpoints = {
 export const finishGoodsEndpoints = {
     ADD_FINISH_GOODS_API: `${BASE_URL}/api/finish-goods`,
     GET_FINISH_GOODS_API: `${BASE_URL}/api/finish-goods`,
+    
+    PUT_FINISH_GOODS_API: (id) => `${BASE_URL}/api/finish-goods/${id}`,
+    DELETE_FINISH_GOODS_API: (id) => `${BASE_URL}/api/finish-goods/${id}`,
+
 }
 
 
