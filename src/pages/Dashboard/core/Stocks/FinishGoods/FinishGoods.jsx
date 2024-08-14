@@ -277,7 +277,7 @@ const FinishGoods = () => {
           Add Product
         </button>
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarBg hover:scrollbar-thumb-scrollbarThumbHover">
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr className="bg-gray-100">

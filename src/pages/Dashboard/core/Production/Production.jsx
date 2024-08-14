@@ -328,11 +328,12 @@ const Production = () => {
   })
   const [products, setProducts] = useState([])
   const [dynamicFields, setDynamicFields] = useState({
-    qtyInStorageStart: [],
-    qtyIssued: [],
-    qtyInStorageEnd: [],
-    qtyReturned: [],
+    qtyInStorageStart: [{ id: Date.now(), grad: "", test: "" }],
+    qtyIssued: [{ id: Date.now(), grad: "", test: "" }],
+    qtyInStorageEnd: [{ id: Date.now(), grad: "", test: "" }],
+    qtyReturned: [{ id: Date.now(), grad: "", test: "" }],
   });
+  
   const navigate = useNavigate()
   const token = localStorage.getItem("token") // Replace with your actual token
 
@@ -591,22 +592,22 @@ const Production = () => {
           {/* Dynamic Fields Section */}
           <div className="mb-4 col-span-2">
             <label className="block text-gray-700">Qty in Storage Start</label>
-            <input
+            {/* <input
               type="text"
               name="qtyInStorageStart"
               value={productiondata.qtyInStorageStart}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
-            />
+            /> */}
             <button
               type="button"
               onClick={() => handleAddGradTestField("qtyInStorageStart")}
-              className="bg-green-500 text-white px-4 py-2 mt-2 rounded hover:bg-green-700"
+              className="bg-green-500 text-white px-4 py-2 my-3 rounded hover:bg-green-700"
             >
               Add Grad & Test Fields
             </button>
             {dynamicFields.qtyInStorageStart.map(field => (
-              <div key={field.id} className="flex mb-2">
+              <div key={field.id} className="flex mb-2 gap-2">
                 <input
                   type="text"
                   name="grad"
@@ -636,22 +637,22 @@ const Production = () => {
   
           <div className="mb-4 col-span-2">
             <label className="block text-gray-700">Qty Issued</label>
-            <input
+            {/* <input
               type="text"
               name="qtyIssued"
               value={productiondata.qtyIssued}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
-            />
+            /> */}
             <button
               type="button"
               onClick={() => handleAddGradTestField("qtyIssued")}
-              className="bg-green-500 text-white px-4 py-2 mt-2 rounded hover:bg-green-700"
+              className="bg-green-500 text-white px-4 py-2 my-3 rounded hover:bg-green-700"
             >
               Add Grad & Test Fields
             </button>
             {dynamicFields.qtyIssued.map(field => (
-              <div key={field.id} className="flex mb-2">
+              <div key={field.id} className="flex mb-2 gap-2">
                 <input
                   type="text"
                   name="grad"
@@ -681,22 +682,22 @@ const Production = () => {
   
           <div className="mb-4 col-span-2">
             <label className="block text-gray-700">Qty in Storage End</label>
-            <input
+            {/* <input
               type="text"
               name="qtyInStorageEnd"
               value={productiondata.qtyInStorageEnd}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
-            />
+            /> */}
             <button
               type="button"
               onClick={() => handleAddGradTestField("qtyInStorageEnd")}
-              className="bg-green-500 text-white px-4 py-2 mt-2 rounded hover:bg-green-700"
+              className="bg-green-500 text-white px-4 py-2 my-3 rounded hover:bg-green-700"
             >
               Add Grad & Test Fields
             </button>
             {dynamicFields.qtyInStorageEnd.map(field => (
-              <div key={field.id} className="flex mb-2">
+              <div key={field.id} className="flex mb-2 gap-2">
                 <input
                   type="text"
                   name="grad"
@@ -726,22 +727,22 @@ const Production = () => {
   
           <div className="mb-4 col-span-2">
             <label className="block text-gray-700">Qty Returned</label>
-            <input
+            {/* <input
               type="text"
               name="qtyReturned"
               value={productiondata.qtyReturned}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
-            />
+            /> */}
             <button
               type="button"
               onClick={() => handleAddGradTestField("qtyReturned")}
-              className="bg-green-500 text-white px-4 py-2 mt-2 rounded hover:bg-green-700"
+              className="bg-green-500 text-white px-4 py-2 my-3 rounded hover:bg-green-700"
             >
               Add Grad & Test Fields
             </button>
             {dynamicFields.qtyReturned.map(field => (
-              <div key={field.id} className="flex mb-2">
+              <div key={field.id} className="flex mb-2 gap-2">
                 <input
                   type="text"
                   name="grad"

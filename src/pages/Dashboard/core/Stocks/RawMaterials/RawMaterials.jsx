@@ -1133,7 +1133,7 @@ const RawMaterials = () => {
         Generate PDF by Date
       </button>
 
-      <div id="pdfContent" className="overflow-x-auto">
+      <div id="pdfContent" className="overflow-x-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarBg hover:scrollbar-thumb-scrollbarThumbHover">
         <table className="min-w-full bg-white">
           <thead>
             <tr>
