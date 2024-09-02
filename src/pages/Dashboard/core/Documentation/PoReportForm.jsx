@@ -370,14 +370,14 @@ const PoReportForm = () => {
     }
   }
 
-const onSubmit = async (data, shouldHitApi) => {
-    setFormData(data);
+  const onSubmit = async (data, shouldHitApi) => {
+    setFormData(data)
     const totals = calculateTotals(
       data.products || [],
       data.igst || 0,
       data.sgst || 0,
       data.cgst || 0
-    );
+    )
 
     const postData = {
       po_no: data.poNo,
@@ -397,7 +397,7 @@ const onSubmit = async (data, shouldHitApi) => {
       cgst: data.cgst,
       total_value: totals.grandTotal,
       amount_in_words: data.amountInWords,
-      products: data.products.map((product) => ({
+      products: data.products.map(product => ({
         product_description: product.product_description,
         hsn_code: product.hsn_code,
         quantity: product.quantity,
@@ -409,41 +409,45 @@ const onSubmit = async (data, shouldHitApi) => {
       notes_2: data.note2,
       notes_3: data.note3,
       notes_4: data.note4,
-    };
+    }
 
     if (shouldHitApi) {
-      const token = localStorage.getItem("token");
-      
+      const token = localStorage.getItem("token")
+
       try {
-        await axios.post("https://api.smartwrapfilms.com/api/po-reports", postData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        await axios.post(
+          "https://api.smartwrapfilms.com/api/po-reports",
+          postData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
 
         // Generate and download the PDF
-        const blob = await generatePdf(data);
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "PurchaseOrder.pdf";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
+        const blob = await generatePdf(data)
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = "PurchaseOrder.pdf"
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
 
-        navigate("/dashboard/po-report");
+        navigate("/dashboard/po-report")
       } catch (error) {
-        console.error("Error while calling the API:", error.response?.data);
+        console.error("Error while calling the API:", error.response?.data)
       }
     }
-  };
+  }
 
-  const generatePdf = async (data) => {
-    const doc = <PoReportPdf formData={data} />;
-    const blob = await pdf(doc).toBlob();
-    return blob;
-  };
+  const generatePdf = async data => {
+    const doc = <PoReportPdf formData={data} />
+    const blob = await pdf(doc).toBlob()
+    return blob
+  }
 
   const handleEdit = () => {
     setFormData(null)
@@ -548,7 +552,10 @@ const onSubmit = async (data, shouldHitApi) => {
               />
             </div>
             <div>
-              <label className="block mb-2 font-semibold">Buyer Mail:</label>
+              <label className="block mb-2 font-semibold">
+                {" "}
+                Buyer Mail ID:
+              </label>
               <input
                 className="w-full p-2 border rounded"
                 {...register("buyer.mail")}
@@ -614,7 +621,9 @@ const onSubmit = async (data, shouldHitApi) => {
               />
             </div>
             <div>
-              <label className="block mb-2 font-semibold">Supplier Mail:</label>
+              <label className="block mb-2 font-semibold">
+                Supplier Mail ID:
+              </label>
               <input
                 className="w-full p-2 border rounded"
                 {...register("supplier.mail")}
@@ -714,10 +723,9 @@ const onSubmit = async (data, shouldHitApi) => {
             </button>
           </div>
 
-          <h2 className="text-xl font-semibold my-4">Taxes</h2>
+          {/* <h2 className="text-xl font-semibold my-4">Taxes</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                
+            <div>
               <label className="block mb-2 font-semibold">IGST:</label>
               <input
                 type="number"
@@ -744,7 +752,7 @@ const onSubmit = async (data, shouldHitApi) => {
                 {...register("cgst")}
               />
             </div>
-          </div>
+          </div> */}
 
           <h2 className="text-xl font-semibold my-4">Amount in Words</h2>
           <input

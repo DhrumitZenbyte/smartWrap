@@ -784,13 +784,13 @@ const PiReport = () => {
               onClick={handleGenerateDomestic}
               className="mr-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
             >
-              Generate PI Domestic
+              Create New PI Domestic
             </button>
             <button
               onClick={handleGenerateExport}
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
             >
-              Generate PI Export
+              Create New PI Export
             </button>
           </div>
 
@@ -799,13 +799,13 @@ const PiReport = () => {
               onClick={openDomModal}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
-              Generate PDF by Pi Dom
+              Search PI by Pi Dom
             </button>
             <button
               onClick={openModal}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
-              Generate PDF by Pi Exp
+              Search PI by Pi Exp
             </button>
           </div>
         </div>

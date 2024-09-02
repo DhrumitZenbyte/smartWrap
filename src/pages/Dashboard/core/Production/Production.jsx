@@ -567,7 +567,7 @@ const Production = () => {
             />
           </div>
   
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-gray-700">Company</label>
             <input
               type="text"
@@ -576,9 +576,9 @@ const Production = () => {
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
             />
-          </div>
+          </div> */}
   
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-gray-700">Description of Goods</label>
             <input
               type="text"
@@ -587,7 +587,7 @@ const Production = () => {
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
             />
-          </div>
+          </div> */}
   
           {/* Dynamic Fields Section */}
           <div className="mb-4 col-span-2">

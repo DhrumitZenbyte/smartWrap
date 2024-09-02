@@ -641,6 +641,7 @@ const PiExportForm = () => {
                 <label className="block">Country of Origin of Goods:</label>
                 <input
                   type="text"
+                  value="india"
                   {...register("country_of_origin_of_goods")}
                   className="w-full border border-gray-300 p-2"
                 />
@@ -689,7 +690,7 @@ const PiExportForm = () => {
                   />
                 </div>
                 <div>
-                  <label className="block">Rolls Pallet:</label>
+                  <label className="block">Rolls Per Pallet:</label>
                   <input
                     type="text"
                     {...register(`products[${index}].rolls_pallet`)}
@@ -713,7 +714,7 @@ const PiExportForm = () => {
                   />
                 </div>
                 <div>
-                  <label className="block">Container:</label>
+                  <label className="block">Weight Per Roll:</label>
                   <input
                     type="text"
                     {...register(`products[${index}].container`)}
@@ -721,7 +722,7 @@ const PiExportForm = () => {
                   />
                 </div>
                 <div>
-                  <label className="block">Unit:</label>
+                  <label className="block">Core Weight:</label>
                   <input
                     type="text"
                     {...register(`products[${index}].unit`)}
@@ -909,14 +910,14 @@ const PiExportForm = () => {
                   className="w-full border border-gray-300 p-2"
                 />
               </div>
-              <div>
+              {/* <div>
                 <label className="block">Delivery Time:</label>
                 <input
                   type="text"
                   {...register("payment_delivery_time")}
                   className="w-full border border-gray-300 p-2"
                 />
-              </div>
+              </div> */}
               <div>
                 <label className="block">Delivery Terms:</label>
                 <input

@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     marginTop: 10,
+    marginBottom:10,
     paddingRight: 10,
   },
   totalAmount: {
@@ -211,6 +212,7 @@ const styles = StyleSheet.create({
     width: "40%",
     fontSize: 10,
     paddingRight: 10,
+    paddingBottom:10
   },
 })
 
@@ -345,16 +347,16 @@ const PoReportPdf = ({ formData }) => {
 
         <View style={styles.tableFooter}>
           <View style={styles.totalAmount}>
-            <Text>Total Amount: {totalAmount.toFixed(2)}</Text>
-            <Text>
+            {/* <Text>Total Amount: {totalAmount.toFixed(2)}</Text> */}
+            {/* <Text>
               Total IGST {`(${igst}%)`}: {totalIGST.toFixed(2)}
-            </Text>
-            <Text>
+            </Text> */}
+            {/* <Text>
               Total SGST {`(${sgst}%)`}: {totalSGST.toFixed(2)}
-            </Text>
-            <Text>
+            </Text> */}
+            {/* <Text>
               Total CGST {`(${cgst}%)`}: {totalCGST.toFixed(2)}
-            </Text>
+            </Text> */}
             <Text>Grand Total: {grandTotal.toFixed(2)}</Text>
           </View>
         </View>

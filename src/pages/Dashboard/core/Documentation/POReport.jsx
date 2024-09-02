@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     width: "40%",
     fontSize: 10,
     paddingRight: 10,
+    paddingBottom:10
   },
 })
 
@@ -253,8 +254,8 @@ const POReport = ({ data }) => {
               </View>
               <View style={styles.tableFooter}>
                 <View style={styles.totalAmount}>
-                  <Text>Total Amount: 5000</Text>
-                  <Text>
+                  {/* <Text>Total Amount: 5000</Text> */}
+                  {/* <Text>
                     IGST {`(%)`}: {data.igst}
                   </Text>
                   <Text>
@@ -262,7 +263,8 @@ const POReport = ({ data }) => {
                   </Text>
                   <Text>
                     CGST {`(%)`}: {data.cgst}
-                  </Text>
+                  </Text> */}
+
                   <Text>Grand Total: {grandTotal}</Text>
                 </View>
               </View>
@@ -416,13 +418,13 @@ const POReportComponent = () => {
             onClick={openModal}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Generate PDF by PO
+            Search PO by PO Number{" "}
           </button>
           <button
             onClick={handleGeneratePdf}
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
           >
-            Generate PDF
+            Create New PO
           </button>
         </div>
       </div>
