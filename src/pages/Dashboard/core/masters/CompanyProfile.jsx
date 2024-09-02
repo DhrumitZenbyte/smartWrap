@@ -457,7 +457,7 @@ const CompanyProfile = () => {
       fields: [
         "gst_no",
         "lut_no",
-        "cin",
+        "LLPIN",
         "gst_circular_no",
         "state_code",
         "lei_no",
@@ -477,54 +477,54 @@ const CompanyProfile = () => {
         "field_5",
       ],
     },
-    {
-      title: "Company Settings",
-      fields: [
-        "pre_carriage_by",
-        "state_of_origin",
-        "delivery_period",
-        "terms_of_delivery",
-        "place_of_receipt",
-        "part_of_loading",
-        "partial_shipement",
-        "district_of_origin",
-        "trans_shipement",
-        "variety_of_quality",
-        "company_logo",
-        "signature_upload",
-      ],
-    },
-    {
-      title: "Annexure Details",
-      fields: [
-        "range",
-        "division",
-        "commissionerate",
-        "location_code",
-        "annexure_remark",
-      ],
-    },
-    {
-      title: "VGM Details",
-      fields: [
-        "shipper_name",
-        "method_used_for_vgm",
-        "weighbridge_slip_no",
-        "name_and_designation_of_office",
-        "weighbridge_registration_no",
-        "shipper_address",
-        "vgm_remarks",
-      ],
-    },
-    {
-      title: "Export Details",
-      fields: [
-        "bank_id",
-        "export_under_detail_1",
-        "export_under_detail_2",
-        "export_remarks",
-      ],
-    },
+    // {
+    //   title: "Company Settings",
+    //   fields: [
+    //     "pre_carriage_by",
+    //     "state_of_origin",
+    //     "delivery_period",
+    //     "terms_of_delivery",
+    //     "place_of_receipt",
+    //     "part_of_loading",
+    //     "partial_shipement",
+    //     "district_of_origin",
+    //     "trans_shipement",
+    //     "variety_of_quality",
+    //     "company_logo",
+    //     "signature_upload",
+    //   ],
+    // },
+    // {
+    //   title: "Annexure Details",
+    //   fields: [
+    //     "range",
+    //     "division",
+    //     "commissionerate",
+    //     "location_code",
+    //     "annexure_remark",
+    //   ],
+    // },
+    // {
+    //   title: "VGM Details",
+    //   fields: [
+    //     "shipper_name",
+    //     "method_used_for_vgm",
+    //     "weighbridge_slip_no",
+    //     "name_and_designation_of_office",
+    //     "weighbridge_registration_no",
+    //     "shipper_address",
+    //     "vgm_remarks",
+    //   ],
+    // },
+    // {
+    //   title: "Export Details",
+    //   fields: [
+    //     "bank_id",
+    //     "export_under_detail_1",
+    //     "export_under_detail_2",
+    //     "export_remarks",
+    //   ],
+    // },
   ]
 
   return (

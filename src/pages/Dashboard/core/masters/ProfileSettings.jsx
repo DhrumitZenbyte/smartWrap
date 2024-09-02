@@ -1102,13 +1102,13 @@ useEffect(() => {
           type="text"
         />
         <FormInput
-          label="CIN No"
+          label="LLPIN"
           name="cin_no"
           value={formData.cin_no}
           onChange={handleChange}
           type="text"
         />
-        <FormInput
+        {/* <FormInput
           label="GST Circular No"
           name="gst_circular_no"
           value={formData.gst_circular_no}
@@ -1121,7 +1121,7 @@ useEffect(() => {
           value={formData.state_code}
           onChange={handleChange}
           type="text"
-        />
+        /> */}
         <FormInput
           label="LEI No"
           name="lei_no"
@@ -1236,7 +1236,7 @@ useEffect(() => {
         />
 
         {/* Company settings */}
-        <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
+        {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <p className="text-2xl font-bold mb-4">Company Settings</p>
         </div>
         <FormInput
@@ -1322,8 +1322,8 @@ useEffect(() => {
           type="file"
           onChange={handleChange}
           value={formData.signature_upload}
-        />
-        <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
+        /> */}
+        {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <p className="text-2xl font-bold mb-4">Performa Details</p>
         </div>
         <FormInput
@@ -1422,7 +1422,7 @@ useEffect(() => {
           value={formData.vgm_remarks}
           onChange={handleChange}
           type="text"
-        />
+        /> */}
         {/* Bank Details */}
         <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <p className="text-2xl font-bold mb-4">Bank Details</p>
@@ -1495,7 +1495,7 @@ useEffect(() => {
         />
         {/* End Bank Popup */}
 
-        <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
+        {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <p className="text-2xl font-bold mb-4">Export Details</p>
         </div>
         <FormInput
@@ -1518,7 +1518,7 @@ useEffect(() => {
           value={formData.export_remarks}
           onChange={handleChange}
           type="text"
-        />
+        /> */}
 
         <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <button
