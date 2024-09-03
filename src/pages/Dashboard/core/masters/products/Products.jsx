@@ -82,6 +82,7 @@ import {
   deleteProduct,
   editProduct,
 } from "services/operations/ProductsOps/ProductsApi"
+import ProductTable from "./ProductTable"
 
 import {
   Col,
@@ -123,13 +124,15 @@ const Products = () => {
   const handleEdit = product => {
     setCurrentProduct(product)
     setIsModalOpen(true)
+    console.log("Edit clicked for product:", product);
   }
 
   const handleDelete = async id => {
     try {
       console.log(id, "@@delete iddddddd")
       await deleteProduct(id, token)
-      setProducts(products.filter(product => product.id !== id))
+      // setProducts(products.filter(product => product.id !== id))
+      getProducts(token, setProducts)
     } catch (error) {
       console.error("Failed to delete product", error)
     }
@@ -191,16 +194,21 @@ const Products = () => {
                         setCurrentProduct(null)
                         setIsModalOpen(true)
                       }}
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                      className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
                     >
                       Add Product
                     </button>
                   </div>
-                  <ProductsTable
-                    products={products}
+                  <ProductTable
+                    data={products}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                   />
+                  {/* <ProductsTable
+                    products={products}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  /> */}
                 </CardBody>
               </Card>
             </Col>

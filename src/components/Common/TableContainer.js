@@ -431,7 +431,7 @@ const TableContainer = ({
   };
   return (
     <Fragment>
-      <Row className="mb-2">
+      {/* <Row className="mb-2">
         <Col md={customPageSizeOptions ? 2 : 1}>
           <select
             className="form-select"
@@ -498,7 +498,7 @@ const TableContainer = ({
             </div>
           </Col>
         )}
-      </Row>
+      </Row> */}
 
       <div className="table-responsive react-table">
         <Table bordered hover {...getTableProps()} className={className}>
@@ -507,11 +507,11 @@ const TableContainer = ({
               <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
                   <th key={column.id}>
-                    <div className="mb-2" {...column.getSortByToggleProps()}>
+                    <div {...column.getSortByToggleProps()}>
                       {column.render("Header")}
                       {generateSortingIndicator(column)}
                     </div>
-                    <Filter column={column} />
+                    {/* <Filter column={column} /> */}
                   </th>
                 ))}
               </tr>
@@ -564,7 +564,7 @@ const TableContainer = ({
             {pageIndex + 1} of {pageOptions.length}
           </strong>
         </Col>
-        <Col className="col-md-auto">
+        {/* <Col className="col-md-auto">
           <Input
             type="number"
             min={1}
@@ -573,7 +573,7 @@ const TableContainer = ({
             defaultValue={pageIndex + 1}
             onChange={onChangeInInput}
           />
-        </Col>
+        </Col> */}
 
         <Col className="col-md-auto">
           <div className="d-flex gap-1">
