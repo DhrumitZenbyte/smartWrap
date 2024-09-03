@@ -302,7 +302,7 @@ const SizeModal = ({ isOpen, onClose, onAddOrUpdateSize, editSize }) => {
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             {editSize ? "Update Size" : "Add Size"}
           </button>

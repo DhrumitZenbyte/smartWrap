@@ -88,11 +88,11 @@
 
 // export default Sizes
 
-
 import React, { useState, useEffect } from "react"
 import SizesTable from "./SizesTable"
 import SizeModal from "./SizeModal"
 import { useSelector } from "react-redux"
+import Breadcrumbs from "../../../../../components/Common/Breadcrumb"
 import {
   addSize,
   updateSize,
@@ -100,7 +100,29 @@ import {
   getSizes,
 } from "services/operations/SizeOps/SizeApi"
 
+import {
+  Col,
+  Row,
+  UncontrolledTooltip,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  Input,
+  FormFeedback,
+  Label,
+  Card,
+  CardBody,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap"
+import SizeTable from "./SizeTable"
+
 const Sizes = () => {
+  document.title = "Sizes | Smart Wrap Panel"
+
   const [sizes, setSizes] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editSize, setEditSize] = useState(null)
@@ -166,20 +188,49 @@ const Sizes = () => {
   }
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Sizes</h1>
-        <button
-          onClick={() => {
-            setEditSize(null)
-            setIsModalOpen(true)
-          }}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Add Size
-        </button>
+    <>
+      <div className="container-fluid">
+        <Breadcrumbs title="Smart-wrap" breadcrumbItem="Sizes" />
+        <Row>
+          <Col lg="12">
+            <Card>
+              <CardBody className="border-bottom">
+                <div className="flex justify-end items-center mb-4 gap-2">
+                  <div className="position-relative">
+                    <Input
+                      type="text"
+                      className="form-control"
+                      id="searchJob"
+                      autoComplete="off"
+                      placeholder="Search..."
+                    />
+                  </div>
+                  <button
+                    onClick={() => {
+                      setEditSize(null)
+                      setIsModalOpen(true)
+                    }}
+                    className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
+                  >
+                    Add Size
+                  </button>
+                </div>
+                {/* <SizesTable
+                  sizes={sizes}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                /> */}
+                <SizeTable
+                  data={sizes}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
-      <SizesTable sizes={sizes} onEdit={handleEdit} onDelete={handleDelete} />
+
       {isModalOpen && (
         <SizeModal
           isOpen={isModalOpen}
@@ -188,7 +239,7 @@ const Sizes = () => {
           editSize={editSize}
         />
       )}
-    </div>
+    </>
   )
 }
 
