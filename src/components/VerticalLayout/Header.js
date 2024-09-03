@@ -107,19 +107,9 @@ const Header = props => {
               className="btn btn-sm px-3 font-size-16 header-item "
               id="vertical-menu-btn"
             >
-              <i className="fa fa-fw fa-bars" />
+              <i className="fa fa-fw fa-bars" style={{color:'#0592d3'}} />
             </button>
 
-            <form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder={props.t("Search") + "..."}
-                />
-                <span className="bx bx-search-alt" />
-              </div>
-            </form>
           </div>
           <div className="d-flex">
             <div className="dropdown d-inline-block d-lg-none ms-2">
@@ -160,69 +150,6 @@ const Header = props => {
                 </form>
               </div>
             </div>
-
-            <LanguageDropdown />
-
-            <Dropdown
-              className="d-none d-lg-inline-block ms-1"
-              isOpen={socialDrp}
-              toggle={() => {
-                setsocialDrp(!socialDrp);
-              }}
-            >
-              <DropdownToggle
-                className="btn header-item noti-icon "
-                tag="button"
-              >
-                <i className="bx bx-customize" />
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-lg dropdown-menu-end">
-                <div className="px-lg-2">
-                  <Row className="no-gutters">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={github} alt="Github" />
-                        <span>GitHub</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={bitbucket} alt="bitbucket" />
-                        <span>Bitbucket</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dribbble} alt="dribbble" />
-                        <span>Dribbble</span>
-                      </Link>
-                    </Col>
-                  </Row>
-
-                  <Row className="no-gutters">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dropbox} alt="dropbox" />
-                        <span>Dropbox</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={mail_chimp} alt="mail_chimp" />
-                        <span>Mail Chimp</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={slack} alt="slack" />
-                        <span>Slack</span>
-                      </Link>
-                    </Col>
-                  </Row>
-                </div>
-              </DropdownMenu>
-            </Dropdown>
-
             <div className="dropdown d-none d-lg-inline-block ms-1">
               <button
                 type="button"
@@ -232,11 +159,10 @@ const Header = props => {
                 className="btn header-item noti-icon "
                 data-toggle="fullscreen"
               >
-                <i className="bx bx-fullscreen" />
+                <i className="bx bx-fullscreen" style={{color:'#0592d3'}} />
               </button>
             </div>
 
-            <NotificationDropdown />
             <ProfileMenu />
 
             {/* <div

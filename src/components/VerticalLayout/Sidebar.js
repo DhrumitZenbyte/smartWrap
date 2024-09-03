@@ -9,7 +9,7 @@ import SidebarContent from "./SidebarContent";
 
 import { Link } from "react-router-dom";
 
-import logo from "../../assets/images/logo.svg";
+import logo from "../../assets/images/smartwraplogo.jpg";
 import logoLightPng from "../../assets/images/brands/smartWrap.jpeg";
 import logoLightSvg from "../../assets/images/brands/smartWrap.jpeg";
 import logoDark from "../../assets/images/brands/smartWrap.jpeg";
@@ -19,22 +19,22 @@ const Sidebar = props => {
   return (
     <React.Fragment>
       <div className="vertical-menu">
-        <div className="navbar-brand-box">
-          <Link to="/" className="logo logo-dark">
+        <div className="navbar-brand-box mt-2">
+          {/* <Link to="/" className="logo logo-dark">
             <span className="logo-sm">
               <img src={logo} alt="" height="22" />
             </span>
             <span className="logo-lg">
-              <img src={logoDark} alt="" height="17" />
+              <img src={logo} alt="" height="17" />
             </span>
-          </Link>
+          </Link> */}
 
           <Link to="/" className="logo logo-light">
-            <span className="logo-sm">
-              <img src={logoLightSvg} alt="" height="22" />
-            </span>
+            {/* <span className="logo-sm">
+              <img src={logo} alt="" />
+            </span> */}
             <span className="logo-lg">
-              <img src={logoLightPng} alt=""  />
+              <img src={logo} alt=""  />
             </span>
           </Link>
         </div>

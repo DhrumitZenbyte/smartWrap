@@ -12,7 +12,7 @@ import { Outlet } from "react-router-dom";
 const Dashboard = props => {
 
   //meta title
-  document.title = "Dashboard | ZenByte Technology - React Admin & Dashboard Template";
+  document.title = "Dashboard | Smart Wrap Panel";
 
   return (
     <React.Fragment>
@@ -21,10 +21,10 @@ const Dashboard = props => {
         <div className="page-content">
           <div className="container-fluid">
             <div className="row">
-              <Breadcrumbs
+              {/* <Breadcrumbs
                 title={props.t("Dashboards")}
                 breadcrumbItem={props.t("Dashboard")}
-              />
+              /> */}
               <Outlet />
             </div>
           </div>

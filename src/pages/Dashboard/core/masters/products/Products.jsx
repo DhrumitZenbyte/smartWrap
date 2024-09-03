@@ -75,6 +75,7 @@ import React, { useEffect, useState } from "react"
 import ProductsTable from "./ProductsData"
 import ProductModal from "./ProductModel"
 import { useSelector } from "react-redux"
+import Breadcrumbs from "../../../../../components/Common/Breadcrumb"
 import {
   addProduct,
   getProducts,
@@ -82,7 +83,28 @@ import {
   editProduct,
 } from "services/operations/ProductsOps/ProductsApi"
 
+import {
+  Col,
+  Row,
+  UncontrolledTooltip,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  Input,
+  FormFeedback,
+  Label,
+  Card,
+  CardBody,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap"
+
 const Products = () => {
+  document.title = "Products | Smart Wrap Panel"
+
   const [products, setProducts] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentProduct, setCurrentProduct] = useState(null)
@@ -146,24 +168,46 @@ const Products = () => {
   }
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Products</h1>
-        <button
-          onClick={() => {
-            setCurrentProduct(null)
-            setIsModalOpen(true)
-          }}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Add Product
-        </button>
+    <>
+      <div>
+        <div className="container-fluid">
+          <Breadcrumbs title="Smart-wrap" breadcrumbItem="Products" />
+          <Row>
+            <Col lg="12">
+              <Card>
+                <CardBody className="border-bottom">
+                  <div className="flex justify-end items-center mb-4 gap-2">
+                    <div className="position-relative">
+                      <Input
+                        type="text"
+                        className="form-control"
+                        id="searchJob"
+                        autoComplete="off"
+                        placeholder="Search..."
+                      />
+                    </div>
+                    <button
+                      onClick={() => {
+                        setCurrentProduct(null)
+                        setIsModalOpen(true)
+                      }}
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                      Add Product
+                    </button>
+                  </div>
+                  <ProductsTable
+                    products={products}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  />
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </div>
       </div>
-      <ProductsTable
-        products={products}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+
       {isModalOpen && (
         <ProductModal
           isOpen={isModalOpen}
@@ -173,7 +217,7 @@ const Products = () => {
           product={currentProduct}
         />
       )}
-    </div>
+    </>
   )
 }
 

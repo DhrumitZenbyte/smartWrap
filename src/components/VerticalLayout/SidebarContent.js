@@ -213,94 +213,93 @@
 
 // export default withRouter(withTranslation()(SidebarContent));
 
-
-import React, { useEffect, useRef, useCallback } from "react";
-import { useLocation } from "react-router-dom";
-import PropTypes from "prop-types";
+import React, { useEffect, useRef, useCallback } from "react"
+import { useLocation } from "react-router-dom"
+import PropTypes from "prop-types"
 
 // Import Scrollbar
-import SimpleBar from "simplebar-react";
+import SimpleBar from "simplebar-react"
 
 // MetisMenu
-import MetisMenu from "metismenujs";
-import withRouter from "components/Common/withRouter";
-import { Link } from "react-router-dom";
+import MetisMenu from "metismenujs"
+import withRouter from "components/Common/withRouter"
+import { Link } from "react-router-dom"
 
 // i18n
-import { withTranslation } from "react-i18next";
+import { withTranslation } from "react-i18next"
 
-const SidebarContent = (props) => {
-  const ref = useRef();
-  const location = useLocation();
+const SidebarContent = props => {
+  const ref = useRef()
+  const location = useLocation()
 
-  const activateParentDropdown = useCallback((item) => {
-    item.classList.add("active");
-    let parent = item.parentElement;
+  const activateParentDropdown = useCallback(item => {
+    item.classList.add("active")
+    let parent = item.parentElement
 
     while (parent && parent.id !== "side-menu") {
       if (parent.tagName === "UL") {
-        parent.classList.add("mm-show");
+        parent.classList.add("mm-show")
       }
       if (parent.tagName === "LI") {
-        parent.classList.add("mm-active");
+        parent.classList.add("mm-active")
       }
-      parent = parent.parentElement;
+      parent = parent.parentElement
     }
 
-    scrollElement(item);
-  }, []);
+    scrollElement(item)
+  }, [])
 
-  const removeActivation = (items) => {
+  const removeActivation = items => {
     for (let i = 0; i < items.length; ++i) {
-      const item = items[i];
-      item.classList.remove("active");
-      let parent = item.parentElement;
+      const item = items[i]
+      item.classList.remove("active")
+      let parent = item.parentElement
 
       while (parent && parent.id !== "side-menu") {
         if (parent.tagName === "UL") {
-          parent.classList.remove("mm-show");
+          parent.classList.remove("mm-show")
         }
         if (parent.tagName === "LI") {
-          parent.classList.remove("mm-active");
+          parent.classList.remove("mm-active")
         }
-        parent = parent.parentElement;
+        parent = parent.parentElement
       }
     }
-  };
+  }
 
   const activeMenu = useCallback(() => {
-    const pathName = location.pathname;
-    const ul = document.getElementById("side-menu");
-    const items = ul.getElementsByTagName("a");
-    removeActivation(items);
+    const pathName = location.pathname
+    const ul = document.getElementById("side-menu")
+    const items = ul.getElementsByTagName("a")
+    removeActivation(items)
 
     for (let i = 0; i < items.length; ++i) {
       if (items[i].pathname === pathName) {
-        activateParentDropdown(items[i]);
-        break;
+        activateParentDropdown(items[i])
+        break
       }
     }
-  }, [location.pathname, activateParentDropdown]);
+  }, [location.pathname, activateParentDropdown])
 
   useEffect(() => {
-    ref.current.recalculate();
-  }, []);
+    ref.current.recalculate()
+  }, [])
 
   useEffect(() => {
-    new MetisMenu("#side-menu");
-    activeMenu();
-  }, []);
+    new MetisMenu("#side-menu")
+    activeMenu()
+  }, [])
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    activeMenu();
-  }, [activeMenu]);
+    window.scrollTo({ top: 0, behavior: "smooth" })
+    activeMenu()
+  }, [activeMenu])
 
   function scrollElement(item) {
     if (item) {
-      const currentPosition = item.offsetTop;
+      const currentPosition = item.offsetTop
       if (currentPosition > window.innerHeight) {
-        ref.current.getScrollElement().scrollTop = currentPosition - 300;
+        ref.current.getScrollElement().scrollTop = currentPosition - 300
       }
     }
   }
@@ -317,18 +316,16 @@ const SidebarContent = (props) => {
               </Link>
             </li>
             <li>
-              <Link to="/#" className="has-arrow">
-                <i className="bx bx-store"></i>
-                <span>{props.t("Stocks")}</span>
+              <Link to="/dashboard/purchase-order">
+                <i className="bx bx-purchase-tag-alt"></i>
+                <span>{props.t("Raw Material Page")}</span>
               </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/dashboard/raw-materials">{props.t("Raw Materials")}</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard/finish-goods">{props.t("Finish Goods")}</Link>
-                </li>
-              </ul>
+            </li>
+            <li>
+              <Link to="/dashboard/production">
+                <i className="bx bxl-product-hunt"></i>
+                <span>{props.t("production")}</span>
+              </Link>
             </li>
             <li>
               <Link to="/#" className="has-arrow">
@@ -346,12 +343,32 @@ const SidebarContent = (props) => {
             </li>
             <li>
               <Link to="/#" className="has-arrow">
+                <i className="bx bx-store"></i>
+                <span>{props.t("Stocks")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/dashboard/raw-materials">
+                    {props.t("Raw Materials")}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/finish-goods">
+                    {props.t("Finish Goods")}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <Link to="/#" className="has-arrow">
                 <i className="bx bx-slider-alt"></i>
                 <span>{props.t("Masters")}</span>
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/dashboard/company-profile">{props.t("Company Profile")}</Link>
+                  <Link to="/dashboard/company-profile">
+                    {props.t("Company Profile")}
+                  </Link>
                 </li>
                 <li>
                   <Link to="/dashboard/products">{props.t("Products")}</Link>
@@ -361,29 +378,16 @@ const SidebarContent = (props) => {
                 </li>
               </ul>
             </li>
-
-            <li>
-              <Link to="/dashboard/purchase-order">
-                {/* <i className="bx bx-home-circle"></i> */}
-                <span>{props.t("Purchase Order")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/dashboard/production">
-                {/* <i className="bx bx-home-circle"></i> */}
-                <span>{props.t("production")}</span>
-              </Link>
-            </li>
           </ul>
         </div>
       </SimpleBar>
     </React.Fragment>
-  );
-};
+  )
+}
 
 SidebarContent.propTypes = {
   location: PropTypes.object,
   t: PropTypes.any,
-};
+}
 
-export default withRouter(withTranslation()(SidebarContent));
+export default withRouter(withTranslation()(SidebarContent))
