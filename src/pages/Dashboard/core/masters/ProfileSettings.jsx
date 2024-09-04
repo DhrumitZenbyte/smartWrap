@@ -753,6 +753,28 @@ import BankModal from "./BankModal"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { getBankDetails } from "services/operations/ProfileOps/ProfileApi"
+import { Link } from "react-router-dom"
+import Breadcrumbs from "../../../../components/Common/Breadcrumb"
+import {
+  Col,
+  Row,
+  UncontrolledTooltip,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  Input,
+  FormFeedback,
+  Label,
+  Card,
+  CardBody,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const FormInput = ({ label, name, type, value, onChange }) => {
   const commonClasses =
@@ -906,7 +928,7 @@ const ProfileSettings = () => {
   const fetchCompanyProfile = async () => {
     try {
       const apiUrl = "https://api.smartwrapfilms.com/api/company-profile-get"
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token")
 
       console.log("Fetching company profile...")
       const response = await axios.get(apiUrl, {
@@ -933,29 +955,27 @@ const ProfileSettings = () => {
     fetchCompanyProfile()
   }, [])
 
-useEffect(() => {
-  const fetchBanks = async () => {
-    const token = localStorage.getItem("token")
-    try {
-      const response = await getBankDetails(token)
-      if (response?.status === 200) {
-        setBanks(response.data.banks) // Set banks data
-        console.log("Banks fetched:", response.data.banks)
+  useEffect(() => {
+    const fetchBanks = async () => {
+      const token = localStorage.getItem("token")
+      try {
+        const response = await getBankDetails(token)
+        if (response?.status === 200) {
+          setBanks(response.data.banks) // Set banks data
+          console.log("Banks fetched:", response.data.banks)
+        }
+      } catch (error) {
+        console.error("Error fetching banks:", error)
       }
-    } catch (error) {
-      console.error("Error fetching banks:", error)
     }
-  }
 
-  fetchBanks()
-}, [])
-
-        console.log("Banks fetched:", banks)
+    fetchBanks()
+  }, [])
 
   const handleSubmit = async e => {
     e.preventDefault()
     const url2 = "https://api.smartwrapfilms.com/api/company-profile"
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token")
     try {
       const response = await axios.put(url2, formData, {
         headers: {
@@ -966,11 +986,9 @@ useEffect(() => {
       if (response.status === 200) {
         // navigate("/dashboard/company-profile") // Navigate to the company profile page
       }
-      console.log("Company profile updated successfully:", response)
-      // Handle success as per your application's requirement (e.g., show a success message)
+      toast.success(response.data.message)
     } catch (error) {
       if (error.response) {
-        // The request was made and the server responded with a status code
         console.error(
           "Server responded with non-2xx status:",
           error.response.status,
@@ -988,127 +1006,161 @@ useEffect(() => {
     return <p>Loading...</p>
   }
 
+  const handleButtonClick = () => {
+    setShowBankPopup(true)
+  }
+
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
-      <form
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
-        onSubmit={handleSubmit}
-      >
-        <FormInput
-          label="Company Name"
-          name="company_name"
-          value={formData.company_name}
-          onChange={handleChange}
-          type="text"
+    <>
+      <div className="container-fluid">
+        <Breadcrumbs
+          title="Smart-wrap"
+          breadcrumbItem="Update Company - Profile"
         />
+        <Row>
+          <Col lg="12">
+            <Card>
+              <CardBody className="border-bottom">
+                <div className="flex justify-between items-center mb-4 gap-2">
+                  <p className="text-2xl font-bold">Company Details</p>
+                  <div className="d-flex gap-2">
+                    <Link
+                      to="/dashboard/company-profile"
+                      className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700"
+                    >
+                      Back
+                    </Link>
+                    <button
+                      onClick={handleSubmit}
+                      className="px-4 py-2 d-flex gap-2 bg-primary text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      <i
+                        style={{ fontSize: "18px" }}
+                        className="bx bx-edit"
+                      ></i>{" "}
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <form
+                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
+                    onSubmit={handleSubmit}
+                  >
+                    <FormInput
+                      label="Company Name"
+                      name="company_name"
+                      value={formData.company_name}
+                      onChange={handleChange}
+                      type="text"
+                    />
 
-        <FormInput
-          label="Contact Person Name"
-          name="contact_person_name"
-          value={formData.contact_person_name}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="OTP Mobile No"
-          name="otp_mobile_phone"
-          value={formData.otp_mobile_phone}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Mobile"
-          name="mobile"
-          value={formData.mobile}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Email"
-          name="email"
-          type="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <FormInput
-          label="Phone No"
-          name="phone_no"
-          value={formData.phone_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Fax No"
-          name="fax_no"
-          value={formData.fax_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Website"
-          name="website"
-          value={formData.website}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Company Register"
-          name="company_register"
-          value={formData.company_register}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Address"
-          name="address"
-          type="textarea"
-          value={formData.address}
-          onChange={handleChange}
-        />
-        <FormInput
-          label="portalAddress"
-          name="portal_address"
-          type="textarea"
-          value={formData.portal_address}
-          onChange={handleChange}
-        />
-        <FormInput
-          label="companyType"
-          name="company_type"
-          type="textarea"
-          value={formData.company_type}
-          onChange={handleChange}
-        />
+                    <FormInput
+                      label="Contact Person Name"
+                      name="contact_person_name"
+                      value={formData.contact_person_name}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="OTP Mobile No"
+                      name="otp_mobile_phone"
+                      value={formData.otp_mobile_phone}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Mobile"
+                      name="mobile"
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
+                    <FormInput
+                      label="Phone No"
+                      name="phone_no"
+                      value={formData.phone_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Fax No"
+                      name="fax_no"
+                      value={formData.fax_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Website"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Company Register"
+                      name="company_register"
+                      value={formData.company_register}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Address"
+                      name="address"
+                      type="textarea"
+                      value={formData.address}
+                      onChange={handleChange}
+                    />
+                    <FormInput
+                      label="Portal Address"
+                      name="portal_address"
+                      type="textarea"
+                      value={formData.portal_address}
+                      onChange={handleChange}
+                    />
+                    <FormInput
+                      label="Company Type"
+                      name="company_type"
+                      type="textarea"
+                      value={formData.company_type}
+                      onChange={handleChange}
+                    />
 
-        {/* company registrartion details */}
-        <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
-          <p className="text-2xl font-bold mb-4">
-            Company Registration Details
-          </p>
-        </div>
-        <FormInput
-          label="GST No"
-          name="gst_no"
-          value={formData.gst_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="LUT No"
-          name="lut_no"
-          value={formData.lut_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="LLPIN"
-          name="cin_no"
-          value={formData.cin_no}
-          onChange={handleChange}
-          type="text"
-        />
-        {/* <FormInput
+                    {/* company registrartion details */}
+                    <div className="md:col-span-3 col-span-1 lg:mt-14 mt-4">
+                      <p className="text-2xl font-bold">
+                        Company Registration Details
+                      </p>
+                    </div>
+                    <FormInput
+                      label="GST No"
+                      name="gst_no"
+                      value={formData.gst_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="LUT No"
+                      name="lut_no"
+                      value={formData.lut_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="LLPIN"
+                      name="cin_no"
+                      value={formData.cin_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    {/* <FormInput
           label="GST Circular No"
           name="gst_circular_no"
           value={formData.gst_circular_no}
@@ -1122,121 +1174,121 @@ useEffect(() => {
           onChange={handleChange}
           type="text"
         /> */}
-        <FormInput
-          label="LEI No"
-          name="lei_no"
-          value={formData.lei_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Field 3"
-          name="field_3"
-          value={formData.field_3}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="PAN No"
-          name="pan_no"
-          value={formData.pan_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="LUT Expiry"
-          name="lut_expiry"
-          value={formData.lut_expiry}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="RCMC No"
-          name="rcmc_no"
-          value={formData.rcmc_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Date of Filing"
-          name="date_of_filling_rex_number"
-          value={formData.date_of_filling_rex_number}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="REX Number"
-          name="date_of_filling_rex_number"
-          value={formData.date_of_filling_rex_number}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Field 1"
-          name="field_1"
-          value={formData.field_1}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Field 4"
-          name="field_4"
-          value={formData.field_4}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="IEC No"
-          name="iec_no"
-          value={formData.iec_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="BIN No"
-          name="bin_no"
-          value={formData.bin_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="RCMC Expiry"
-          name="rcmc_expiry"
-          value={formData.rcmc_expiry}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Circular No"
-          name="circular_no"
-          value={formData.circular_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="AEO No"
-          name="aeo_no"
-          value={formData.aeo_no}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Field 2"
-          name="field_2"
-          value={formData.field_2}
-          onChange={handleChange}
-          type="text"
-        />
-        <FormInput
-          label="Field 5"
-          name="field_5"
-          value={formData.field_5}
-          onChange={handleChange}
-          type="text"
-        />
+                    <FormInput
+                      label="LEI No"
+                      name="lei_no"
+                      value={formData.lei_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Field 3"
+                      name="field_3"
+                      value={formData.field_3}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="PAN No"
+                      name="pan_no"
+                      value={formData.pan_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="LUT Expiry"
+                      name="lut_expiry"
+                      value={formData.lut_expiry}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="RCMC No"
+                      name="rcmc_no"
+                      value={formData.rcmc_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Date of Filing"
+                      name="date_of_filling_rex_number"
+                      value={formData.date_of_filling_rex_number}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="REX Number"
+                      name="date_of_filling_rex_number"
+                      value={formData.date_of_filling_rex_number}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Field 1"
+                      name="field_1"
+                      value={formData.field_1}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Field 4"
+                      name="field_4"
+                      value={formData.field_4}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="IEC No"
+                      name="iec_no"
+                      value={formData.iec_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="BIN No"
+                      name="bin_no"
+                      value={formData.bin_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="RCMC Expiry"
+                      name="rcmc_expiry"
+                      value={formData.rcmc_expiry}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Circular No"
+                      name="circular_no"
+                      value={formData.circular_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="AEO No"
+                      name="aeo_no"
+                      value={formData.aeo_no}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Field 2"
+                      name="field_2"
+                      value={formData.field_2}
+                      onChange={handleChange}
+                      type="text"
+                    />
+                    <FormInput
+                      label="Field 5"
+                      name="field_5"
+                      value={formData.field_5}
+                      onChange={handleChange}
+                      type="text"
+                    />
 
-        {/* Company settings */}
-        {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
+                    {/* Company settings */}
+                    {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <p className="text-2xl font-bold mb-4">Company Settings</p>
         </div>
         <FormInput
@@ -1323,7 +1375,7 @@ useEffect(() => {
           onChange={handleChange}
           value={formData.signature_upload}
         /> */}
-        {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
+                    {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <p className="text-2xl font-bold mb-4">Performa Details</p>
         </div>
         <FormInput
@@ -1423,79 +1475,83 @@ useEffect(() => {
           onChange={handleChange}
           type="text"
         /> */}
-        {/* Bank Details */}
-        <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
-          <p className="text-2xl font-bold mb-4">Bank Details</p>
-          <div className="flex items-center mb-4">
-            <label className="mr-2">Select Bank:</label>
-            <select
-              className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              onChange={e => handleBankChange(e.target.value)}
-            >
-              <option value="">Select Bank</option>
-              {banks?.map((bank, index) => (
-                <option key={index} value={bank?.bank_name}>
-                  {bank?.bank_name}
-                </option>
-              ))}
-            </select>
-          </div>
-          {/* Render selected bank details */}
-          {selectedBank && (
-            <div className="flex flex-col space-y-2">
-              <div className="flex">
-                <span className="font-medium mr-2">Bank Name:</span>
-                <span>{selectedBank.bank_name}</span>
-              </div>
-              <div className="flex">
-                <span className="font-medium mr-2">Bank Address:</span>
-                <span>{selectedBank.bank_address}</span>
-              </div>
-              <div className="flex">
-                <span className="font-medium mr-2">Account Name:</span>
-                <span>{selectedBank.account_name}</span>
-              </div>
-              <div className="flex">
-                <span className="font-medium mr-2">Account No:</span>
-                <span>{selectedBank.account_no}</span>
-              </div>
-              <div className="flex">
-                <span className="font-medium mr-2">IFSC Code:</span>
-                <span>{selectedBank.ifsc_code}</span>
-              </div>
-              <div className="flex">
-                <span className="font-medium mr-2">Swift Code:</span>
-                <span>{selectedBank.swift_code}</span>
-              </div>
-              <div className="flex">
-                <span className="font-medium mr-2">Bank Ad Code No:</span>
-                <span>{selectedBank.bank_ad_code_no}</span>
-              </div>
-              <div className="flex">
-                <span className="font-medium mr-2">IBAN No:</span>
-                <span>{selectedBank.iban_no}</span>
-              </div>
-            </div>
-          )}
-          {/* Add Bank Button */}
-          <button
-            onClick={() => setShowBankPopup(true)}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-          >
-            Add Bank
-          </button>
-        </div>
-        {/* Bank Popup */}
-        <BankModal
-          showBankPopup={showBankPopup}
-          setShowBankPopup={setShowBankPopup}
-          newBank={newBank}
-          setNewBank={setNewBank}
-          handleAddBank={handleAddBank}
-        />
-        {/* End Bank Popup */}
+                    {/* Bank Details */}
+                  </form>
+                  <div className="md:col-span-3 col-span-1 lg:mt-4">
+                    <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
+                      <p className="text-2xl font-bold">Bank Details</p>
+                      <div className="d-flex gap-3 align-items-center">
+                        <div className="flex items-center">
+                          <label className="mr-2 mt-2">Select Bank:</label>
+                          <select
+                            className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            onChange={e => handleBankChange(e.target.value)}
+                          >
+                            <option value="">Select Bank</option>
+                            {banks?.map((bank, index) => (
+                              <option key={index} value={bank?.bank_name}>
+                                {bank?.bank_name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <button
+                          onClick={handleButtonClick}
+                          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700"
+                        >
+                          Add Bank
+                        </button>
+                      </div>
+                    </div>
+                    {/* Render selected bank details */}
+                    {selectedBank && (
+                      <div className="space-y-4 p-4 bg-gray-50 mt-4 rounded-lg shadow-inner">
+                        <div className="flex">
+                          <span className="font-medium mr-2">Bank Name:</span>
+                          <span>{selectedBank.bank_name}</span>
+                        </div>
+                        <div className="flex">
+                          <span className="font-medium mr-2">
+                            Bank Address:
+                          </span>
+                          <span>{selectedBank.bank_address}</span>
+                        </div>
+                        <div className="flex">
+                          <span className="font-medium mr-2">
+                            Account Name:
+                          </span>
+                          <span>{selectedBank.account_name}</span>
+                        </div>
+                        <div className="flex">
+                          <span className="font-medium mr-2">Account No:</span>
+                          <span>{selectedBank.account_no}</span>
+                        </div>
+                        <div className="flex">
+                          <span className="font-medium mr-2">IFSC Code:</span>
+                          <span>{selectedBank.ifsc_code}</span>
+                        </div>
+                        <div className="flex">
+                          <span className="font-medium mr-2">Swift Code:</span>
+                          <span>{selectedBank.swift_code}</span>
+                        </div>
+                        <div className="flex">
+                          <span className="font-medium mr-2">
+                            Bank Ad Code No:
+                          </span>
+                          <span>{selectedBank.bank_ad_code_no}</span>
+                        </div>
+                        <div className="flex">
+                          <span className="font-medium mr-2">IBAN No:</span>
+                          <span>{selectedBank.iban_no}</span>
+                        </div>
+                      </div>
+                    )}
+                    {/* Add Bank Button */}
+                  </div>
+                  {/* Bank Popup */}
+                  {/* End Bank Popup */}
 
-        {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
+                  {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
           <p className="text-2xl font-bold mb-4">Export Details</p>
         </div>
         <FormInput
@@ -1520,16 +1576,28 @@ useEffect(() => {
           type="text"
         /> */}
 
-        <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-          >
-            Save Changes
-          </button>
-        </div>
-      </form>
-    </div>
+                  {/* <div className="md:col-span-3 col-span-1 lg:mt-14 mt-8">
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+                    >
+                      Save Changes
+                    </button>
+                  </div> */}
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+      <BankModal
+        showBankPopup={showBankPopup}
+        setShowBankPopup={setShowBankPopup}
+        newBank={newBank}
+        setNewBank={setNewBank}
+        handleAddBank={handleAddBank}
+      />
+    </>
   )
 }
 

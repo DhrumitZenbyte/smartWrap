@@ -337,7 +337,7 @@ const BankModal = ({
           <div className="mt-4 flex justify-end space-x-4">
             <button
               onClick={handleAddBankNew}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+              className="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700"
             >
               Add Bank
             </button>
