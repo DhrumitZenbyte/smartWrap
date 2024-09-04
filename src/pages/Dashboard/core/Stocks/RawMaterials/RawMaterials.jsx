@@ -483,6 +483,21 @@ import React, { useState, useEffect } from "react"
 import Modal from "./Modal"
 import { useNavigate } from "react-router-dom"
 import {
+  Col,
+  Row,
+  UncontrolledTooltip,
+  Form,
+  Input,
+  FormFeedback,
+  Label,
+  Card,
+  CardBody,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap"
+import {
   addRawMaterial,
   deleteRawMaterial,
   getRawMaterials,
@@ -500,8 +515,12 @@ import {
   Font,
 } from "@react-pdf/renderer"
 import companylogo from "../../../../../assets/images/brands/smartWrap.jpeg"
+import Breadcrumbs from "../../../../../components/Common/Breadcrumb"
+import RawMaterialTable from "./RawMaterialTable"
 
 const RawMaterials = () => {
+  document.title = "Raw Materials | Smart Wrap Panel"
+
   const [showModal, setShowModal] = useState(false)
   const [companies, setCompanies] = useState([])
   const [companyNames, setCompanyNames] = useState([])
@@ -1085,7 +1104,6 @@ const RawMaterials = () => {
     navigate("/dashboard/purchase-order")
   }
 
-  
   const handleCloseModal = () => {
     setShowModal(false)
     console.log(showModal, "@@showmodal")
@@ -1093,112 +1111,165 @@ const RawMaterials = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Raw Materials</h1>
-      <button
-        onClick={handleRedirect}
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-      >
-        Add & Edit RawMaterial
-      </button>
-      <PDFDownloadLink
-        document={<MyDocument />}
-        fileName="raw-materials-report.pdf"
-      >
-        {({ loading }) =>
-          loading ? (
-            <button className="mb-4 ml-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700">
-              Loading PDF...
-            </button>
-          ) : (
-            <button className="mb-4 ml-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700">
-              Generate PDF
-            </button>
-          )
-        }
-      </PDFDownloadLink>
-      <label className="block mb-2">
-        Select Date:
-        <input
-          type="date"
-          value={selectedDate}
-          onChange={handleDateChange}
-          className="border rounded-md p-2"
-        />
-      </label>
-      <button
-        onClick={handleGeneratePdfByDate}
-        className="mb-4 px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-700"
-      >
-        Generate PDF by Date
-      </button>
-
-      <div id="pdfContent" className="overflow-x-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarBg hover:scrollbar-thumb-scrollbarThumbHover">
-        <table className="min-w-full bg-white">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 border-b">Sr. No.</th>
-              <th className="px-4 py-2 border-b">Company Name</th>
-              <th className="px-4 py-2 border-b">Total Pallet</th>
-              <th className="px-4 py-2 border-b">Bag per Pallet</th>
-              <th className="px-4 py-2 border-b">Total Bag</th>
-              <th className="px-4 py-2 border-b">Weight per Bag</th>
-              <th className="px-4 py-2 border-b">Total Weight</th>
-              <th className="px-4 py-2 border-b">Supplier Name</th>
-              <th className="px-4 py-2 border-b">Purchase Order No</th>
-              <th className="px-4 py-2 border-b">Sales Order No</th>
-              <th className="px-4 py-2 border-b">Description of Goods</th>
-              <th className="px-4 py-2 border-b">Qty</th>
-              <th className="px-4 py-2 border-b">Weight per Pcs</th>
-              <th className="px-4 py-2 border-b">Payment Terms</th>
-              <th className="px-4 py-2 border-b">Invoice Date</th>
-              <th className="px-4 py-2 border-b">Status</th>
-              <th className="px-4 py-2 border-b">Received Date</th>
-              <th className="px-4 py-2 border-b">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {companies.map((company, index) => (
-              <tr key={index}>
-                <td className="px-4 py-2 border-b">{index + 1}</td>
-                <td className="px-4 py-2 border-b">{company.company_name}</td>
-                <td className="px-4 py-2 border-b">{company.total_pallet}</td>
-                <td className="px-4 py-2 border-b">{company.bag_per_pallet}</td>
-                <td className="px-4 py-2 border-b">{company.total_bag}</td>
-                <td className="px-4 py-2 border-b">{company.weight_per_bag}</td>
-                <td className="px-4 py-2 border-b">{company.total_weight}</td>
-                <td className="px-4 py-2 border-b">{company.supplier_name}</td>
-                <td className="px-4 py-2 border-b">
-                  {company.purchase_order_no}
-                </td>
-                <td className="px-4 py-2 border-b">{company.sales_order_no}</td>
-                <td className="px-4 py-2 border-b">
-                  {company.description_of_goods}
-                </td>
-                <td className="px-4 py-2 border-b">{company.qty}</td>
-                <td className="px-4 py-2 border-b">{company.weight_per_pcs}</td>
-                <td className="px-4 py-2 border-b">{company.payment_terms}</td>
-                <td className="px-1 py-2 border-b">{company.invoice_date}</td>
-                <td className="px-4 py-2 border-b">{company.status}</td>
-                <td className="px-1 py-2 border-b">{company.received_date}</td>
-                <td className="px-4 py-2 border-b">
-                  <button
-                    onClick={() => handleEditCompany(index)}
-                    className="bg-yellow-500 text-white px-2 py-1 rounded-md hover:bg-yellow-700 mr-2"
+    <>
+      <div className="container-fluid">
+        <Breadcrumbs title="Smart-wrap" breadcrumbItem="Raw - Materials" />
+        <Row>
+          <Col lg="12">
+            <Card>
+              <CardBody className="border-bottom">
+                <div className="flex justify-between gap-2">
+                  <div className="position-relative">
+                    <Input
+                      type="text"
+                      className="form-control"
+                      id="searchJob"
+                      autoComplete="off"
+                      placeholder="Search..."
+                    />
+                  </div>
+                  <div className="flex justify-end items-center  gap-2">
+                    <label className="block mb-4">
+                      Select Date:
+                      <input
+                        type="date"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        className="border rounded-md p-2"
+                      />
+                    </label>
+                    <button
+                      onClick={handleGeneratePdfByDate}
+                      className="mb-4 px-2 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-700"
+                    >
+                      Generate PDF by Date
+                    </button>
+                    <PDFDownloadLink
+                      document={<MyDocument />}
+                      fileName="raw-materials-report.pdf"
+                    >
+                      <button className="mb-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700">
+                        Generate PDF
+                      </button>
+                    </PDFDownloadLink>
+                    <button
+                      onClick={handleRedirect}
+                      className="mb-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700"
+                    >
+                      Add & Edit Raw Material
+                    </button>
+                  </div>
+                  {/* <div
+                    id="pdfContent"
+                    className="overflow-x-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarBg hover:scrollbar-thumb-scrollbarThumbHover"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteCompany(company.id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    <table className="min-w-full bg-white">
+                      <thead>
+                        <tr>
+                          <th className="px-4 py-2 border-b">Sr. No.</th>
+                          <th className="px-4 py-2 border-b">Company Name</th>
+                          <th className="px-4 py-2 border-b">Total Pallet</th>
+                          <th className="px-4 py-2 border-b">Bag per Pallet</th>
+                          <th className="px-4 py-2 border-b">Total Bag</th>
+                          <th className="px-4 py-2 border-b">Weight per Bag</th>
+                          <th className="px-4 py-2 border-b">Total Weight</th>
+                          <th className="px-4 py-2 border-b">Supplier Name</th>
+                          <th className="px-4 py-2 border-b">
+                            Purchase Order No
+                          </th>
+                          <th className="px-4 py-2 border-b">Sales Order No</th>
+                          <th className="px-4 py-2 border-b">
+                            Description of Goods
+                          </th>
+                          <th className="px-4 py-2 border-b">Qty</th>
+                          <th className="px-4 py-2 border-b">Weight per Pcs</th>
+                          <th className="px-4 py-2 border-b">Payment Terms</th>
+                          <th className="px-4 py-2 border-b">Invoice Date</th>
+                          <th className="px-4 py-2 border-b">Status</th>
+                          <th className="px-4 py-2 border-b">Received Date</th>
+                          <th className="px-4 py-2 border-b">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {companies.map((company, index) => (
+                          <tr key={index}>
+                            <td className="px-4 py-2 border-b">{index + 1}</td>
+                            <td className="px-4 py-2 border-b">
+                              {company.company_name}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.total_pallet}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.bag_per_pallet}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.total_bag}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.weight_per_bag}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.total_weight}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.supplier_name}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.purchase_order_no}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.sales_order_no}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.description_of_goods}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.qty}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.weight_per_pcs}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.payment_terms}
+                            </td>
+                            <td className="px-1 py-2 border-b">
+                              {company.invoice_date}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              {company.status}
+                            </td>
+                            <td className="px-1 py-2 border-b">
+                              {company.received_date}
+                            </td>
+                            <td className="px-4 py-2 border-b">
+                              <button
+                                onClick={() => handleEditCompany(index)}
+                                className="bg-yellow-500 text-white px-2 py-1 rounded-md hover:bg-yellow-700 mr-2"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => handleDeleteCompany(company.id)}
+                                className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-700"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div> */}
+                </div>
+                <RawMaterialTable
+                  data={companies}
+                  handleDeleteCompany={handleDeleteCompany}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
       {showModal && (
         <Modal
@@ -1303,7 +1374,7 @@ const RawMaterials = () => {
               </label>
               <div className="flex justify-end mt-4">
                 <button
-                  type="button" 
+                  type="button"
                   onClick={handleSaveCompany}
                   className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
                 >
@@ -1321,7 +1392,7 @@ const RawMaterials = () => {
           </div>
         </Modal>
       )}
-    </div>
+    </>
   )
 }
 
