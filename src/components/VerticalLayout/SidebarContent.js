@@ -324,7 +324,7 @@ const SidebarContent = props => {
             <li>
               <Link to="/dashboard/production">
                 <i className="bx bxl-product-hunt"></i>
-                <span>{props.t("production")}</span>
+                <span>{props.t("Production")}</span>
               </Link>
             </li>
             <li>

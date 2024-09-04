@@ -19,7 +19,7 @@
 //   const token = localStorage.getItem("token")
 //   const updateTimeoutRef = useRef(null) // useRef to hold the timeout reference
 //   const originalTotalPalletRef = useRef(null) // useRef to hold the original totalPallet value
-  
+
 //   const handleChange = e => {
 //     const { name, value } = e.target
 //     let updatedCompany = { ...newCompany, [name]: value }
@@ -243,8 +243,6 @@
 
 // export default PurchaseOrder
 
-
-
 import React, { useEffect, useRef, useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
@@ -254,8 +252,30 @@ import {
   updateRawMaterial,
   deleteRawMaterial,
 } from "services/operations/RawMaterialsOps/RawApi"
+import Breadcrumbs from "../../../../components/Common/Breadcrumb"
+import {
+  Col,
+  Row,
+  UncontrolledTooltip,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  Input,
+  FormFeedback,
+  Label,
+  Card,
+  CardBody,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap"
+import { Link } from "react-router-dom"
 
 const PurchaseOrder = () => {
+  document.title = "Raw Materials | Smart Wrap Panel"
+
   const [isUpdateMode, setIsUpdateMode] = useState(false)
   const [additionalPallets, setAdditionalPallets] = useState(0)
   const [showModal, setShowModal] = useState(false)
@@ -318,7 +338,6 @@ const PurchaseOrder = () => {
 
     setNewCompany(updatedCompany)
   }
-  
 
   const resetForm = () => {
     setNewCompany({
@@ -343,8 +362,8 @@ const PurchaseOrder = () => {
     })
     setIsUpdateMode(false)
   }
-   
-  console.log(newCompany, "@@newCompany from purchase order");
+
+  console.log(newCompany, "@@newCompany from purchase order")
   const handleUpdateCompany = async () => {
     try {
       const processedData = {
@@ -368,7 +387,7 @@ const PurchaseOrder = () => {
         bl_date: newCompany.blDate,
         payment_terms_date: newCompany.paymentTermsDate,
       }
-      console.log(processedData, "@@processedData from purchase order");
+      console.log(processedData, "@@processedData from purchase order")
       await updateRawMaterial(processedData, token)
       alert("Company updated successfully!")
       resetForm()
@@ -451,7 +470,7 @@ const PurchaseOrder = () => {
         // const response = await editRawMaterial(newCompany.id, newCompany, token);
         // console.log("Edited raw material:", response.message);
       } else {
-        console.log(newCompany, "@@newComp from po");
+        console.log(newCompany, "@@newComp from po")
         await handleAddCompany(newCompany)
       }
       setNewCompany({
@@ -517,7 +536,6 @@ const PurchaseOrder = () => {
         receivedDate: selectedCompany.received_date || "",
         blDate: selectedCompany.bl_date || "", // Added BL Date
         paymentTermsDate: selectedCompany.payment_terms_date || "", // Added Payment Terms Date
-
       })
     } else {
       setNewCompany({
@@ -542,11 +560,32 @@ const PurchaseOrder = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Raw Material Page</h1>
-  
-      <div className="bg-white p-4 rounded-md">
-        <h2 className="text-xl font-bold mb-4">Add New Company</h2>
+    <div className="container-fluid">
+      <Breadcrumbs title="Smart-wrap" breadcrumbItem="Add Raw Material" />
+      <div className="bg-white p-4 rounded-md mb-4">
+        <div className="flex justify-between items-center mb-5 gap-2">
+          <h2 className="text-xl font-bold">Add New Company</h2>
+          <div className="flex justify-end items-center  gap-2">
+            <Link to="/dashboard/raw-materials" className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700">
+              Back
+            </Link>
+            {isUpdateMode ? (
+              <button
+                onClick={handleUpdateCompany}
+                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary"
+              >
+                Update Changes
+              </button>
+            ) : (
+              <button
+                onClick={handleSaveCompany}
+                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary"
+              >
+                Save Company
+              </button>
+            )}
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="col-span-1">
             <label className="block text-sm font-medium text-gray-700">
@@ -587,24 +626,23 @@ const PurchaseOrder = () => {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
-          {Object.keys(newCompany).map((key) => {
-            if (key === "companyName" || key === "id") return null;
-  
-            let type = "text";
-            if (key.toLowerCase().includes("bldate")) type = "date";
-            if (key.toLowerCase().includes("paymentterms")) type = "number";
-            
-            if (key.toLowerCase().includes("invoicedate")) type = "date";
+          {Object.keys(newCompany).map(key => {
+            if (key === "companyName" || key === "id") return null
+
+            let type = "text"
+            if (key.toLowerCase().includes("bldate")) type = "date"
+            if (key.toLowerCase().includes("paymentterms")) type = "number"
+
+            if (key.toLowerCase().includes("invoicedate")) type = "date"
             // if (key.toLowerCase().includes("paymentterms")) type = "date";
-            if (key.toLowerCase().includes("paymenttermsdate")) type = "date";
-            if (key.toLowerCase().includes("receiveddate")) type = "date";
-  
+            if (key.toLowerCase().includes("paymenttermsdate")) type = "date"
+            if (key.toLowerCase().includes("receiveddate")) type = "date"
+
             return (
               <div key={key} className="col-span-1">
                 <label className="block text-sm font-medium text-gray-700">
-                  {key
-                    .replace(/_/g, " ")
-                    .replace(/\b\w/g, (char) => char.toUpperCase())}
+                  {key.
+                    replace(/_/g, " ").replace(/\b\w/g, char => char.toUpperCase())}
                 </label>
                 <input
                   type={type}
@@ -619,36 +657,12 @@ const PurchaseOrder = () => {
                   // }
                 />
               </div>
-            );
+            )
           })}
-        </div>
-        <div className="mt-4 flex justify-end space-x-4">
-          {isUpdateMode ? (
-            <button
-              onClick={handleUpdateCompany}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-            >
-              Update Changes
-            </button>
-          ) : (
-            <button
-              onClick={handleSaveCompany}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-            >
-              Save Company
-            </button>
-          )}
-          <button
-            onClick={resetForm}
-            className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700"
-          >
-            Cancel
-          </button>
         </div>
       </div>
     </div>
-  );
-  
+  )
 }
 
 export default PurchaseOrder
