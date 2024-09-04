@@ -133,151 +133,186 @@
 
 // export default FinishGoods
 
-
-import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react"
+import toast from "react-hot-toast"
+import {
+  Col,
+  Row,
+  UncontrolledTooltip,
+  Form,
+  Input,
+  FormFeedback,
+  Label,
+  Card,
+  CardBody,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap"
+import { useNavigate } from "react-router-dom"
 import {
   addFinishGoods,
   deleteFinishGoods,
   fetchFinishGoods,
   updateFinishGoods,
-} from "services/operations/FinishGoodsOps/FinishGoodsApi";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import FinishGoodsPDF from "./FinishGoodsPDF";
-import FinishGoodsModal from "./FinishGoodsModal";
+} from "services/operations/FinishGoodsOps/FinishGoodsApi"
+import { PDFDownloadLink } from "@react-pdf/renderer"
+import FinishGoodsPDF from "./FinishGoodsPDF"
+import FinishGoodsModal from "./FinishGoodsModal"
+import Breadcrumbs from "../../../../../components/Common/Breadcrumb"
+import FinishGoodTable from "./FinishGoodTable"
 
 const FinishGoods = () => {
-  const [products, setProducts] = useState([]);
-  const [generatePdf, setGeneratePdf] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 4; // Show 10 rows by default
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  document.title = "Finish Goods | Smart Wrap Panel"
+
+  const [products, setProducts] = useState([])
+  const [generatePdf, setGeneratePdf] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const rowsPerPage = 4 // Show 10 rows by default
+  const navigate = useNavigate()
+  const token = localStorage.getItem("token")
 
   const fetchData = async () => {
     try {
-      const toastid = toast.loading("Loading Finish Goods Data...");
-      const response = await fetchFinishGoods(token);
+      const toastid = toast.loading("Loading Finish Goods Data...")
+      const response = await fetchFinishGoods(token)
 
-      console.log(response, "@@response");
+      console.log(response, "@@response")
       // Ensure response data structure matches your expectations
       if (response && response.finishGoods) {
-        setProducts(response.finishGoods);
+        setProducts(response.finishGoods)
       } else {
-        console.error("Unexpected response structure:", response);
-        toast.error("Unexpected response structure.");
+        console.error("Unexpected response structure:", response)
+        toast.error("Unexpected response structure.")
       }
 
-      toast.dismiss(toastid);
+      toast.dismiss(toastid)
     } catch (error) {
-      toast.error("Failed to fetch finish goods data.");
-      console.error("Failed to fetch products:", error);
+      toast.error("Failed to fetch finish goods data.")
+      console.error("Failed to fetch products:", error)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const handleEdit = async (id, product) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
+    setSelectedProduct(product)
+    setIsModalOpen(true)
+  }
 
-  const handleDelete = async (id) => {
-    const token = localStorage.getItem("token");
+  const handleDelete = async id => {
+    const token = localStorage.getItem("token")
 
     try {
-      await deleteFinishGoods(id, token);
-      toast.success("Product deleted successfully");
+      await deleteFinishGoods(id, token)
+      toast.success("Product deleted successfully")
       // Optionally, refetch the data
-      fetchData();
+      fetchData()
     } catch (error) {
-      console.error("Failed to delete product:", error);
+      console.error("Failed to delete product:", error)
     }
-  };
+  }
 
-  const onAddProduct = async (newProduct) => {
-    const token = localStorage.getItem("token");
+  const onAddProduct = async newProduct => {
+    const token = localStorage.getItem("token")
     try {
-      await addFinishGoods(newProduct, token);
-      toast.success("Product added successfully");
-      fetchData();
+      await addFinishGoods(newProduct, token)
+      toast.success("Product added successfully")
+      fetchData()
     } catch (error) {
-      console.error("Failed to add product:", error);
+      console.error("Failed to add product:", error)
     }
-  };
+  }
 
-  const onUpdateProduct = async (updatedProduct) => {
-    const token = localStorage.getItem("token");
+  const onUpdateProduct = async updatedProduct => {
+    const token = localStorage.getItem("token")
     try {
-      await updateFinishGoods(updatedProduct.id, updatedProduct, token);
-      toast.success("Product updated successfully");
-      fetchData();
+      await updateFinishGoods(updatedProduct.id, updatedProduct, token)
+      toast.success("Product updated successfully")
+      fetchData()
     } catch (error) {
-      console.error("Failed to update product:", error);
+      console.error("Failed to update product:", error)
     }
-  };
+  }
 
   const handleRedirect = () => {
-    navigate("/dashboard/production");
-  };
+    navigate("/dashboard/production")
+  }
 
   // Pagination calculations
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentProducts = products.slice(indexOfFirstRow, indexOfLastRow);
-  const totalPages = Math.ceil(products.length / rowsPerPage);
+  const indexOfLastRow = currentPage * rowsPerPage
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage
+  const currentProducts = products.slice(indexOfFirstRow, indexOfLastRow)
+  const totalPages = Math.ceil(products.length / rowsPerPage)
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+      setCurrentPage(currentPage + 1)
     }
-  };
+  }
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPage(currentPage - 1)
     }
-  };
+  }
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Finish Goods</h1>
-        {generatePdf && (
-          <PDFDownloadLink
-            document={<FinishGoodsPDF data={products} />}
-            fileName="finish_goods_report.pdf"
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
-            onClick={() => setGeneratePdf(true)}
-          >
-            {({ loading }) =>
-              loading ? "Generating PDF..." : "Download PDF"
-            }
-          </PDFDownloadLink>
-        )}
-        {!generatePdf && (
-          <button
-            onClick={() => setGeneratePdf(true)}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Generate PDF
-          </button>
-        )}
-      </div>
-      <div className="mb-4">
-        <button
-          onClick={handleRedirect}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Add Product
-        </button>
-      </div>
-      <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarBg hover:scrollbar-thumb-scrollbarThumbHover">
+    <>
+      <div className="container-fluid">
+        <Breadcrumbs title="Smart-wrap" breadcrumbItem="Finish - Goods" />
+        <Row>
+          <Col lg="12">
+            <Card>
+              <CardBody className="border-bottom">
+                <div className="flex justify-between gap-2">
+                  <div className="position-relative">
+                    <Input
+                      type="text"
+                      className="form-control"
+                      id="searchJob"
+                      autoComplete="off"
+                      placeholder="Search..."
+                    />
+                  </div>
+                  <div className="flex justify-end items-center  gap-2">
+                    <div className="flex justify-between items-center mb-4">
+                      {generatePdf && (
+                        <PDFDownloadLink
+                          document={<FinishGoodsPDF data={products} />}
+                          fileName="finish_goods_report.pdf"
+                          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                          onClick={() => setGeneratePdf(true)}
+                        >
+                          {({ loading }) =>
+                            loading ? "Generating PDF..." : "Download PDF"
+                          }
+                        </PDFDownloadLink>
+                      )}
+                      {!generatePdf && (
+                        <button
+                          onClick={() => setGeneratePdf(true)}
+                          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                        >
+                          Generate PDF
+                        </button>
+                      )}
+                    </div>
+                    <div className="mb-4">
+                      <button
+                        onClick={handleRedirect}
+                        className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
+                      >
+                        Add Product
+                      </button>
+                    </div>
+                  </div>
+                  {/* <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarBg hover:scrollbar-thumb-scrollbarThumbHover">
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr className="bg-gray-100">
@@ -304,7 +339,7 @@ const FinishGoods = () => {
             </tr>
           </thead>
           <tbody>
-            {currentProducts.map((item) => (
+            {currentProducts.map(item => (
               <tr key={item.id} className="border-t border-gray-200">
                 <td className="py-2 px-4">
                   {item.product ? item.product.product_name : "N/A"}
@@ -349,29 +384,18 @@ const FinishGoods = () => {
             ))}
           </tbody>
         </table>
+      </div> */}
+                  {/* Finish Goods Modal */}
+                </div>
+                <FinishGoodTable
+                  data={products}
+                  handleDeleteCompany={handleDelete}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
-      {/* Pagination Controls */}
-      <div className="flex justify-between items-center mt-4">
-        <button
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-          className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-        >
-          Previous
-        </button>
-        <span className="text-gray-700">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-          className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-        >
-          Next
-        </button>
-      </div>
-
-      {/* Finish Goods Modal */}
       <FinishGoodsModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -379,8 +403,8 @@ const FinishGoods = () => {
         onUpdateProduct={onUpdateProduct}
         productData={selectedProduct}
       />
-    </div>
-  );
-};
+    </>
+  )
+}
 
-export default FinishGoods;
+export default FinishGoods
