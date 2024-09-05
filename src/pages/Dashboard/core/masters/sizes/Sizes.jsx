@@ -119,6 +119,7 @@ import {
   DropdownItem,
 } from "reactstrap"
 import SizeTable from "./SizeTable"
+import { Skeleton } from "@mui/material"
 
 const Sizes = () => {
   document.title = "Sizes | Smart Wrap Panel"
@@ -127,6 +128,7 @@ const Sizes = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editSize, setEditSize] = useState(null)
   const token = localStorage.getItem("token")
+  const [Loader, setLoader] = useState(true)
 
   // Function to fetch sizes from API
   const fetchSizes = async () => {
@@ -142,6 +144,7 @@ const Sizes = () => {
   // Initial fetch of sizes when component mounts
   useEffect(() => {
     fetchSizes()
+    setLoader(false)
   }, [])
 
   // Function to handle edit action
@@ -191,44 +194,57 @@ const Sizes = () => {
     <>
       <div className="container-fluid">
         <Breadcrumbs title="Smart-wrap" breadcrumbItem="Sizes" />
-        <Row>
-          <Col lg="12">
-            <Card>
-              <CardBody className="border-bottom">
-                <div className="flex justify-end items-center mb-4 gap-2">
-                  <div className="position-relative">
-                    <Input
-                      type="text"
-                      className="form-control"
-                      id="searchJob"
-                      autoComplete="off"
-                      placeholder="Search..."
-                    />
+        {Loader ? (
+          <Skeleton
+            variant="rounded"
+            animation="wave"
+            style={{
+              width: "100%",
+              height: "700px",
+              marginBottom: "16px",
+              borderRadius: "18px",
+            }}
+          />
+        ) : (
+          <Row>
+            <Col lg="12">
+              <Card>
+                <CardBody className="border-bottom">
+                  <div className="flex justify-end items-center mb-4 gap-2">
+                    <div className="position-relative">
+                      <Input
+                        type="text"
+                        className="form-control"
+                        id="searchJob"
+                        autoComplete="off"
+                        placeholder="Search..."
+                      />
+                    </div>
+                    <button
+                      onClick={() => {
+                        setEditSize(null)
+                        setIsModalOpen(true)
+                      }}
+                      className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                      Add Size
+                    </button>
                   </div>
-                  <button
-                    onClick={() => {
-                      setEditSize(null)
-                      setIsModalOpen(true)
-                    }}
-                    className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
-                  >
-                    Add Size
-                  </button>
-                </div>
-                {/* <SizesTable
+                  {/* <SizesTable
                   sizes={sizes}
                   onEdit={handleEdit}
                   onDelete={handleDelete}
                 /> */}
-                <SizeTable
-                  data={sizes}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+                  <SizeTable
+                    data={sizes}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  />
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        )}
       </div>
 
       {isModalOpen && (
