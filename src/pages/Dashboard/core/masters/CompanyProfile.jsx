@@ -606,80 +606,102 @@ const CompanyProfile = () => {
       </Row>
 
       {/* Bank Details */}
-      <div className="md:col-span-3 col-span-1  p-6 bg-white rounded-lg shadow-md">
-        <div className="flex justify-between items-center gap-2">
-          <p className="text-2xl font-bold">Bank Details</p>
-          <div className="flex flex-col sm:flex-row sm:items-center">
-            <label className="mb-2 sm:mb-0 sm:mr-2 font-medium">
-              Select Bank For Details:
-            </label>
-            <select
-              className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              onChange={e => handleBankChange(e.target.value)}
-            >
-              <option value="">Select Bank</option>
-              {banks?.map((bank, index) => (
-                <option key={index} value={bank?.bank_name}>
-                  {bank?.bank_name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/* Render selected bank details */}
-        {selectedBank && (
-          <div className="space-y-4 p-4 bg-gray-50 mt-4 rounded-lg shadow-inner">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span className="font-medium text-black text-base">
-                Bank Name:
-              </span>
-              <span className="text-gray-900">{selectedBank.bank_name}</span>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span className="font-medium text-black text-base">
-                Bank Address:
-              </span>
-              <span className="text-gray-900">{selectedBank.bank_address}</span>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span className="font-medium text-black text-base">
-                Account Name:
-              </span>
-              <span className="text-gray-900">{selectedBank.account_name}</span>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span className="font-medium text-black text-base">
-                Account No:
-              </span>
-              <span className="text-gray-900">{selectedBank.account_no}</span>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span className="font-medium text-black text-base">
-                IFSC Code:
-              </span>
-              <span className="text-gray-900">{selectedBank.ifsc_code}</span>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span className="font-medium text-black text-base">
-                Swift Code:
-              </span>
-              <span className="text-gray-900">{selectedBank.swift_code}</span>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span className="font-medium text-black text-base">
-                Bank Ad Code No:
-              </span>
-              <span className="text-gray-900">
-                {selectedBank.bank_ad_code_no}
-              </span>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span className="font-medium text-black text-base">IBAN No:</span>
-              <span className="text-gray-900">{selectedBank.iban_no}</span>
-            </div>
-          </div>
-        )}
-      </div>
+      <Row>
+        <Col lg="12">
+          <Card>
+            <CardBody className="border-bottom">
+                <div className="flex justify-between items-center gap-2">
+                  <p className="text-2xl font-bold">Bank Details</p>
+                  <div className="flex flex-col sm:flex-row sm:items-center">
+                    <label className="mb-2 sm:mb-0 sm:mr-2 font-medium">
+                      Select Bank For Details:
+                    </label>
+                    <select
+                      className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      onChange={e => handleBankChange(e.target.value)}
+                    >
+                      <option value="">Select Bank</option>
+                      {banks?.map((bank, index) => (
+                        <option key={index} value={bank?.bank_name}>
+                          {bank?.bank_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                {/* Render selected bank details */}
+                {selectedBank && (
+                  <div className="space-y-4 p-4 bg-gray-50 mt-4 rounded-lg shadow-inner">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <span className="font-medium text-black text-base">
+                        Bank Name:
+                      </span>
+                      <span className="text-gray-900">
+                        {selectedBank.bank_name}
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <span className="font-medium text-black text-base">
+                        Bank Address:
+                      </span>
+                      <span className="text-gray-900">
+                        {selectedBank.bank_address}
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <span className="font-medium text-black text-base">
+                        Account Name:
+                      </span>
+                      <span className="text-gray-900">
+                        {selectedBank.account_name}
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <span className="font-medium text-black text-base">
+                        Account No:
+                      </span>
+                      <span className="text-gray-900">
+                        {selectedBank.account_no}
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <span className="font-medium text-black text-base">
+                        IFSC Code:
+                      </span>
+                      <span className="text-gray-900">
+                        {selectedBank.ifsc_code}
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <span className="font-medium text-black text-base">
+                        Swift Code:
+                      </span>
+                      <span className="text-gray-900">
+                        {selectedBank.swift_code}
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <span className="font-medium text-black text-base">
+                        Bank Ad Code No:
+                      </span>
+                      <span className="text-gray-900">
+                        {selectedBank.bank_ad_code_no}
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <span className="font-medium text-black text-base">
+                        IBAN No:
+                      </span>
+                      <span className="text-gray-900">
+                        {selectedBank.iban_no}
+                      </span>
+                    </div>
+                  </div>
+                )}
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
 
       {/* End Bank Popup */}
     </div>

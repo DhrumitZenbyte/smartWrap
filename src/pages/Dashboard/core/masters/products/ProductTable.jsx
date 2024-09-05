@@ -7,6 +7,11 @@ function ProductTable({ data, onEdit, onDelete }) {
   const columns = useMemo(
     () => [
       {
+        Header: "Sr. No",
+        accessor: (_, rowIndex) => rowIndex + 1,
+        id: "sr_no",
+      },
+      {
         Header: "HSN Code",
         accessor: "hsn_code",
       },

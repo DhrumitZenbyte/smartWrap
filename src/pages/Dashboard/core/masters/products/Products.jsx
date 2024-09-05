@@ -102,6 +102,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap"
+import { Skeleton } from "@mui/material"
 
 const Products = () => {
   document.title = "Products | Smart Wrap Panel"
@@ -109,6 +110,7 @@ const Products = () => {
   const [products, setProducts] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentProduct, setCurrentProduct] = useState(null)
+  const [Loader, setLoader] = useState(true)
 
   const { email, name } = useSelector(state => ({
     email: state.Login.email,
@@ -119,12 +121,13 @@ const Products = () => {
   useEffect(() => {
     // Fetch products on component mount
     getProducts(token, setProducts)
+    setLoader(false)
   }, [token])
 
   const handleEdit = product => {
     setCurrentProduct(product)
     setIsModalOpen(true)
-    console.log("Edit clicked for product:", product);
+    console.log("Edit clicked for product:", product)
   }
 
   const handleDelete = async id => {
@@ -172,49 +175,51 @@ const Products = () => {
 
   return (
     <>
-      <div>
         <div className="container-fluid">
           <Breadcrumbs title="Smart-wrap" breadcrumbItem="Products" />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody className="border-bottom">
-                  <div className="flex justify-end items-center mb-4 gap-2">
-                    <div className="position-relative">
-                      <Input
-                        type="text"
-                        className="form-control"
-                        id="searchJob"
-                        autoComplete="off"
-                        placeholder="Search..."
-                      />
+          {Loader ? (
+            <Skeleton variant="rounded" animation="wave" style={{width:'100%' , height:'700px' , marginBottom:'16px' , borderRadius:'18px'}} />
+          ) : (
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody className="border-bottom">
+                    <div className="flex justify-end items-center mb-4 gap-2">
+                      <div className="position-relative">
+                        <Input
+                          type="text"
+                          className="form-control"
+                          id="searchJob"
+                          autoComplete="off"
+                          placeholder="Search..."
+                        />
+                      </div>
+                      <button
+                        onClick={() => {
+                          setCurrentProduct(null)
+                          setIsModalOpen(true)
+                        }}
+                        className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
+                      >
+                        Add Product
+                      </button>
                     </div>
-                    <button
-                      onClick={() => {
-                        setCurrentProduct(null)
-                        setIsModalOpen(true)
-                      }}
-                      className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
-                    >
-                      Add Product
-                    </button>
-                  </div>
-                  <ProductTable
-                    data={products}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                  />
-                  {/* <ProductsTable
+                    <ProductTable
+                      data={products}
+                      onEdit={handleEdit}
+                      onDelete={handleDelete}
+                    />
+                    {/* <ProductsTable
                     products={products}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                   /> */}
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          )}
         </div>
-      </div>
 
       {isModalOpen && (
         <ProductModal

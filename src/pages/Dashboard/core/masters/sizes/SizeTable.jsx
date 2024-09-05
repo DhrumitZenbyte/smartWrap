@@ -7,6 +7,11 @@ function SizeTable({ data, onEdit, onDelete }) {
   const columns = useMemo(
     () => [
       {
+        Header: "Sr. No",
+        accessor: (_, rowIndex) => rowIndex + 1,
+        id: 'sr_no', 
+      },
+      {
         Header: "Size (CM)",
         accessor: "size_in_cm",
       },
