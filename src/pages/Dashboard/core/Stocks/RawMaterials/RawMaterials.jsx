@@ -619,26 +619,6 @@ const RawMaterials = () => {
 
   // Function to generate PDF by date
   const handleGeneratePdfByDate = async () => {
-    const totalPalletSum = companies.reduce(
-      (sum, company) => sum + (company.total_pallet || 0),
-      0
-    )
-    const bagPerPalletSum = companies.reduce(
-      (sum, company) => sum + (company.bag_per_pallet || 0),
-      0
-    )
-    const totalBagSum = companies.reduce(
-      (sum, company) => sum + (company.total_bag || 0),
-      0
-    )
-    const weightPerBagSum = companies.reduce(
-      (sum, company) => sum + (company.weight_per_bag || 0),
-      0
-    )
-    const totalWeightSum = companies.reduce(
-      (sum, company) => sum + (company.total_weight || 0),
-      0
-    )
 
     try {
       if (!selectedDate) {
@@ -667,9 +647,33 @@ const RawMaterials = () => {
           },
         }
       )
-
+      
       const data = await response.json()
-      if (data.status === "success") {
+      
+      const totalPalletSum = data.company_raw_materials.reduce(
+        (sum, company) => sum + (company.total_pallet || 0),
+        0
+      )
+      const bagPerPalletSum = data.company_raw_materials.reduce(
+        (sum, company) => sum + (company.bag_per_pallet || 0),
+        0
+      )
+      const totalBagSum = data.company_raw_materials.reduce(
+        (sum, company) => sum + (company.total_bag || 0),
+        0
+      )
+      const weightPerBagSum = data.company_raw_materials.reduce(
+        (sum, company) => sum + (company.weight_per_bag || 0),
+        0
+      )
+      const totalWeightSum = data.company_raw_materials.reduce(
+        (sum, company) => sum + (company.total_weight || 0),
+        0
+      )
+
+      console.log(data,"@@resss of the resss") 
+      if (data?.status === "success") {
+        console.log(data,"@@data222 of the datewise")
         // Use the fetched data to generate the PDF
         const MyDocumentWithDate = () => {
           return (
@@ -709,7 +713,8 @@ const RawMaterials = () => {
                       </View>
                     ))}
                   </View>
-                  {companies.map((company, index) => (
+                  {console.log(companies,"comppppppp from the inside of the structure")}
+                  {data.company_raw_materials.map((company, index) => (
                     <View key={index} style={styles.tableRow}>
                       {[
                         company.company_name,
@@ -894,7 +899,6 @@ const RawMaterials = () => {
 
   const MyDocument = () => {
     // Calculate totals
-    // Calculate totals
     const totalPalletSum = companies.reduce(
       (sum, company) => sum + (company.total_pallet || 0),
       0
@@ -1048,9 +1052,6 @@ const RawMaterials = () => {
                 <Text style={styles.tableCellHeader}>Total</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCellHeader}></Text>
-              </View>
-              <View style={styles.tableCol}>
                 <Text style={styles.tableCellHeader}>{totalPalletSum}</Text>
               </View>
               <View style={styles.tableCol}>
@@ -1064,6 +1065,9 @@ const RawMaterials = () => {
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCellHeader}>{totalWeightSum}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCellHeader}></Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCellHeader}></Text>
