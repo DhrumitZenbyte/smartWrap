@@ -773,7 +773,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap"
-import {toast } from "react-toastify"
+import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
 const FormInput = ({ label, name, type, value, onChange }) => {
@@ -813,20 +813,16 @@ const ProfileSettings = () => {
   const [formData, setFormData] = useState({
     company_name: "",
     contact_person_name: "",
-    otp_mobile_phone: "",
     mobile: "",
     email: "",
     phone_no: "",
-    fax_no: "",
     website: "",
-    company_register: "",
     address: "",
     portal_address: "",
     company_type: "",
     gst_no: "",
     lut_no: "",
     cin_no: "",
-    gst_circular_no: "",
     state_code: "",
     lei_no: "",
     field_3: "",
@@ -1063,13 +1059,6 @@ const ProfileSettings = () => {
                       type="text"
                     />
                     <FormInput
-                      label="OTP Mobile No"
-                      name="otp_mobile_phone"
-                      value={formData.otp_mobile_phone}
-                      onChange={handleChange}
-                      type="text"
-                    />
-                    <FormInput
                       label="Mobile"
                       name="mobile"
                       value={formData.mobile}
@@ -1091,23 +1080,9 @@ const ProfileSettings = () => {
                       type="text"
                     />
                     <FormInput
-                      label="Fax No"
-                      name="fax_no"
-                      value={formData.fax_no}
-                      onChange={handleChange}
-                      type="text"
-                    />
-                    <FormInput
                       label="Website"
                       name="website"
                       value={formData.website}
-                      onChange={handleChange}
-                      type="text"
-                    />
-                    <FormInput
-                      label="Company Register"
-                      name="company_register"
-                      value={formData.company_register}
                       onChange={handleChange}
                       type="text"
                     />
