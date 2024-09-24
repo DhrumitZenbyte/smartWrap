@@ -481,7 +481,7 @@ const CompanyProfile = () => {
       fields: [
         "company_name",
         "contact_person_name",
-        "mobile",
+        "mobile_no",
         "email",
         "phone_no",
         "website",

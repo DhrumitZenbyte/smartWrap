@@ -1059,7 +1059,7 @@ const ProfileSettings = () => {
                       type="text"
                     />
                     <FormInput
-                      label="Mobile"
+                      label="Mobile No"
                       name="mobile"
                       value={formData.mobile}
                       onChange={handleChange}
