@@ -561,7 +561,7 @@ const PurchaseOrder = () => {
 
   return (
     <div className="container-fluid">
-      <Breadcrumbs title="Smart-wrap" breadcrumbItem="Add Raw Material" />
+      <Breadcrumbs title="Smart-wrap" breadcrumbItem="Purchase Entry" />
       <div className="bg-white p-4 rounded-md mb-4">
         <div className="flex justify-between items-center mb-5 gap-2">
           <h2 className="text-xl font-bold">Add New Company</h2>
@@ -581,7 +581,7 @@ const PurchaseOrder = () => {
                 onClick={handleSaveCompany}
                 className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary"
               >
-                Save Company
+                Save Entry
               </button>
             )}
           </div>
