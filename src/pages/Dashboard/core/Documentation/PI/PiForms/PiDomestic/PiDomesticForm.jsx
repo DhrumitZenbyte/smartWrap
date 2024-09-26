@@ -1,247 +1,5 @@
-// import React, { useState } from "react"
-
-// const PiDomesticForm = () => {
-//       const [notes, setNotes] = useState([{ note: "" }])
-
-//       const handleAddNote = () => {
-//         setNotes([...notes, { note: "" }])
-//       }
-
-//       const handleNoteChange = (index, event) => {
-//         const newNotes = notes.map((note, noteIndex) => {
-//           if (index === noteIndex) {
-//             return { ...note, note: event.target.value }
-//           }
-//           return note
-//         })
-//         setNotes(newNotes)
-//       }
-//   return (
-//     <div className="max-w-4xl mx-auto p-4">
-//       <h2 className="text-2xl font-bold mb-6">Proforma Invoice</h2>
-
-//       {/* Proforma Invoice Section */}
-//       <div className="mb-6">
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//           <div>
-//             <label className="block mb-2 font-medium">PI No:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Date:</label>
-//             <input type="date" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Buyer Order No:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Buyer Order Date:</label>
-//             <input type="date" className="w-full p-2 border rounded" />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Supplier Details Section */}
-//       <div className="mb-6">
-//         <h3 className="text-xl font-semibold mb-4">Supplier Details</h3>
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//           <div>
-//             <label className="block mb-2 font-medium">Name:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Address:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">PAN:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">GST:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Mail Id:</label>
-//             <input type="email" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Contact Person:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Contact No:</label>
-//             <input type="tel" className="w-full p-2 border rounded" />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Consignee Details Section */}
-//       <div className="mb-6">
-//         <h3 className="text-xl font-semibold mb-4">Consignee Details</h3>
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//           <div>
-//             <label className="block mb-2 font-medium">Name:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Address:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">PAN:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">IEC:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">GST:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Mail Id:</label>
-//             <input type="email" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Contact Person:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Contact No:</label>
-//             <input type="tel" className="w-full p-2 border rounded" />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Main Details Section */}
-//       <div className="mb-6">
-//         <h3 className="text-xl font-semibold mb-4">Main Details</h3>
-//         <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-//           <div className="col-span-2">
-//             <label className="block mb-2 font-medium">Description:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">HSN Code:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">No of Box/Bag:</label>
-//             <input type="number" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Quantity:</label>
-//             <input type="number" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Unit:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Rate:</label>
-//             <input type="number" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Amount:</label>
-//             <input type="number" className="w-full p-2 border rounded" />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Bank Details Section */}
-//       <div className="mb-6">
-//         <h3 className="text-xl font-semibold mb-4">Bank Details</h3>
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//           <div>
-//             <label className="block mb-2 font-medium">Bank Name:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Address:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Account No:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">IFSC Code:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">AD Code:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Swift Code:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Payment Details Section */}
-//       <div className="mb-6">
-//         <h3 className="text-xl font-semibold mb-4">Payment Details</h3>
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//           <div>
-//             <label className="block mb-2 font-medium">Payment Terms:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Delivery Time:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//           <div>
-//             <label className="block mb-2 font-medium">Delivery Terms:</label>
-//             <input type="text" className="w-full p-2 border rounded" />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Note Section */}
-//       {/* Notes */}
-//       <div className="mb-6">
-//         <h3 className="text-lg font-semibold mb-2">Notes</h3>
-//         {notes.map((note, index) => (
-//           <div key={index} className="mb-2">
-//             <label className="block text-sm font-medium mb-1">
-//               Note {index + 1}:
-//             </label>
-//             <input
-//               type="text"
-//               value={note.note}
-//               onChange={e => handleNoteChange(index, e)}
-//               className="w-full p-2 border rounded"
-//               placeholder={`Enter note ${index + 1}`}
-//             />
-//           </div>
-//         ))}
-//         <button
-//           type="button"
-//           onClick={handleAddNote}
-//           className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-//         >
-//           Add Note
-//         </button>
-//       </div>
-
-//       {/* Submit Button */}
-//       <div className="text-right">
-//         <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-//           Generate PDF
-//         </button>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default PiDomesticForm
-
 import { PDFViewer, pdf } from "@react-pdf/renderer"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useForm, Controller, useFieldArray } from "react-hook-form"
 import PiDomesticPdf from "./PiDomesticPdf"
 import axios from "axios"
@@ -250,8 +8,9 @@ import { useNavigate } from "react-router-dom"
 const PiDomesticForm = () => {
   const [formData, setFormData] = useState(null)
   const navigate = useNavigate()
+  const [totalWeight, setTotalWeight] = useState("")
 
-  const { control, handleSubmit, watch, register } = useForm({
+  const { control, handleSubmit, watch, register, setValue } = useForm({
     defaultValues: {
       pi_no: "",
       date: "",
@@ -296,9 +55,9 @@ const PiDomesticForm = () => {
           description: "",
           hsn_code: "",
           no_of_box: "",
-          quantity: "",
-          unit: "",
-          rate_in_usd: "",
+          weight_per_box: "",
+          total_weight: "",
+          rate: "",
           amount: "",
         },
       ],
@@ -323,12 +82,12 @@ const PiDomesticForm = () => {
     name: "notes",
   })
 
-  const onSubmit = async(data, shouldHitApi) => {
+  const onSubmit = async (data, shouldHitApi) => {
     // Handle form submission here
     console.log(data, "i am the ops")
     setFormData(data)
 
-       if (shouldHitApi) {
+    if (shouldHitApi) {
       const token = localStorage.getItem("token")
 
       const dataToSend = {
@@ -369,15 +128,15 @@ const PiDomesticForm = () => {
     const blob = await pdf(doc).toBlob()
     return blob
   }
-    
+
   const handleAddProduct = () => {
     appendProduct({
       description: "",
       hsn_code: "",
       no_of_box: "",
-      quantity: "",
-      unit: "",
-      rate_in_usd: "",
+      weight_per_box: "",
+      total_weight: "",
+      rate: "",
       amount: "",
     })
   }
@@ -392,9 +151,28 @@ const PiDomesticForm = () => {
     setFormData(null)
   }
 
+  const calculateTotalWeight = (index) => {
+    const noOfBoxes = watch(`products[${index}].no_of_box`) || 0
+    const weightPerBox = watch(`products[${index}].weight_per_box`) || 0
+    const finalWeight = Number(noOfBoxes) * Number(weightPerBox)
+    setTotalWeight(finalWeight)
+    return finalWeight
+  }
+  
+  const updateTotalWeight = (index) => {
+    const getTotalWeight = calculateTotalWeight(index)?.toString();
+    setValue(`products[${index}].total_weight`, getTotalWeight);
+  };
+
+  useEffect(() => {
+    productFields?.forEach((_, index) => {
+      updateTotalWeight(index)
+    })
+  }, [watch(`products`), totalWeight])
+
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6">PI Domestic Invoice</h2>
+      <h2 className="text-2xl font-bold mb-6">PI Domestic</h2>
 
       {formData ? (
         <div>
@@ -744,13 +522,15 @@ const PiDomesticForm = () => {
                     <Controller
                       control={control}
                       name={`products[${index}].hsn_code`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
-                        />
-                      )}
+                      render={({ field }) => {
+                        return (
+                          <input
+                            type="text"
+                            className="w-full p-2 border rounded"
+                            {...field}
+                          />
+                        )
+                      }}
                     />
                   </div>
                   <div>
@@ -763,45 +543,57 @@ const PiDomesticForm = () => {
                           type="text"
                           className="w-full p-2 border rounded"
                           {...field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 font-medium">Quantity:</label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].quantity`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 font-medium">Unit:</label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].unit`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
+                          onChange={e => {
+                            field.onChange(e)
+                            calculateTotalWeight(index) // Update total weight
+                          }}
                         />
                       )}
                     />
                   </div>
                   <div>
                     <label className="block mb-2 font-medium">
-                      Rate in USD:
+                      Weight Per Box:
                     </label>
                     <Controller
                       control={control}
-                      name={`products[${index}].rate_in_usd`}
+                      name={`products[${index}].weight_per_box`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                          onChange={e => {
+                            field.onChange(e)
+                            calculateTotalWeight(index) // Update total weight
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium">
+                      Total Weight:
+                    </label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].total_weight`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                          value={calculateTotalWeight(index)}
+                          readOnly
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium">Rate:</label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].rate`}
                       render={({ field }) => (
                         <input
                           type="text"
