@@ -376,125 +376,6 @@ const PiDomesticForm = () => {
             </div>
           </div>
 
-          {/* Tax Details Section */}
-          {/* <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Tax Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block mb-2 font-medium">IGST:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("igst")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">SGST:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("sgst")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">CGST:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("cgst")}
-                />
-              </div>
-            </div>
-          </div> */}
-
-          {/* Bank Details Section */}
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Bank Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 font-medium">Bank Name:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_name")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Bank Address:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_address")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Account No:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_account_no")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">IFSC Code:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_ifsc_code")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">AD Code:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_ad_code")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Swift Code:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_swift_code")}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Payment Details Section */}
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Payment Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 font-medium">Payment Terms:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("payment_terms")}
-                />
-              </div>
-              {/* <div>
-                <label className="block mb-2 font-medium">Delivery Time:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("payment_delivery_time")}
-                />
-              </div> */}
-              <div>
-                <label className="block mb-2 font-medium">
-                  Delivery Terms:
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("payment_delivery_terms")}
-                />
-              </div>
-            </div>
-          </div>
-
           {/* Products Section */}
           <div className="mb-6">
             <h3 className="text-xl font-semibold mb-4">Products</h3>
@@ -634,6 +515,125 @@ const PiDomesticForm = () => {
             >
               Add Product
             </button>
+          </div>
+
+          {/* Tax Details Section */}
+          {/* <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Tax Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block mb-2 font-medium">IGST:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("igst")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">SGST:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("sgst")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">CGST:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("cgst")}
+                />
+              </div>
+            </div>
+          </div> */}
+
+          {/* Bank Details Section */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Bank Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-2 font-medium">Bank Name:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_name")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Bank Address:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_address")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Account No:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_account_no")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">IFSC Code:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_ifsc_code")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">AD Code:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_ad_code")}
+                />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Swift Code:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("bank_swift_code")}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Details Section */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-4">Payment Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-2 font-medium">Payment Terms:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("payment_terms")}
+                />
+              </div>
+              {/* <div>
+                <label className="block mb-2 font-medium">Delivery Time:</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("payment_delivery_time")}
+                />
+              </div> */}
+              <div>
+                <label className="block mb-2 font-medium">
+                  Delivery Terms:
+                </label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...register("payment_delivery_terms")}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Notes Section */}
