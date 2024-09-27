@@ -48,6 +48,7 @@
     "moment": "^2.29.4",
     "namor": "^2.0.4",
     "nouislider-react": "^3.4.1",
+    "number-to-words": "^1.2.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",

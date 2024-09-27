@@ -4,6 +4,7 @@ import { useForm, Controller, useFieldArray } from "react-hook-form"
 import PiDomesticPdf from "./PiDomesticPdf"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import numberToWords from 'number-to-words';
 
 const PiDomesticForm = () => {
   const [formData, setFormData] = useState(null)
@@ -59,6 +60,7 @@ const PiDomesticForm = () => {
           total_weight: "",
           rate: "",
           amount: "",
+          amount_in_words: ""
         },
       ],
     },
@@ -138,6 +140,7 @@ const PiDomesticForm = () => {
       total_weight: "",
       rate: "",
       amount: "",
+      amount_in_words: ""
     })
   }
 
@@ -489,6 +492,26 @@ const PiDomesticForm = () => {
                     <Controller
                       control={control}
                       name={`products[${index}].amount`}
+                      render={({ field }) => (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...field}
+                          onChange={(e) => {
+                            const value = (e.target.value)
+                            field.onChange(value);
+                            const amountInWords = numberToWords.toWords(Number(value));  
+                            setValue(`products[${index}].amount_in_words`, amountInWords); 
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 font-medium">Amount in Words:</label>
+                    <Controller
+                      control={control}
+                      name={`products[${index}].amount_in_words`}
                       render={({ field }) => (
                         <input
                           type="text"
