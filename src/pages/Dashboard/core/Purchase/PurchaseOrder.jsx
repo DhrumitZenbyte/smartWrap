@@ -336,7 +336,10 @@ const PurchaseOrder = () => {
       }
     }
 
-    setNewCompany(updatedCompany)
+    setNewCompany((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   }
 
   const resetForm = () => {
@@ -516,47 +519,17 @@ const PurchaseOrder = () => {
 
     if (selectedCompany) {
       // setIsUpdateMode(true)
-      setNewCompany({
+      setNewCompany((prev) => ({
+        ...prev,
         id: selectedCompany?.id,
         companyName: selectedCompany.company_name,
-        totalPallet: selectedCompany.total_pallet.toString(),
-        bagPerPallet: selectedCompany.bag_per_pallet.toString(),
-        totalBag: selectedCompany.total_bag.toString(),
-        weightPerBag: selectedCompany.weight_per_bag.toString(),
-        totalWeight: selectedCompany.total_weight.toString(),
-        supplierName: selectedCompany.supplier_name || "",
-        purchaseOrderNo: selectedCompany.purchase_order_no || "",
-        salesOrderNo: selectedCompany.sales_order_no || "",
-        descriptionOfGoods: selectedCompany.description_of_goods || "",
-        qty: selectedCompany.qty?.toString() || "",
-        weightPerPcs: selectedCompany.weight_per_pcs?.toString() || "",
-        paymentTerms: selectedCompany.payment_terms || "",
-        invoiceDate: selectedCompany.invoice_date || "",
-        status: selectedCompany.status || "",
-        receivedDate: selectedCompany.received_date || "",
-        blDate: selectedCompany.bl_date || "", // Added BL Date
-        paymentTermsDate: selectedCompany.payment_terms_date || "", // Added Payment Terms Date
-      })
+      }))
     } else {
-      setNewCompany({
+      setNewCompany((prev) => ({
+        ...prev,
         companyName: selectedCompanyName,
-        totalPallet: "",
-        bagPerPallet: "",
-        totalBag: "",
-        weightPerBag: "",
-        totalWeight: "",
-        supplierName: "",
-        purchaseOrderNo: "",
-        salesOrderNo: "",
-        descriptionOfGoods: "",
-        qty: "",
-        weightPerPcs: "",
-        paymentTerms: "",
-        invoiceDate: "",
-        status: "",
-        receivedDate: "",
       })
-    }
+    )}
   }
 
   return (
