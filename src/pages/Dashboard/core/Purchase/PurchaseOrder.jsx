@@ -306,12 +306,12 @@ const PurchaseOrder = () => {
   const handleChange = e => {
     const { name, value } = e.target
     let updatedCompany = { ...newCompany, [name]: value }
-
+    
     // Calculate total bag and total weight
     if (name === "totalPallet" || name === "bagPerPallet") {
       const totalPallet = parseInt(updatedCompany.totalPallet || 0, 10)
       const bagPerPallet = parseInt(updatedCompany.bagPerPallet || 0, 10)
-      updatedCompany.totalBag = totalPallet * bagPerPallet
+      updatedCompany.totalBag = (totalPallet * bagPerPallet)
 
       const weightPerBag = parseFloat(updatedCompany.weightPerBag || 0)
       updatedCompany.totalWeight = weightPerBag * updatedCompany.totalBag
@@ -334,10 +334,7 @@ const PurchaseOrder = () => {
       }
     }
 
-    setNewCompany((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setNewCompany(updatedCompany);
   }
 
   const resetForm = () => {
