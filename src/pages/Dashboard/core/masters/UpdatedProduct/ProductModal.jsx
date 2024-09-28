@@ -147,70 +147,51 @@
 import React, { useState, useEffect } from "react"
 import { Spinner } from "reactstrap"
 
-const SizeModal = ({ isOpen, onClose, onAddOrUpdateSize, editSize }) => {
-  const [sizeCm, setSizeCm] = useState("")
-  const [sizeMm, setSizeMm] = useState("")
+const ProductModal = ({ isOpen, onClose, onAddOrUpdateSize, editProduct }) => {
   const [productName, setProductName] = useState("")
   const [hsnCode, setHsnCode] = useState("")
-  const [thickness, setThickness] = useState("")
   const [micron, setMicron] = useState("")
-  const [grade, setGrade] = useState("")
   const [width, setWidth] = useState("")
+  const [meter, setMeter] = useState("")
   const [Loader, setLoader] = useState(false)
 
+
   useEffect(() => {
-    if (editSize) {
-      setSizeCm(editSize.size_in_cm)
-      setSizeMm(editSize.size_in_mm)
-      setProductName(editSize.product_name)
-      setHsnCode(editSize.hsn_code)
-      setThickness(editSize.thickness)
-      setMicron(editSize.micron)
-      setGrade(editSize.grade)
-      setWidth(editSize.width)
+    if (editProduct) {
+      setProductName(editProduct.product_name)
+      setHsnCode(editProduct.hsn_code)
+      setMicron(editProduct.micron)
+      setWidth(editProduct.width)
+      setMeter(editProduct.meter)
     } else {
-      setSizeCm("")
-      setSizeMm("")
       setProductName("")
       setHsnCode("")
-      setThickness("")
       setMicron("")
-      setGrade("")
       setWidth("")
+      setMeter("")
     }
-  }, [editSize])
+  }, [editProduct])
 
   const handleSubmit = async e => {
     e.preventDefault()
     // Perform basic client-side validation
-    if (
-      !sizeCm ||
-      !sizeMm ||
-      !productName ||
-      !hsnCode ||
-      !thickness ||
-      !micron ||
-      !grade ||
-      !width
-    ) {
+    if (!productName || !hsnCode || !micron || !width || !meter) {
       console.error("Please fill in all fields.")
       return
     }
 
-    const newSize = {
-      size_in_cm: parseInt(sizeCm), // Ensure numeric format
-      size_in_mm: parseInt(sizeMm), // Ensure numeric format
+    const newProducts = {
       product_name: productName,
       hsn_code: hsnCode,
-      thickness: thickness,
       micron: parseInt(micron), // Ensure numeric format
-      grade: grade,
       width: width,
+      meter: meter,
     }
 
     try {
       setLoader(true) // Show loader when the process starts
-      await onAddOrUpdateSize(newSize)
+      // TODO: Need to change api
+      await onAddOrUpdateSize(newProducts)
     } catch (error) {
       console.error("Error adding/updating size", error)
     } finally {
@@ -226,30 +207,10 @@ const SizeModal = ({ isOpen, onClose, onAddOrUpdateSize, editSize }) => {
     >
       <div className="bg-white modal-new p-6 rounded shadow-lg w-11/12 max-w-2xl">
         <h2 className="text-2xl mb-4">
-          {editSize ? "Edit Size" : "Add New Size"}
+          {editProduct ? "Edit Product" : "Add New Product"}
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700">Size in cm</label>
-              <input
-                type="text"
-                value={sizeCm}
-                placeholder="Enter Size in cm"
-                onChange={e => setSizeCm(e.target.value)}
-                className="w-full px-3 py-2 border rounded shadow-sm"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700">Size in mm</label>
-              <input
-                type="text"
-                value={sizeMm}
-                placeholder="Enter Size in mm"
-                onChange={e => setSizeMm(e.target.value)}
-                className="w-full px-3 py-2 border rounded shadow-sm"
-              />
-            </div>
             <div>
               <label className="block text-gray-700">Product Name</label>
               <input
@@ -270,16 +231,7 @@ const SizeModal = ({ isOpen, onClose, onAddOrUpdateSize, editSize }) => {
                 className="w-full px-3 py-2 border rounded shadow-sm"
               />
             </div>
-            <div>
-              <label className="block text-gray-700">Thickness</label>
-              <input
-                type="text"
-                value={thickness}
-                placeholder="Enter Thickness"
-                onChange={e => setThickness(e.target.value)}
-                className="w-full px-3 py-2 border rounded shadow-sm"
-              />
-            </div>
+
             <div>
               <label className="block text-gray-700">Micron</label>
               <input
@@ -287,6 +239,59 @@ const SizeModal = ({ isOpen, onClose, onAddOrUpdateSize, editSize }) => {
                 value={micron}
                 placeholder="Enter Micron"
                 onChange={e => setMicron(e.target.value)}
+                className="w-full px-3 py-2 border rounded shadow-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700">Width</label>
+              <input
+                type="text"
+                value={width}
+                placeholder="Enter Width"
+                onChange={e => setWidth(e.target.value)}
+                className="w-full px-3 py-2 border rounded shadow-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700">Meter</label>
+              <input
+                type="text"
+                value={meter}
+                placeholder="Enter Meter"
+                onChange={e => setMeter(e.target.value)}
+                className="w-full px-3 py-2 border rounded shadow-sm"
+              />
+            </div>
+
+            {/* <div>
+              <label className="block text-gray-700">Size in cm</label>
+              <input
+                type="text"
+                value={sizeCm}
+                placeholder="Enter Size in cm"
+                onChange={e => setSizeCm(e.target.value)}
+                className="w-full px-3 py-2 border rounded shadow-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700">Size in mm</label>
+              <input
+                type="text"
+                value={sizeMm}
+                placeholder="Enter Size in mm"
+                onChange={e => setSizeMm(e.target.value)}
+                className="w-full px-3 py-2 border rounded shadow-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700">Thickness</label>
+              <input
+                type="text"
+                value={thickness}
+                placeholder="Enter Thickness"
+                onChange={e => setThickness(e.target.value)}
                 className="w-full px-3 py-2 border rounded shadow-sm"
               />
             </div>
@@ -299,17 +304,7 @@ const SizeModal = ({ isOpen, onClose, onAddOrUpdateSize, editSize }) => {
                 onChange={e => setGrade(e.target.value)}
                 className="w-full px-3 py-2 border rounded shadow-sm"
               />
-            </div>
-            <div>
-              <label className="block text-gray-700">Width</label>
-              <input
-                type="text"
-                value={width}
-                placeholder="Enter Width"
-                onChange={e => setWidth(e.target.value)}
-                className="w-full px-3 py-2 border rounded shadow-sm"
-              />
-            </div>
+            </div> */}
           </div>
           <div className="flex justify-end mt-4">
             <button
@@ -334,7 +329,7 @@ const SizeModal = ({ isOpen, onClose, onAddOrUpdateSize, editSize }) => {
                 type="submit"
                 className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
               >
-                {editSize ? "Update Size" : "Add Size"}
+                {editProduct ? "Update Product" : "Add Product"}
               </button>
             )}
           </div>
@@ -344,4 +339,4 @@ const SizeModal = ({ isOpen, onClose, onAddOrUpdateSize, editSize }) => {
   )
 }
 
-export default SizeModal
+export default ProductModal

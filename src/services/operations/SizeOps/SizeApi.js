@@ -32,7 +32,7 @@ export async function addSize(sizeData, token) {
 }
 
 export async function getSizes(token) {
-    const toastId = toast.loading("Loading sizes...");
+    const toastId = toast.loading("Loading Products...");
 
     try {
         const response = await apiconnector("GET", GET_SIZES_API, null, {

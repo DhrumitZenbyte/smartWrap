@@ -89,9 +89,7 @@
 // export default Sizes
 
 import React, { useState, useEffect } from "react"
-import SizesTable from "./SizesTable"
-import SizeModal from "./SizeModal"
-import { useSelector } from "react-redux"
+import ProductModal from "./ProductModal"
 import Breadcrumbs from "../../../../../components/Common/Breadcrumb"
 import {
   addSize,
@@ -118,15 +116,15 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap"
-import SizeTable from "./SizeTable"
+import ProductDataTable from "./ProductDataTable"
 import { Skeleton } from "@mui/material"
 
-const Sizes = () => {
-  document.title = "Sizes | Smart Wrap Panel"
+const ProductsListPage = () => {
+  document.title = "Products | Smart Wrap Panel"
 
-  const [sizes, setSizes] = useState([])
+  const [products, setProducts] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editSize, setEditSize] = useState(null)
+  const [editProduct, setEditProduct] = useState(null)
   const token = localStorage.getItem("token")
   const [Loader, setLoader] = useState(true)
 
@@ -134,7 +132,7 @@ const Sizes = () => {
   const fetchSizes = async () => {
     try {
       const response = await getSizes(token)
-      setSizes(response) // Assuming response structure matches your provided example
+      setProducts(response) // Assuming response structure matches your provided example
       console.log(response, "@@response of sizes")
     } catch (error) {
       console.error("Error fetching sizes:", error)
@@ -149,7 +147,7 @@ const Sizes = () => {
 
   // Function to handle edit action
   const handleEdit = size => {
-    setEditSize(size)
+    setEditProduct(size)
     setIsModalOpen(true)
   }
 
@@ -167,8 +165,9 @@ const Sizes = () => {
   // Function to handle add or update size action
   const handleAddOrUpdateSize = async sizeData => {
     try {
-      if (editSize) {
-        const response = await updateSize(editSize.id, sizeData, token)
+      if (editProduct) {
+        // TODO: need to change list api 
+        const response = await updateSize(editProduct.id, sizeData, token)
         if (response.status === "success") {
           console.log("Updated size:", response.message)
         } else {
@@ -184,7 +183,7 @@ const Sizes = () => {
       }
       fetchSizes() // Fetch sizes again to get the updated list
       setIsModalOpen(false) // Close the modal after successful addition or update
-      setEditSize(null) // Clear the edit size state
+      setEditProduct(null) // Clear the edit size state
     } catch (error) {
       console.error("Error adding or updating size:", error)
     }
@@ -193,7 +192,7 @@ const Sizes = () => {
   return (
     <>
       <div className="container-fluid">
-        <Breadcrumbs title="Smart-wrap" breadcrumbItem="Sizes" />
+        <Breadcrumbs title="Smart-wrap" breadcrumbItem="PRODUCTS" />
         {Loader ? (
           <Skeleton
             variant="rounded"
@@ -222,12 +221,12 @@ const Sizes = () => {
                     </div>
                     <button
                       onClick={() => {
-                        setEditSize(null)
+                        setEditProduct(null)
                         setIsModalOpen(true)
                       }}
                       className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
                     >
-                      Add Size
+                      Add Product
                     </button>
                   </div>
                   {/* <SizesTable
@@ -235,8 +234,8 @@ const Sizes = () => {
                   onEdit={handleEdit}
                   onDelete={handleDelete}
                 /> */}
-                  <SizeTable
-                    data={sizes}
+                  <ProductDataTable
+                    data={products}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                   />
@@ -248,15 +247,15 @@ const Sizes = () => {
       </div>
 
       {isModalOpen && (
-        <SizeModal
+        <ProductModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onAddOrUpdateSize={handleAddOrUpdateSize}
-          editSize={editSize}
+          editProduct={editProduct}
         />
       )}
     </>
   )
 }
 
-export default Sizes
+export default ProductsListPage
