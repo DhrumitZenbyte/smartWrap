@@ -291,9 +291,7 @@ const PurchaseOrder = () => {
     supplierName: "",
     purchaseOrderNo: "",
     salesOrderNo: "",
-    descriptionOfGoods: "",
     qty: "",
-    weightPerPcs: "",
     paymentTerms: "",
     invoiceDate: "",
     status: "",
@@ -353,9 +351,7 @@ const PurchaseOrder = () => {
       supplierName: "",
       purchaseOrderNo: "",
       salesOrderNo: "",
-      descriptionOfGoods: "",
       qty: "",
-      weightPerPcs: "",
       paymentTerms: "",
       invoiceDate: "",
       status: "",
@@ -380,9 +376,7 @@ const PurchaseOrder = () => {
         supplier_name: newCompany.supplierName,
         purchase_order_no: newCompany.purchaseOrderNo,
         sales_order_no: newCompany.salesOrderNo,
-        description_of_goods: newCompany.descriptionOfGoods,
         qty: parseInt(newCompany.qty, 10),
-        weight_per_pcs: parseFloat(newCompany.weightPerPcs),
         payment_terms: newCompany.paymentTerms,
         invoice_date: newCompany.invoiceDate,
         status: newCompany.status,
@@ -486,9 +480,7 @@ const PurchaseOrder = () => {
         supplierName: "",
         purchaseOrderNo: "",
         salesOrderNo: "",
-        descriptionOfGoods: "",
         qty: "",
-        weightPerPcs: "",
         paymentTerms: "",
         invoiceDate: "",
         status: "",
@@ -587,17 +579,6 @@ const PurchaseOrder = () => {
             />
           </div>
           <div className="col-span-1">
-            <label className="block text-sm font-medium text-gray-700">
-              Additional Pallets
-            </label>
-            <input
-              type="number"
-              name="additionalPallets"
-              value={additionalPallets}
-              onChange={handleAdditionalPalletsChange}
-              placeholder="Enter additional pallets"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
           </div>
           {Object.keys(newCompany).map(key => {
             if (key === "companyName" || key === "id") return null
