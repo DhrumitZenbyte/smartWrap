@@ -283,6 +283,7 @@ const PurchaseOrder = () => {
   const [companyNames, setCompanyNames] = useState([])
   const [newCompany, setNewCompany] = useState({
     companyName: "",
+    grade: "",
     totalPallet: "",
     bagPerPallet: "",
     totalBag: "",
@@ -306,12 +307,12 @@ const PurchaseOrder = () => {
   const handleChange = e => {
     const { name, value } = e.target
     let updatedCompany = { ...newCompany, [name]: value }
-    
+
     // Calculate total bag and total weight
     if (name === "totalPallet" || name === "bagPerPallet") {
       const totalPallet = parseInt(updatedCompany.totalPallet || 0, 10)
       const bagPerPallet = parseInt(updatedCompany.bagPerPallet || 0, 10)
-      updatedCompany.totalBag = (totalPallet * bagPerPallet)
+      updatedCompany.totalBag = totalPallet * bagPerPallet
 
       const weightPerBag = parseFloat(updatedCompany.weightPerBag || 0)
       updatedCompany.totalWeight = weightPerBag * updatedCompany.totalBag
@@ -334,12 +335,13 @@ const PurchaseOrder = () => {
       }
     }
 
-    setNewCompany(updatedCompany);
+    setNewCompany(updatedCompany)
   }
 
   const resetForm = () => {
     setNewCompany({
       companyName: "",
+      grade: "",
       totalPallet: "",
       bagPerPallet: "",
       totalBag: "",
@@ -365,6 +367,7 @@ const PurchaseOrder = () => {
       const processedData = {
         id: newCompany.id,
         company_name: newCompany.companyName,
+        grade: newCompany?.grade,
         total_pallet: parseInt(newCompany.totalPallet, 10),
         bag_per_pallet: parseInt(newCompany.bagPerPallet, 10),
         total_bag: parseInt(newCompany.totalBag, 10),
@@ -469,6 +472,7 @@ const PurchaseOrder = () => {
       }
       setNewCompany({
         companyName: "",
+        grade: "",
         totalPallet: "",
         bagPerPallet: "",
         totalBag: "",
@@ -506,19 +510,35 @@ const PurchaseOrder = () => {
       company => company.company_name === selectedCompanyName
     )
 
+    const getSelctedObj = companies?.find(
+      obj => obj.company_name === selectedCompanyName
+    )
+
+    if (getSelctedObj) {
+      setNewCompany(prev => ({
+        ...prev,
+        grade: getSelctedObj?.garde,
+      }))
+    }
+
     if (selectedCompany) {
       // setIsUpdateMode(true)
-      setNewCompany((prev) => ({
+      setNewCompany(prev => ({
         ...prev,
         id: selectedCompany?.id,
         companyName: selectedCompany.company_name,
       }))
     } else {
-      setNewCompany((prev) => ({
+      setNewCompany(prev => ({
         ...prev,
         companyName: selectedCompanyName,
-      })
-    )}
+      }))
+    }
+  }
+
+  const handleGradeChange = e => {
+    const { value } = e.target
+    setNewCompany(prev => ({ ...prev, grade: value }))
   }
 
   return (
@@ -528,7 +548,10 @@ const PurchaseOrder = () => {
         <div className="flex justify-between items-center mb-5 gap-2">
           <h2 className="text-xl font-bold">Add New Company</h2>
           <div className="flex justify-end items-center  gap-2">
-            <Link to="/dashboard/raw-materials" className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700">
+            <Link
+              to="/dashboard/raw-materials"
+              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700"
+            >
               Back
             </Link>
             {isUpdateMode ? (
@@ -575,8 +598,6 @@ const PurchaseOrder = () => {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
-          <div className="col-span-1">
-          </div>
           {Object.keys(newCompany).map(key => {
             if (key === "companyName" || key === "id") return null
 
@@ -592,14 +613,15 @@ const PurchaseOrder = () => {
             return (
               <div key={key} className="col-span-1">
                 <label className="block text-sm font-medium text-gray-700">
-                  {key.
-                    replace(/_/g, " ").replace(/\b\w/g, char => char.toUpperCase())}
+                  {key
+                    .replace(/_/g, " ")
+                    .replace(/\b\w/g, char => char.toUpperCase())}
                 </label>
                 <input
                   type={type}
                   name={key}
                   value={newCompany[key]}
-                  onChange={handleChange}
+                  onChange={key === "grade" ? handleGradeChange : handleChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   // readOnly={
                   //   key === "totalBag" ||

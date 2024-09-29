@@ -13,6 +13,7 @@ export async function addRawMaterial(rawMaterialData, token) {
         // Convert string values to numbers if necessary and map to snake_case
         const processedData = {
             company_name: rawMaterialData.companyName,
+            grade: rawMaterialData?.grade,
             total_pallet: parseInt(rawMaterialData.totalPallet, 10),
             bag_per_pallet: parseInt(rawMaterialData.bagPerPallet, 10),
             total_bag: parseInt(rawMaterialData.totalBag, 10),
