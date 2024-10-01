@@ -259,9 +259,9 @@
 // }
 
 // export default PiExportForm
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import axios from "axios"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, useFieldArray, useWatch } from "react-hook-form"
 import { PDFViewer, pdf } from "@react-pdf/renderer"
 import PiExpertPdf from "./PiExportPdf"
 import { useNavigate } from "react-router-dom"
@@ -269,9 +269,15 @@ import { useNavigate } from "react-router-dom"
 const PiExportForm = () => {
   const [piNumber, setPiNumber] = useState("")
   const [formData, setFormData] = useState(null)
+  const [selectedOption, setSelectedOption] = useState("rolls")
+  const [amount, setAmount] = useState(0)
+  const [rate, setRate] = useState(0)
+  // const [totalRolls, setTotalRolls] = useState(null)
+  // const [noOfPallets, setNoOfPallets] = useState("")
+  // const [rollsPerPallets, setRollsPerPallets] = useState("")
 
   // Initialize React Hook Form
-  const { register, control, handleSubmit, setValue } = useForm({
+  const { register, control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       pi_no: "",
       date: "",
@@ -317,20 +323,25 @@ const PiExportForm = () => {
           size: "",
           type: "",
           packaging_description: "",
-          rolls_pallet: "",
-          no_of_pallets: "",
-          total_rolls: "",
+          rolls_pallet: 0,
+          no_of_pallets: 0,
+          total_rolls: 0,
           container: "",
           unit: "",
           rate_in_usd: "",
           amount_in_usd: "",
           quanity: "",
+          rolls: true,
+          weight: false,
         },
       ],
     },
   })
   const navigate = useNavigate()
 
+  // const watchedValued = watch()
+
+  // console.log({ watchedValued })
   const {
     fields: noteFields,
     append: appendNote,
@@ -416,9 +427,77 @@ const PiExportForm = () => {
     setFormData(null)
   }
 
+  const calculateTotalRolls = index => {
+    const rollsPallet = watch(`products[${index}].rolls_pallet`) || 0
+    const noOfPallets = watch(`products[${index}].no_of_pallets`) || 0
+    const finalRolls = Number(noOfPallets) * Number(rollsPallet)
+    // setTotalRolls(finalRolls)
+    setValue(`products.${index}.total_rolls`, finalRolls?.toString())
+    return finalRolls
+  }
+
+  const calculateCoreWeight = index => {
+    const totalRolls = watch(`products[${index}].total_rolls`) || 0
+    const weightPerRoll = watch(`products[${index}].container`) || 0
+    const finalCoreWeight = Number(totalRolls) * Number(weightPerRoll)
+    setValue(`products.${index}.unit`, finalCoreWeight?.toString())
+    return finalCoreWeight
+  }
+
+  const handleRateChange = (e, index) => {
+    const newRate = parseFloat(e.target.value)
+
+
+    console.log({ newRate, selectedOption })
+
+    setRate(newRate)
+    if (selectedOption === "rolls") {
+      console.log({ selectedOption })
+      const rollsValue = calculateTotalRolls(index) * newRate
+      // setAmount()
+      setValue(`products.${index}.amount_in_usd`, rollsValue)
+    } else if (selectedOption === "weight") {
+      // setAmount()
+      const totalValue = calculateCoreWeight(index) * newRate
+      setValue(`products.${index}.amount_in_usd`, totalValue)
+    }
+  }
+
+  const handleRadioOptionChange = (e, index) => {
+    setSelectedOption(e.target.value)
+    
+    // const newRate = watch(`products${index}.rate_in_usd`)
+    
+    console.log(e.target.value, rate,  "rdioOnchange")
+    // if (rate) {
+    if (e.target.value === "rolls") {
+      const rollsRate = calculateTotalRolls(index) * rate
+      console.log({ rrrrrr: rollsRate })
+      setAmount(rollsRate)
+      setValue(`products.${index}.amount_in_usd`, rollsRate)
+    } else if (e.target.value === "weight") {
+      const weightRate = calculateCoreWeight(index) * rate
+      console.log({ rrrrwwwww: weightRate })
+      setAmount(weightRate)
+      setValue(`products.${index}.amount_in_usd`, weightRate)
+    }
+    // }
+  }
+
+  // const handleRateChange = (e, index) => {
+  //   const rate = parseFloat(e.target.value)
+  //   if (selectedOption === "rolls") {
+  //     setAmount(calculateTotalRolls(index) * rate)
+  //   } else if (selectedOption === "weight") {
+  //     setAmount(calculateCoreWeight(index) * rate)
+  //   }
+
+  //   console.log({ amount })
+  // }
+
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      <h1 className="text-2xl font-bold mb-4">Pi Export Invoice</h1>
+      <h1 className="text-2xl font-bold mb-4">Pi Export</h1>
 
       {formData ? (
         <div>
@@ -692,16 +771,20 @@ const PiExportForm = () => {
                 <div>
                   <label className="block">Rolls Per Pallet:</label>
                   <input
-                    type="text"
-                    {...register(`products[${index}].rolls_pallet`)}
+                    type="number"
+                    {...register(`products[${index}].rolls_pallet`, {
+                      onChange: e => calculateTotalRolls(index),
+                    })}
                     className="w-full border border-gray-300 p-2"
                   />
                 </div>
                 <div>
                   <label className="block">No of Pallets:</label>
                   <input
-                    type="text"
-                    {...register(`products[${index}].no_of_pallets`)}
+                    type="number"
+                    {...register(`products[${index}].no_of_pallets`, {
+                      onChange: e => calculateTotalRolls(index),
+                    })}
                     className="w-full border border-gray-300 p-2"
                   />
                 </div>
@@ -709,15 +792,19 @@ const PiExportForm = () => {
                   <label className="block">Total Rolls:</label>
                   <input
                     type="text"
-                    {...register(`products[${index}].total_rolls`)}
+                    {...register}
+                    value={calculateTotalRolls(index)}
                     className="w-full border border-gray-300 p-2"
+                    readOnly
                   />
                 </div>
                 <div>
                   <label className="block">Weight Per Roll:</label>
                   <input
                     type="text"
-                    {...register(`products[${index}].container`)}
+                    {...register(`products[${index}].container`, {
+                      onChange: e => calculateCoreWeight(index),
+                    })}
                     className="w-full border border-gray-300 p-2"
                   />
                 </div>
@@ -727,23 +814,51 @@ const PiExportForm = () => {
                     type="text"
                     {...register(`products[${index}].unit`)}
                     className="w-full border border-gray-300 p-2"
+                    value={calculateCoreWeight(index)}
                   />
                 </div>
                 <div>
                   <label className="block">Rate in USD:</label>
                   <input
                     type="number"
-                    {...register(`products[${index}].rate_in_usd`)}
+                    {...register(`products[${index}].rate_in_usd`, {
+                      onChange: e => handleRateChange(e, index),
+                    })}
                     className="w-full border border-gray-300 p-2"
                   />
                 </div>
+
                 <div>
                   <label className="block">Amount in USD:</label>
                   <input
                     type="number"
                     {...register(`products[${index}].amount_in_usd`)}
                     className="w-full border border-gray-300 p-2"
+                    value={watch(`products${index}.amount_in_usd`)}
+                    readOnly
                   />
+                </div>
+                <div>
+                  <label>
+                    <input
+                      type="radio"
+                      value="rolls"
+                      {...register(`products[${index}].rolls`)}
+                      onClick={e => handleRadioOptionChange(e, index)}
+                      checked={selectedOption === "rolls"}
+                    />
+                    Rolls
+                  </label>
+                  <label className="ml-4">
+                    <input
+                      type="radio"
+                      value="weight"
+                      {...register(`products[${index}].weight`)}
+                      onClick= { e => handleRadioOptionChange(e, index)}
+                      checked={selectedOption === "weight"}
+                    />
+                    Weight
+                  </label>
                 </div>
                 <div>
                   <label className="block">Quantity:</label>
@@ -780,6 +895,8 @@ const PiExportForm = () => {
                   rate_in_usd: 0,
                   amount_in_usd: 0,
                   quantity: 0,
+                  rolls: true,
+                  weight: false,
                 })
               }
               className="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200"
@@ -911,13 +1028,13 @@ const PiExportForm = () => {
                 />
               </div>
               {/* <div>
-                <label className="block">Delivery Time:</label>
-                <input
-                  type="text"
-                  {...register("payment_delivery_time")}
-                  className="w-full border border-gray-300 p-2"
-                />
-              </div> */}
+        <label className="block">Delivery Time:</label>
+        <input
+          type="text"
+          {...register("payment_delivery_time")}
+          className="w-full border border-gray-300 p-2"
+        />
+      </div> */}
               <div>
                 <label className="block">Delivery Terms:</label>
                 <input
