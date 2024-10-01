@@ -269,13 +269,8 @@ import { useNavigate } from "react-router-dom"
 const PiExportForm = () => {
   const [piNumber, setPiNumber] = useState("")
   const [formData, setFormData] = useState(null)
-  const [selectedOption, setSelectedOption] = useState("rolls")
-  const [amount, setAmount] = useState(0)
+  const [selectedOption, setSelectedOption] = useState({ 0: "rolls" })
   const [rate, setRate] = useState(0)
-  // const [totalRolls, setTotalRolls] = useState(null)
-  // const [noOfPallets, setNoOfPallets] = useState("")
-  // const [rollsPerPallets, setRollsPerPallets] = useState("")
-
   // Initialize React Hook Form
   const { register, control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
@@ -339,9 +334,6 @@ const PiExportForm = () => {
   })
   const navigate = useNavigate()
 
-  // const watchedValued = watch()
-
-  // console.log({ watchedValued })
   const {
     fields: noteFields,
     append: appendNote,
@@ -431,7 +423,6 @@ const PiExportForm = () => {
     const rollsPallet = watch(`products[${index}].rolls_pallet`) || 0
     const noOfPallets = watch(`products[${index}].no_of_pallets`) || 0
     const finalRolls = Number(noOfPallets) * Number(rollsPallet)
-    // setTotalRolls(finalRolls)
     setValue(`products.${index}.total_rolls`, finalRolls?.toString())
     return finalRolls
   }
@@ -447,53 +438,26 @@ const PiExportForm = () => {
   const handleRateChange = (e, index) => {
     const newRate = parseFloat(e.target.value)
 
-
-    console.log({ newRate, selectedOption })
-
     setRate(newRate)
-    if (selectedOption === "rolls") {
-      console.log({ selectedOption })
+    if (selectedOption?.[index] === "rolls") {
       const rollsValue = calculateTotalRolls(index) * newRate
-      // setAmount()
-      setValue(`products.${index}.amount_in_usd`, rollsValue)
-    } else if (selectedOption === "weight") {
-      // setAmount()
+      setValue(`products.${index}.amount_in_usd`, rollsValue.toString())
+    } else if (selectedOption?.[index] === "weight") {
       const totalValue = calculateCoreWeight(index) * newRate
-      setValue(`products.${index}.amount_in_usd`, totalValue)
+      setValue(`products.${index}.amount_in_usd`, totalValue.toString())
     }
   }
 
   const handleRadioOptionChange = (e, index) => {
-    setSelectedOption(e.target.value)
-    
-    // const newRate = watch(`products${index}.rate_in_usd`)
-    
-    console.log(e.target.value, rate,  "rdioOnchange")
-    // if (rate) {
+    setSelectedOption(prev => ({ ...prev, [index]: e.target.value }))
     if (e.target.value === "rolls") {
       const rollsRate = calculateTotalRolls(index) * rate
-      console.log({ rrrrrr: rollsRate })
-      setAmount(rollsRate)
-      setValue(`products.${index}.amount_in_usd`, rollsRate)
+      setValue(`products.${index}.amount_in_usd`, rollsRate.toString())
     } else if (e.target.value === "weight") {
       const weightRate = calculateCoreWeight(index) * rate
-      console.log({ rrrrwwwww: weightRate })
-      setAmount(weightRate)
-      setValue(`products.${index}.amount_in_usd`, weightRate)
+      setValue(`products.${index}.amount_in_usd`, weightRate.toString())
     }
-    // }
   }
-
-  // const handleRateChange = (e, index) => {
-  //   const rate = parseFloat(e.target.value)
-  //   if (selectedOption === "rolls") {
-  //     setAmount(calculateTotalRolls(index) * rate)
-  //   } else if (selectedOption === "weight") {
-  //     setAmount(calculateCoreWeight(index) * rate)
-  //   }
-
-  //   console.log({ amount })
-  // }
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
@@ -843,9 +807,8 @@ const PiExportForm = () => {
                     <input
                       type="radio"
                       value="rolls"
-                      {...register(`products[${index}].rolls`)}
                       onClick={e => handleRadioOptionChange(e, index)}
-                      checked={selectedOption === "rolls"}
+                      checked={selectedOption?.[index] === "rolls"}
                     />
                     Rolls
                   </label>
@@ -853,9 +816,8 @@ const PiExportForm = () => {
                     <input
                       type="radio"
                       value="weight"
-                      {...register(`products[${index}].weight`)}
-                      onClick= { e => handleRadioOptionChange(e, index)}
-                      checked={selectedOption === "weight"}
+                      onClick={e => handleRadioOptionChange(e, index)}
+                      checked={selectedOption?.[index] === "weight"}
                     />
                     Weight
                   </label>
