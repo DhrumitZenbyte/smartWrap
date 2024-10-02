@@ -259,18 +259,22 @@
 // }
 
 // export default PiExportForm
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import axios from "axios"
-import { useForm, useFieldArray, useWatch } from "react-hook-form"
+import { useForm, useFieldArray } from "react-hook-form"
 import { PDFViewer, pdf } from "@react-pdf/renderer"
 import PiExpertPdf from "./PiExportPdf"
 import { useNavigate } from "react-router-dom"
+import numberToWords from "number-to-words"
 
 const PiExportForm = () => {
-  const [piNumber, setPiNumber] = useState("")
   const [formData, setFormData] = useState(null)
   const [selectedOption, setSelectedOption] = useState({ 0: "rolls" })
   const [rate, setRate] = useState(0)
+  const [totalAmountInUSD, setTotalAmountInUSD] = useState(0)
+
+  const totalAmountRef = useRef(totalAmountInUSD)
+
   // Initialize React Hook Form
   const { register, control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
@@ -458,6 +462,44 @@ const PiExportForm = () => {
       setValue(`products.${index}.amount_in_usd`, weightRate.toString())
     }
   }
+
+  useEffect(() => {
+    const { unsubscribe } = watch(value => {
+      const newTotalAmountInUSD = value.products.reduce((total, product) => {
+        const amount = parseFloat(product.amount_in_usd) || 0 // Ensure it's a number
+        return total + amount
+      }, 0)
+
+      if (newTotalAmountInUSD !== totalAmountRef.current) {
+        setTotalAmountInUSD(newTotalAmountInUSD)
+        totalAmountRef.current = newTotalAmountInUSD
+      }
+    })
+
+    return () => unsubscribe()
+  }, [watch])
+
+  const calculateCfrValue = () => {
+    const frightCharges = watch("freight_charges") || 0
+    const finalCFR = Number(frightCharges) + totalAmountInUSD
+    setValue("total_cfr_value", finalCFR?.toString())
+    return finalCFR
+  }
+
+  const renderFobValue = () => {
+    setValue("total_fob_value", totalAmountInUSD.toString())
+    return totalAmountInUSD
+  }
+
+  const cfrValue = watch("total_cfr_value")
+  const insuranceChargesA = watch("insurance_charges")
+
+  useEffect(() => {
+    const finalValue = Number(cfrValue) + Number(insuranceChargesA)
+    setValue("total_cif_value", finalValue.toString())
+    const amountInWords = numberToWords.toWords(finalValue)
+    setValue(`amount_in_words`, amountInWords)
+  }, [insuranceChargesA, cfrValue])
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
@@ -809,6 +851,7 @@ const PiExportForm = () => {
                       value="rolls"
                       onClick={e => handleRadioOptionChange(e, index)}
                       checked={selectedOption?.[index] === "rolls"}
+                      readOnly
                     />
                     Rolls
                   </label>
@@ -818,6 +861,7 @@ const PiExportForm = () => {
                       value="weight"
                       onClick={e => handleRadioOptionChange(e, index)}
                       checked={selectedOption?.[index] === "weight"}
+                      readOnly
                     />
                     Weight
                   </label>
@@ -876,6 +920,7 @@ const PiExportForm = () => {
                 <input
                   type="number"
                   {...register("total_fob_value")}
+                  value={renderFobValue()}
                   className="w-full border border-gray-300 p-2"
                 />
               </div>
@@ -883,7 +928,9 @@ const PiExportForm = () => {
                 <label className="block">Freight Charges:</label>
                 <input
                   type="number"
-                  {...register("freight_charges")}
+                  {...register("freight_charges", {
+                    onChange: () => calculateCfrValue(),
+                  })}
                   className="w-full border border-gray-300 p-2"
                 />
               </div>
