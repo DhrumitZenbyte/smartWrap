@@ -266,12 +266,14 @@ import { PDFViewer, pdf } from "@react-pdf/renderer"
 import PiExpertPdf from "./PiExportPdf"
 import { useNavigate } from "react-router-dom"
 import numberToWords from "number-to-words"
+import { getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
 
 const PiExportForm = () => {
   const [formData, setFormData] = useState(null)
   const [selectedOption, setSelectedOption] = useState({ 0: "rolls" })
   const [rate, setRate] = useState(0)
   const [totalAmountInUSD, setTotalAmountInUSD] = useState(0)
+  const [companyProfile, setCompanyProfile] = useState(null)
 
   const totalAmountRef = useRef(totalAmountInUSD)
 
