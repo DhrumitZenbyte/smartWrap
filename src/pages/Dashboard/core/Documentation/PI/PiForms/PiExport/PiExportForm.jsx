@@ -852,20 +852,20 @@ const PiExportForm = () => {
                   />
                 </div>
                 <div>
-                  <label className="block">Rolls Per Pallet:</label>
+                  <label className="block">No of Pallets:</label>
                   <input
                     type="number"
-                    {...register(`products[${index}].rolls_pallet`, {
+                    {...register(`products[${index}].no_of_pallets`, {
                       onChange: e => calculateTotalRolls(index),
                     })}
                     className="w-full border border-gray-300 p-2"
                   />
                 </div>
                 <div>
-                  <label className="block">No of Pallets:</label>
+                  <label className="block">Rolls Per Pallet:</label>
                   <input
                     type="number"
-                    {...register(`products[${index}].no_of_pallets`, {
+                    {...register(`products[${index}].rolls_pallet`, {
                       onChange: e => calculateTotalRolls(index),
                     })}
                     className="w-full border border-gray-300 p-2"
