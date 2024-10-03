@@ -266,7 +266,10 @@ import { PDFViewer, pdf } from "@react-pdf/renderer"
 import PiExpertPdf from "./PiExportPdf"
 import { useNavigate } from "react-router-dom"
 import numberToWords from "number-to-words"
-import { getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
+import {
+  getBankDetails,
+  getProfileDetails,
+} from "services/operations/ProfileOps/ProfileApi"
 
 const PiExportForm = () => {
   const [formData, setFormData] = useState(null)
@@ -274,6 +277,8 @@ const PiExportForm = () => {
   const [rate, setRate] = useState(0)
   const [totalAmountInUSD, setTotalAmountInUSD] = useState(0)
   const [companyProfile, setCompanyProfile] = useState(null)
+  const [banks, setBanks] = useState(null)
+
 
   const totalAmountRef = useRef(totalAmountInUSD)
 
@@ -349,6 +354,24 @@ const PiExportForm = () => {
     name: "notes",
   })
 
+  useEffect(() => {
+    const fetchBanks = async () => {
+      const token = localStorage.getItem("token")
+      try {
+        const response = await getBankDetails(token)
+        if (response?.status === 200) {
+          setBanks(response.data.banks.filter((bank) => bank.bank_name))
+        }
+      } catch (error) {
+        console.error("Error fetching banks:", error)
+      }
+    }
+
+    fetchBanks()
+  }, [])
+
+
+
   const {
     fields: productFields,
     append: appendProduct,
@@ -383,7 +406,7 @@ const PiExportForm = () => {
   }, [])
 
   useEffect(() => {
-    if (companyProfile) { 
+    if (companyProfile) {
       const {
         company_name,
         address,
@@ -393,19 +416,18 @@ const PiExportForm = () => {
         email,
         contact_person_name,
         mobile,
-      } = companyProfile;
-  
-      setValue("exporter_name", company_name);
-      setValue("exporter_address", address);
-      setValue("exporter_pan", pan_no);
-      setValue("exporter_iec", iec_no);
-      setValue("exporter_gst", gst_no);
-      setValue("exporter_mail", email);
-      setValue("exporter_contact_person", contact_person_name);
-      setValue("exporter_contact_no", mobile);
+      } = companyProfile
+
+      setValue("exporter_name", company_name)
+      setValue("exporter_address", address)
+      setValue("exporter_pan", pan_no)
+      setValue("exporter_iec", iec_no)
+      setValue("exporter_gst", gst_no)
+      setValue("exporter_mail", email)
+      setValue("exporter_contact_person", contact_person_name)
+      setValue("exporter_contact_no", mobile)
     }
   }, [companyProfile])
-
 
   const onSubmit = async (data, shouldHitApi) => {
     console.log(data, "@@form data")
@@ -523,6 +545,28 @@ const PiExportForm = () => {
     setValue("total_fob_value", totalAmountInUSD.toString())
     return totalAmountInUSD
   }
+
+  const handleBankChange = (event) => {
+    const bankId = event.target.value;
+    const bank = banks.find((b) => b.id === bankId);
+
+    if (bank) {
+      setValue("bank_name", bank.bank_name);
+      setValue("bank_address", bank.bank_address);
+      setValue("bank_account_no", bank.account_no);
+      setValue("bank_ifsc_code", bank.ifsc_code);
+      setValue("bank_ad_code", bank.bank_ad_code_no);
+      setValue("bank_swift_code", bank.swift_code);
+    } else {
+      setValue("bank_name", "");
+      setValue("bank_address", "");
+      setValue("bank_account_no", "");
+      setValue("bank_ifsc_code", "");
+      setValue("bank_ad_code", "");
+      setValue("bank_swift_code", "");
+    }
+  };
+
 
   const cfrValue = watch("total_cfr_value")
   const insuranceChargesA = watch("insurance_charges")
@@ -1006,6 +1050,20 @@ const PiExportForm = () => {
           <section className="mb-4">
             <h2 className="text-xl font-semibold mb-2">Bank Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label className="block">Select Bank:</label>
+                <select
+                  onChange={handleBankChange}
+                  className="w-full border border-gray-300 p-2"
+                >
+                  <option value="">-- Select a Bank --</option>
+                  {banks?.map((bank) => (
+                    <option key={bank?.id} value={bank.id}>
+                      {bank.bank_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block">Bank Name:</label>
                 <input
