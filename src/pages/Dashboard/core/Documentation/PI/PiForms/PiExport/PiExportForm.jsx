@@ -374,6 +374,37 @@ const PiExportForm = () => {
   //     generatePiNumber()
   //   }, [])
 
+  const token = localStorage.getItem("token")
+
+  useEffect(() => {
+    getProfileDetails(token, setCompanyProfile)
+  }, [])
+
+  useEffect(() => {
+    if (companyProfile) { 
+      const {
+        company_name,
+        address,
+        pan_no,
+        iec_no,
+        gst_no,
+        email,
+        contact_person_name,
+        mobile,
+      } = companyProfile;
+  
+      setValue("exporter_name", company_name);
+      setValue("exporter_address", address);
+      setValue("exporter_pan", pan_no);
+      setValue("exporter_iec", iec_no);
+      setValue("exporter_gst", gst_no);
+      setValue("exporter_mail", email);
+      setValue("exporter_contact_person", contact_person_name);
+      setValue("exporter_contact_no", mobile);
+    }
+  }, [companyProfile])
+
+
   const onSubmit = async (data, shouldHitApi) => {
     console.log(data, "@@form data")
     setFormData(data)
