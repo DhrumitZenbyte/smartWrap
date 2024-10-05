@@ -5,12 +5,13 @@ import PiDomesticPdf from "./PiDomesticPdf"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import numberToWords from 'number-to-words';
-import { getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
+import { getBankDetails, getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
 
 const PiDomesticForm = () => {
   const [formData, setFormData] = useState(null)
   const navigate = useNavigate()
   const [companyProfile, setCompanyProfile] = useState(null)
+  const [banks, setBanks] = useState(null)
 
   const { control, handleSubmit, watch, register, setValue } = useForm({
     defaultValues: {
@@ -86,6 +87,22 @@ const PiDomesticForm = () => {
   })
 
   const token = localStorage.getItem("token")
+
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        const response = await getBankDetails(token)
+        if (response?.status === 200) {
+          setBanks(response.data.banks.filter((bank) => bank.bank_name))
+        }
+      } catch (error) {
+        console.error("Error fetching banks:", error)
+      }
+    }
+
+    fetchBanks()
+  }, [])
+
 
   useEffect(() => {
     getProfileDetails(token, setCompanyProfile)
@@ -200,6 +217,27 @@ const PiDomesticForm = () => {
       updateTotalWeight(index)
     })
   }, [watch(`products`)])
+
+  const handleBankChange = (event) => {
+    const bankId = event.target.value;
+    const bank = banks.find((b) => b.id === bankId);
+
+    if (bank) {
+      setValue("bank_name", bank.bank_name);
+      setValue("bank_address", bank.bank_address);
+      setValue("bank_account_no", bank.account_no);
+      setValue("bank_ifsc_code", bank.ifsc_code);
+      setValue("bank_ad_code", bank.bank_ad_code_no);
+      setValue("bank_swift_code", bank.swift_code);
+    } else {
+      setValue("bank_name", "");
+      setValue("bank_address", "");
+      setValue("bank_account_no", "");
+      setValue("bank_ifsc_code", "");
+      setValue("bank_ad_code", "");
+      setValue("bank_swift_code", "");
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -603,6 +641,20 @@ const PiDomesticForm = () => {
           <div className="mb-6">
             <h3 className="text-xl font-semibold mb-4">Bank Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label className="block">Select Bank:</label>
+                <select
+                  onChange={handleBankChange}
+                  className="w-full border border-gray-300 p-2"
+                >
+                  <option value="">-- Select a Bank --</option>
+                  {banks?.map(bank => (
+                    <option key={bank?.id} value={bank.id}>
+                      {bank.bank_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block mb-2 font-medium">Bank Name:</label>
                 <input
