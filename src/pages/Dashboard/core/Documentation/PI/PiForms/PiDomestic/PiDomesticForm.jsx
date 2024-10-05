@@ -5,11 +5,12 @@ import PiDomesticPdf from "./PiDomesticPdf"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import numberToWords from 'number-to-words';
+import { getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
 
 const PiDomesticForm = () => {
   const [formData, setFormData] = useState(null)
   const navigate = useNavigate()
-  const [totalWeight, setTotalWeight] = useState("")
+  const [companyProfile, setCompanyProfile] = useState(null)
 
   const { control, handleSubmit, watch, register, setValue } = useForm({
     defaultValues: {
@@ -83,6 +84,34 @@ const PiDomesticForm = () => {
     control,
     name: "notes",
   })
+
+  const token = localStorage.getItem("token")
+
+  useEffect(() => {
+    getProfileDetails(token, setCompanyProfile)
+  }, [])
+
+  useEffect(() => {
+    if (companyProfile) {
+      const {
+        company_name,
+        address,
+        pan_no,
+        gst_no,
+        email,
+        contact_person_name,
+        mobile,
+      } = companyProfile
+
+      setValue("supplier_name", company_name)
+      setValue("supplier_address", address)
+      setValue("supplier_pan", pan_no)
+      setValue("supplier_gst", gst_no)
+      setValue("supplier_mail", email)
+      setValue("supplier_contact_person", contact_person_name)
+      setValue("supplier_contact_no", mobile)
+    }
+  }, [companyProfile])
 
   const onSubmit = async (data, shouldHitApi) => {
     // Handle form submission here
@@ -158,7 +187,6 @@ const PiDomesticForm = () => {
     const noOfBoxes = watch(`products[${index}].no_of_box`) || 0
     const weightPerBox = watch(`products[${index}].weight_per_box`) || 0
     const finalWeight = Number(noOfBoxes) * Number(weightPerBox)
-    setTotalWeight(finalWeight)
     return finalWeight
   }
   
@@ -171,7 +199,7 @@ const PiDomesticForm = () => {
     productFields?.forEach((_, index) => {
       updateTotalWeight(index)
     })
-  }, [watch(`products`), totalWeight])
+  }, [watch(`products`)])
 
   return (
     <div className="max-w-4xl mx-auto p-4">
