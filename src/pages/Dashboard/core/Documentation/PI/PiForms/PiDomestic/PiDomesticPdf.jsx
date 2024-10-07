@@ -414,7 +414,7 @@ const PiDomesticPdf = ({ formData }) => {
             <Text style={styles.notesText}>Notes:</Text>
             {parsedNotes.map((note, index) => (
               <Text key={index} style={styles.notesText}>
-                {note.note}
+                {index + 1}. {note.note}
               </Text>
             ))}
           </View>
