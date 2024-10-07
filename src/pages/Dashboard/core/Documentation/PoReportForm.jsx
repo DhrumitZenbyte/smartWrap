@@ -340,6 +340,14 @@ const PoReportForm = () => {
     name: "products",
   })
 
+  const {
+    fields: noteFields,
+    append: appendNote,
+    remove: removeNote,
+  } = useFieldArray({
+    control,
+    name: "notes",
+  })
   const navigate = useNavigate()
 
   const calculateTotals = (products, igst, sgst, cgst) => {
@@ -760,37 +768,40 @@ const PoReportForm = () => {
             {...register("amountInWords")}
           />
 
-          <h2 className="text-xl font-semibold my-4">Notes</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block mb-2 font-semibold">Note 1:</label>
-              <input
-                className="w-full p-2 border rounded"
-                {...register("note1")}
-              />
-            </div>
-            <div>
-              <label className="block mb-2 font-semibold">Note 2:</label>
-              <input
-                className="w-full p-2 border rounded"
-                {...register("note2")}
-              />
-            </div>
-            <div>
-              <label className="block mb-2 font-semibold">Note 3:</label>
-              <input
-                className="w-full p-2 border rounded"
-                {...register("note3")}
-              />
-            </div>
-            <div>
-              <label className="block mb-2 font-semibold">Note 4:</label>
-              <input
-                className="w-full p-2 border rounded"
-                {...register("note4")}
-              />
-            </div>
-          </div>
+          <section className="mb-4">
+            <h2 className="text-xl font-semibold mb-2">Notes</h2>
+            {noteFields.map((note, index) => (
+              <div
+                key={note.id}
+                className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2"
+              >
+                <div>
+                  <label className="block">Note:</label>
+                  <input
+                    type="text"
+                    {...register(`notes[${index}].note`)}
+                    className="w-full border border-gray-300 p-2"
+                  />
+                </div>
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={() => removeNote(index)}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => appendNote({ note: "" })}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200"
+            >
+              Add Note
+            </button>
+          </section>
 
           <div className="flex justify-end mt-6">
             <button

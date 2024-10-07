@@ -9,12 +9,27 @@ import {
   Image,
   PDFViewer,
   pdf,
+  Font,
 } from "@react-pdf/renderer"
 import { useForm } from "react-hook-form"
 import { useNavigate, useNavigation } from "react-router-dom"
 // Import the logo image
 import logo from "../../../../assets/images/brands/smartWrap.jpeg" // Adjust the path to your logo
 import axios from "axios"
+import Sign from "../../../../assets/images/sign/download.jpeg"
+
+Font.register({
+  family: "Open Sans",
+  fonts: [
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf",
+    },
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-800.ttf",
+      fontWeight: "bold",
+    },
+  ],
+})
 
 // Create styles
 const styles = StyleSheet.create({
@@ -22,19 +37,24 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#ffffff",
     padding: 10,
-    border: "2px solid #3c3c3c",
+  },
+  pageborder: {
+    border: "2px solid black",
+    display: "flex",
+    flexDirection: " column",
   },
   header: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    padding: 10,
+    paddingTop: 16,
+    paddingBottom: 18,
     borderBottom: "1px solid #EEE",
   },
   logo: {
-    width: 90,
-    height: 40,
+    width: 220,
+    height: 60,
   },
   address: {
     flex: 1,
@@ -44,16 +64,18 @@ const styles = StyleSheet.create({
     maxWidth: "450px",
   },
   title: {
+    fontFamily: "Open Sans",
     fontSize: 18,
     textAlign: "center",
-    marginBottom: 10,
-    marginTop: 10,
-    fontWeight: "800",
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderTop: "2px solid black",
+    borderBottom: "2px solid black",
+    textDecoration: "underline",
   },
   sectionContainer: {
     display: "flex",
     flexDirection: "column",
-    border: "1px solid #9c9c9c",
     borderRadius: 5,
     marginBottom: 10,
   },
@@ -137,7 +159,91 @@ const styles = StyleSheet.create({
     width: "40%",
     fontSize: 10,
     paddingRight: 10,
-    paddingBottom:10
+    paddingBottom: 10,
+  },
+  mainTermsSection: {
+    position: "relative",
+  },
+  termsSection: {
+    borderTop: "2px solid black",
+  },
+  termsTitle: {
+    fontSize: 10,
+    paddingTop: 1,
+    textDecoration: "underline",
+    fontFamily: "Open Sans",
+    fontWeight: 600,
+  },
+  termsContent: {
+    fontSize: 10,
+  },
+  termLable: {
+    fontSize: 10,
+    paddingTop: 4,
+  },
+  regardsContainer: {
+    fontSize: 10,
+    marginTop: 16,
+  },
+  nameContainer: {
+    fontSize: 10,
+    marginTop: 30,
+  },
+  signatureContainer: {
+    display: "flex",
+    flexDirection: "column",
+    borderTop: "2px solid black",
+    borderLeft: "2px solid black",
+    fontSize: 10,
+    height: 90,
+    width: 140,
+    position: "absolute",
+    right: "0px",
+    bottom: "0px",
+  },
+  signContent: {
+    padding: 10,
+  },
+  acceptLable: {
+    borderTop: "2px solid black",
+    textAlign: "center",
+    alignContent: "center",
+    paddingTop: 4,
+    padding: 5,
+    fontFamily: "Open Sans",
+    fontSize: 10,
+    fontWeight: 600,
+    textDecoration: "underline",
+  },
+
+  container: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center", // Aligns text vertically in the center
+  },
+  text: {
+    margin: 6, // Handles spacing between words
+    fontSize: 14,
+    textAlign: "justify",
+    color: "#000000",
+    fontWeight: "normal",
+    fontSize: 20,
+    marginLeft: -3, // Adjust margin to align text correctly
+  },
+  textBold: {
+    fontFamily: "Open Sans",
+    fontSize: 20,
+    fontWeight: 600,
+  },
+  filmLabel: {
+    fontFamily: "Open Sans",
+    fontSize: 10,
+    fontWeight: 600,
+  },
+  nameLabel: {
+    fontFamily: "Open Sans",
+    fontSize: 10,
+    fontWeight: 600,
   },
 })
 
@@ -167,12 +273,8 @@ const POReport = ({ data }) => {
             <View style={styles.pageborder}>
               <View style={styles.header}>
                 <Image style={styles.logo} src={logo} />
-                <Text style={styles.address}>
-                  Address: Vaishnavi Summit, Ground Floor, Bangalore KA IN
-                  560034.
-                </Text>
               </View>
-              <Text style={styles.title}>Purchase Order</Text>
+              <Text style={styles.title}>PURCHASE ORDER</Text>
               <View style={styles.sectionContainer}>
                 <View style={styles.sectionRow}>
                   <View style={styles.section}>
@@ -268,10 +370,33 @@ const POReport = ({ data }) => {
                   <Text>Grand Total: {grandTotal}</Text>
                 </View>
               </View>
-              <View style={styles.paymentSection}>
-                <Text>Payment Terms: {data.paymentTerms}</Text>
-                <Text>Time of Delivery: {data.timeOfDelivery}</Text>
-                <Text>Terms of Delivery: {data.termsOfDelivery}</Text>
+              <View style={styles.mainTermsSection}>
+                <View style={styles.termsSection}>
+                  <Text style={styles.termsTitle}>Terms and Condition :-</Text>
+                </View>
+
+                <View style={styles.termsContainer}>
+                  <Text style={styles.termLable}>
+                    1. Terms and Condition :-
+                  </Text>
+                </View>
+                <View style={styles.regardsContainer}>
+                  <Text>Best Regards,</Text>
+                  <Text style={styles.filmLabel}>
+                    FOR SMARTWRAP FILM EXTRUSIONS LLP
+                  </Text>
+                </View>
+                <View style={styles.nameContainer}>
+                  <Text style={styles.nameLabel}>SHREYAS D PATEL</Text>
+                  <Text>
+                    This is computer generated Purchase Order therefore does not
+                    require signature.
+                  </Text>
+                </View>
+                <View style={styles.signatureContainer}>
+                  <Image style={styles.signContent} src={Sign} />
+                  <Text style={styles.acceptLable}>Acceptance Signature</Text>
+                </View>
               </View>
             </View>
           </Page>
