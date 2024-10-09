@@ -838,11 +838,13 @@ const PiExportPdf = ({ formData }) => {
 
         <View style={styles.tableCalculation}>
           <View style={styles.totalAmount}>
-            <Text>Total FOB Value: {total_fob_value}</Text>
-            <Text>Freight Charges: {freight_charges}</Text>
-            <Text>Total CFR Value: {total_cfr_value}</Text>
-            <Text>Insurance Charges: {insurance_charges}</Text>
-            <Text>Total CIF Value: {total_cif_value}</Text>
+            {total_fob_value !== "0" && <Text>Total FOB Value: {total_fob_value}</Text>}
+            {freight_charges && <Text>Freight Charges: {freight_charges}</Text>}
+            {total_cfr_value && <Text>Total CFR Value: {total_cfr_value}</Text>}
+            {insurance_charges && (
+              <Text>Insurance Charges: {insurance_charges}</Text>
+            )}
+            {total_cif_value !== "0" && <Text>Total CIF Value: {total_cif_value}</Text>}
           </View>
         </View>
         <View style={styles.Fob}>
