@@ -282,11 +282,16 @@ const PiExportForm = () => {
 
   const totalAmountRef = useRef(totalAmountInUSD)
 
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+
   // Initialize React Hook Form
   const { register, control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       pi_no: "",
-      date: "",
+      date: getCurrentDate(),
       buyer_order_no: "",
       buyer_order_date: "",
       exporter_name: "",
