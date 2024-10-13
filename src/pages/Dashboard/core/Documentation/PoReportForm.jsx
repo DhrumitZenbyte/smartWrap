@@ -323,22 +323,37 @@
 
 // export default PoReportForm
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm, useFieldArray } from "react-hook-form"
 import { PDFViewer } from "@react-pdf/renderer"
 import PoReportPdf from "./PoReportPdf"
 import axios from "axios"
 import { pdf } from "@react-pdf/renderer"
 import { useNavigate } from "react-router-dom"
+import { getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
+import numberToWords from 'number-to-words';
+
 
 const PoReportForm = () => {
-  const { register, handleSubmit, control } = useForm()
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+
+  const { register, handleSubmit, control, setValue, watch } = useForm({
+    defaultValues: {
+      date: getCurrentDate(),
+    },
+  })
   const [formData, setFormData] = useState(null)
   const [downloadLink, setDownloadLink] = useState(null)
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, } = useFieldArray({
     control,
     name: "products",
   })
+  const [companyProfile, setCompanyProfile] = useState(null)
+
 
   const {
     fields: noteFields,
@@ -349,6 +364,17 @@ const PoReportForm = () => {
     name: "notes",
   })
   const navigate = useNavigate()
+
+  const products = watch('products');
+
+  const totalAmount = products?.reduce((sum, product) => {
+    const amount = parseFloat(product.amount);
+    return sum + (isNaN(amount) ? 0 : amount);
+  }, 0);
+
+  const amountInWord = totalAmount && numberToWords.toWords(totalAmount)
+
+  setValue('amountInWords', amountInWord || "")
 
   const calculateTotals = (products, igst, sgst, cgst) => {
     let subtotal = 0
@@ -450,6 +476,36 @@ const PoReportForm = () => {
       }
     }
   }
+
+  const token = localStorage.getItem("token")
+
+  useEffect(() => {
+    getProfileDetails(token, setCompanyProfile)
+  }, [])
+
+  useEffect(() => {
+    if (companyProfile) {
+      const {
+        company_name,
+        address,
+        pan_no,
+        iec_no,
+        gst_no,
+        email,
+        contact_person_name,
+        mobile,
+      } = companyProfile
+
+      setValue("buyer.name", company_name)
+      setValue("buyer.address", address)
+      setValue("buyer.pan", pan_no)
+      setValue("buyer.iec", iec_no)
+      setValue("buyer.gst", gst_no)
+      setValue("buyer.mail", email)
+      setValue("buyer.contactPerson", contact_person_name)
+      setValue("buyer.contactNo", mobile)
+    }
+  }, [companyProfile])
 
   const generatePdf = async data => {
     const doc = <PoReportPdf formData={data} />
