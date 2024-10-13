@@ -13,10 +13,15 @@ const PiDomesticForm = () => {
   const [companyProfile, setCompanyProfile] = useState(null)
   const [banks, setBanks] = useState(null)
 
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+
   const { control, handleSubmit, watch, register, setValue } = useForm({
     defaultValues: {
       pi_no: "",
-      date: "",
+      date: getCurrentDate(),
       buyer_order_no: "",
       buyer_order_date: "",
       supplier_name: "",
@@ -133,13 +138,26 @@ const PiDomesticForm = () => {
   const onSubmit = async (data, shouldHitApi) => {
     // Handle form submission here
     console.log(data, "i am the ops")
-    setFormData(data)
+
+    const totalAmount = data?.products?.reduce((sum, product) => {
+      const amount = parseFloat(product.amount);
+      return sum + (isNaN(amount) ? 0 : amount);
+    }, 0);
+
+    const amountInWord = totalAmount && numberToWords.toWords(totalAmount)
+
+    const finaldata = {
+      ...data,
+      amount_in_words: amountInWord
+    } 
+    setFormData(finaldata)
 
     if (shouldHitApi) {
       const token = localStorage.getItem("token")
 
       const dataToSend = {
         ...data,
+        amount_in_words: amountInWord
       }
       console.log(formData, "@@formdata from the godd")
       try {
