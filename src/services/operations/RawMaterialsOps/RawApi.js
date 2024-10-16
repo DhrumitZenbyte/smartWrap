@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { rawEndpoints } from "../api";
 import { apiconnector } from "../apiconnector";
 
-const { ADD_RAW_MATERIAL_API, GET_RAW_MATERIALS_API, UPDATE_RAW_MATERIAL_API, DELETE_RAW_MATERIAL_API } = rawEndpoints;
+const { ADD_RAW_MATERIAL_API, GET_RAW_MATERIALS_API, UPDATE_RAW_MATERIAL_API, DELETE_RAW_MATERIAL_API, FETCH_GRADE_BY_COMPANY_NAME } = rawEndpoints;
 
 export async function addRawMaterial(rawMaterialData, token) {
     const toastId = toast.loading("Adding raw material...");
@@ -157,5 +157,43 @@ export const deleteRawMaterial = async (id, token) => {
     } catch (error) {
         console.error("Error deleting raw material:", error)
         throw error
+    }
+}
+
+// fetch grade by company name
+export const getGradebyCompanyName = async (companyName, token) => {
+    const toastId = toast.loading("Adding raw material...");
+
+    try {
+        const processedData = {
+            company_name: companyName,
+        };
+
+        const response = await apiconnector("POST", FETCH_GRADE_BY_COMPANY_NAME, processedData, {
+            Authorization: `Bearer ${token}`,
+        });
+
+        // Check if the response status indicates success
+        if (response.status !== 200 && response.status !== "success") {
+            throw new Error(response.data.message || "Unknown error occurred"); // Adjust based on your API response structure
+        }
+
+        toast.success("fetch grade by comapny name");
+        return response.data; // Return any data if needed
+    } catch (error) {
+        // Handle validation errors
+        if (error.response && error.response.status === 422) {
+            const validationErrors = error.response.data.errors;
+            Object.keys(validationErrors).forEach(field => {
+                toast.error(`${field}: ${validationErrors[field].join(", ")}`);
+            });
+        } else {
+            toast.error("Failed to fetch grade. Please try again.");
+        }
+
+        // Optionally rethrow the error if needed in the calling component
+        throw error;
+    } finally {
+        toast.dismiss(toastId);
     }
 }

@@ -25,12 +25,15 @@ import PoReportForm from "pages/Dashboard/core/Documentation/PoReportForm"
 import PiReport from "pages/Dashboard/core/Documentation/PI/PiReport"
 import PiExportForm from "pages/Dashboard/core/Documentation/PI/PiForms/PiExport/PiExportForm"
 import PiDomesticForm from "pages/Dashboard/core/Documentation/PI/PiForms/PiDomestic/PiDomesticForm"
+import { ProductionDetails } from "pages/Dashboard/core/Production/ProductionDetails"
+import { MainDashboardPage } from "pages/Dashboard/MainDashboardPage"
 
 const authProtectedRoutes = [
   {
     path: "/dashboard",
     element: <Dashboard />,
     children: [
+      { path: "", element: <MainDashboardPage /> },
       { path: "company-profile", element: <CompanyProfile /> },
       { path: "profile-settings", element: <ProfileSettings /> },
       { path: "products", element: <ProductsListPage /> },
@@ -38,11 +41,12 @@ const authProtectedRoutes = [
       { path: "finish-goods", element: <FinishGoods /> },
       { path: "purchase-order", element: <PurchaseOrder /> },
       { path: "production", element: <Production /> },
-      { path: "po-report", element: <POReportComponent/>},
-      { path: "po-report/generate", element: <PoReportForm/>},
-      { path: "pi-report", element: <PiReport/>},
-      { path: "pi-export-report/generate", element: <PiExportForm/>},
-      { path: "pi-domestic-report/generate", element: <PiDomesticForm/>},
+      { path: "production/details", element: <ProductionDetails /> },
+      { path: "po-report", element: <POReportComponent /> },
+      { path: "po-report/generate", element: <PoReportForm /> },
+      { path: "pi-report", element: <PiReport /> },
+      { path: "pi-export-report/generate", element: <PiExportForm /> },
+      { path: "pi-domestic-report/generate", element: <PiDomesticForm /> },
     ],
   },
   { path: "/profile", element: <UserProfile /> },

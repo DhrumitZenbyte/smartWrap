@@ -1,4 +1,6 @@
-const BASE_URL = "https://api.smartwrapfilms.com"
+// const BASE_URL = "https://api.smartwrapfilms.com"
+// aws deployed url
+const BASE_URL = "http://3.109.158.73/smartwrap-api/public"
 
 // PROFILE ENDPOINTS
 export const profileEndpoints = {
@@ -29,6 +31,7 @@ export const rawEndpoints = {
     GET_RAW_MATERIALS_API: BASE_URL + "/api/company-raw-material",
     UPDATE_RAW_MATERIAL_API: (id) => `${BASE_URL}/api/company-raw-material/${id}`,
     DELETE_RAW_MATERIAL_API: (id) => `${BASE_URL}/api/company-raw-material/${id}`,
+    FETCH_GRADE_BY_COMPANY_NAME: BASE_URL + "/api/fetch_grade_by_company_name"
 }
 
 
@@ -38,7 +41,10 @@ export const finishGoodsEndpoints = {
     
     PUT_FINISH_GOODS_API: (id) => `${BASE_URL}/api/finish-goods/${id}`,
     DELETE_FINISH_GOODS_API: (id) => `${BASE_URL}/api/finish-goods/${id}`,
+}
 
+export const dashboardndpoints = {
+    DASHBOARD_API: `${BASE_URL}/api/dashboard`
 }
 
 

@@ -19,38 +19,42 @@ function FinishGoodTable({ data, handleDeleteCompany }) {
           return product ? <div>{product.product_name}</div> : <div>N/A</div>
         },
       },
+      // {
+      //   Header: "Size",
+      //   Cell: ({ row }) => {
+      //     const size = row.original.size
+      //     return size ? (
+      //       <div>
+      //         {size.size_in_cm} x {size.size_in_mm}
+      //       </div>
+      //     ) : (
+      //       <div>N/A</div>
+      //     )
+      //   },
+      // },
       {
         Header: "Size",
-        Cell: ({ row }) => {
-          const size = row.original.size
-          return size ? (
-            <div>
-              {size.size_in_cm} x {size.size_in_mm}
-            </div>
-          ) : (
-            <div>N/A</div>
-          )
-        },
+        accessor: "size"
       },
       {
-        Header: "SQM per Roll",
-        accessor: "sqm_per_roll",
+        Header: "Kg per Roll",
+        accessor: "kg_per_roll",
       },
       {
         Header: "Roll Quantity",
         accessor: "roll_quantity",
       },
       {
-        Header: "Total SQM",
-        accessor: "total_sqm",
+        Header: "Total Kg",
+        accessor: "total_kg",
       },
       {
-        Header: "Pallet",
-        accessor: "pallet",
+        Header: "Number of Pallet",
+        accessor: "number_of_pallet",
       },
       {
-        Header: "Pallet Name",
-        accessor: "pallet_name",
+        Header: "Pallet Number",
+        accessor: "pallet_number",
       },
       {
         Header: "Details",
@@ -62,7 +66,7 @@ function FinishGoodTable({ data, handleDeleteCompany }) {
       },
       {
         Header: " Material / Grade / Description of Goods",
-        accessor: "description_of_goods",
+        accessor: "good_details",
       },
       {
         Header: "Action",

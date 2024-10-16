@@ -1,301 +1,3 @@
-// import React, { useState } from "react"
-// import { useNavigate } from "react-router-dom"
-// import { addFinishGoods } from "services/operations/FinishGoodsOps/FinishGoodsApi"
-
-// const Production = () => {
-//   const [productiondata, setProductionData] = useState({
-//     product: "",
-//     hsnCode: "",
-//     micron: "",
-//     size: "",
-//     sqmPerRoll: "",
-//     rollQuantity: "",
-//     totalSqm: "",
-//     pallet: "",
-//     palletName: "",
-//     details: "",
-//     boxes: "",
-//     orderPurchaseDate: "",
-//     goodDetails: "",
-//     company: "",
-//     descriptionOfGoods: "",
-//     qtyInStorageStart: "",
-//     qtyIssued: "",
-//     qtyInStorageEnd: "",
-//     qtyReturned: "",
-//     wastage: "",
-//     actualQtyConsumed: "",
-//   })
-
-//   const navigate = useNavigate()
-
-//   const handleChange = e => {
-//     const { name, value } = e.target
-//     setProductionData({ ...productiondata, [name]: value })
-//   }
-
-//   const handleSubmit = async e => {
-//     e.preventDefault()
-
-//     const newProduct = {
-//       product_id: 16, // Use a unique identifier or generate it dynamically
-//       size_id: 2, // Ensure this is correct or map it dynamically
-//       sqm_per_roll: productiondata.sqmPerRoll,
-//       roll_quantity: productiondata.rollQuantity,
-//       total_sqm: productiondata.totalSqm,
-//       pallet: productiondata.pallet,
-//       pallet_name: productiondata.palletName,
-//       details: productiondata.details,
-//       boxes: productiondata.boxes,
-//       order_purchase_date: productiondata.orderPurchaseDate,
-//       good_details: productiondata.goodDetails,
-//       company: productiondata.company,
-//       description_of_goods: productiondata.descriptionOfGoods,
-//       qty_in_storage_start: productiondata.qtyInStorageStart,
-//       qty_issued: productiondata.qtyIssued,
-//       qty_in_storage_end: productiondata.qtyInStorageEnd,
-//       qty_returned: productiondata.qtyReturned,
-//       wastage: productiondata.wastage,
-//       actual_qty_consumed: productiondata.actualQtyConsumed,
-//     }
-
-//     try {
-//       const token = localStorage.getItem("token") // Replace with your actual token
-//       await addFinishGoods(newProduct, token)
-//       console.log("Product added successfully:", productiondata)
-//       navigate("/dashboard/production")
-//     } catch (error) {
-//       console.error("Failed to add product:", error)
-//     }
-//   }
-
-//   return (
-//     <div className="container mx-auto px-4">
-//       <h1 className="text-2xl font-bold mb-4">Add Product</h1>
-//       <form onSubmit={handleSubmit}>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Product</label>
-//           <input
-//             type="text"
-//             name="product"
-//             value={productiondata.product}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">HSN Code</label>
-//           <input
-//             type="text"
-//             name="hsnCode"
-//             value={productiondata.hsnCode}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Micron</label>
-//           <input
-//             type="text"
-//             name="micron"
-//             value={productiondata.micron}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Size</label>
-//           <input
-//             type="text"
-//             name="size"
-//             value={productiondata.size}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Sqm per Roll</label>
-//           <input
-//             type="text"
-//             name="sqmPerRoll"
-//             value={productiondata.sqmPerRoll}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Roll Quantity</label>
-//           <input
-//             type="text"
-//             name="rollQuantity"
-//             value={productiondata.rollQuantity}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Total Sqm</label>
-//           <input
-//             type="text"
-//             name="totalSqm"
-//             value={productiondata.totalSqm}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Pallet</label>
-//           <input
-//             type="text"
-//             name="pallet"
-//             value={productiondata.pallet}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Pallet Name</label>
-//           <input
-//             type="text"
-//             name="palletName"
-//             value={productiondata.palletName}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Details</label>
-//           <input
-//             type="text"
-//             name="details"
-//             value={productiondata.details}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Boxes</label>
-//           <input
-//             type="text"
-//             name="boxes"
-//             value={productiondata.boxes}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Order Purchase Date</label>
-//           <input
-//             type="date"
-//             name="orderPurchaseDate"
-//             value={productiondata.orderPurchaseDate}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Good Details</label>
-//           <input
-//             type="text"
-//             name="goodDetails"
-//             value={productiondata.goodDetails}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Company</label>
-//           <input
-//             type="text"
-//             name="company"
-//             value={productiondata.company}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Description of Goods</label>
-//           <input
-//             type="text"
-//             name="descriptionOfGoods"
-//             value={productiondata.descriptionOfGoods}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Qty in Storage Start</label>
-//           <input
-//             type="text"
-//             name="qtyInStorageStart"
-//             value={productiondata.qtyInStorageStart}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Qty Issued</label>
-//           <input
-//             type="text"
-//             name="qtyIssued"
-//             value={productiondata.qtyIssued}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Qty in Storage End</label>
-//           <input
-//             type="text"
-//             name="qtyInStorageEnd"
-//             value={productiondata.qtyInStorageEnd}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Qty Returned</label>
-//           <input
-//             type="text"
-//             name="qtyReturned"
-//             value={productiondata.qtyReturned}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Wastage</label>
-//           <input
-//             type="text"
-//             name="wastage"
-//             value={productiondata.wastage}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Actual Qty Consumed</label>
-//           <input
-//             type="text"
-//             name="actualQtyConsumed"
-//             value={productiondata.actualQtyConsumed}
-//             onChange={handleChange}
-//             className="w-full px-4 py-2 border rounded"
-//           />
-//         </div>
-//         <button
-//           type="submit"
-//           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-//         >
-//           Save Product
-//         </button>
-//       </form>
-//     </div>
-//   )
-// }
-
-// export default Production
-
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { addFinishGoods } from "services/operations/FinishGoodsOps/FinishGoodsApi"
@@ -329,9 +31,9 @@ const Production = () => {
     hsnCode: "",
     micron: "",
     size: "",
-    sqmPerRoll: "",
+    kgPerRoll: "",
     rollQuantity: "",
-    totalSqm: "",
+    totalKg: "",
     pallet: "",
     palletName: "",
     details: "",
@@ -340,19 +42,27 @@ const Production = () => {
     goodDetails: "",
     company: "",
     descriptionOfGoods: "",
-    qtyInStorageStart: "",
-    qtyIssued: "",
-    qtyInStorageEnd: "",
-    qtyReturned: "",
+    qty_in_storage_start: "",
+    qty_issued: "",
+    qty_in_storage_end: "",
+    qty_returned: "",
     wastage: "",
     actualQtyConsumed: "",
   })
   const [products, setProducts] = useState([])
   const [dynamicFields, setDynamicFields] = useState({
-    qtyInStorageStart: [{ id: Date.now(), grad: "", test: "" }],
-    qtyIssued: [{ id: Date.now(), grad: "", test: "" }],
-    qtyInStorageEnd: [{ id: Date.now(), grad: "", test: "" }],
-    qtyReturned: [{ id: Date.now(), grad: "", test: "" }],
+    qty_in_storage_start: [
+      { id: Date.now(), grad: "", pallets: "", bags: "", weights: "" },
+    ],
+    qty_issued: [
+      { id: Date.now(), grad: "", pallets: "", bags: "", weights: "" },
+    ],
+    qty_in_storage_end: [
+      { id: Date.now(), grad: "", pallets: "", bags: "", weights: "" },
+    ],
+    qty_returned: [
+      { id: Date.now(), grad: "", pallets: "", bags: "", weights: "" },
+    ],
   })
 
   const navigate = useNavigate()
@@ -373,31 +83,72 @@ const Production = () => {
     e.preventDefault()
 
     const newProduct = {
-      product_id: productiondata.productId, // Use productId from state
-      size_id: 2, // Ensure this is correct or map it dynamically
-      sqm_per_roll: productiondata.sqmPerRoll,
+      product_id: productiondata.productId,
+      hsn_code: productiondata.hsnCode,
+      micron: productiondata.micron,
+      size: productiondata.size,
+      kg_per_roll: productiondata.kgPerRoll,
       roll_quantity: productiondata.rollQuantity,
-      total_sqm: productiondata.totalSqm,
-      pallet: productiondata.pallet,
-      pallet_name: productiondata.palletName,
+      total_kg: productiondata.totalKg,
+      number_of_pallet: productiondata.pallet,
+      pallet_number: productiondata.palletName,
       details: productiondata.details,
       boxes: productiondata.boxes,
-      order_purchase_date: productiondata.orderPurchaseDate,
+      production_date: productiondata.orderPurchaseDate,
       good_details: productiondata.goodDetails,
       company: productiondata.company,
       description_of_goods: productiondata.descriptionOfGoods,
-      qty_in_storage_start: productiondata.qtyInStorageStart,
-      qty_issued: productiondata.qtyIssued,
-      qty_in_storage_end: productiondata.qtyInStorageEnd,
-      qty_returned: productiondata.qtyReturned,
-      wastage: productiondata.wastage,
-      actual_qty_consumed: productiondata.actualQtyConsumed,
+      qty_in_storage_start: productiondata.qty_in_storage_start,
+      qty_issued: productiondata.qty_issued,
+      qty_in_storage_end: productiondata.qty_in_storage_end,
+      qty_returned: productiondata.qty_returned,
+      wastage: Number(productiondata.wastage),
+      actual_qty_consumed: Number(productiondata.actualQtyConsumed),
       dynamic_fields: dynamicFields, // Include dynamic fields in the product data
     }
 
     try {
       await addFinishGoods(newProduct, token)
       console.log("Product added successfully:", productiondata)
+
+      setProductionData({
+        productId: "",
+        hsnCode: "",
+        micron: "",
+        size: "",
+        kgPerRoll: "",
+        rollQuantity: "",
+        totalKg: "",
+        pallet: "",
+        palletName: "",
+        details: "",
+        boxes: "",
+        orderPurchaseDate: "",
+        goodDetails: "",
+        company: "",
+        descriptionOfGoods: "",
+        qty_in_storage_start: "",
+        qty_issued: "",
+        qty_in_storage_end: "",
+        qty_returned: "",
+        wastage: "",
+        actualQtyConsumed: "",
+      })
+
+      setDynamicFields({
+        qty_in_storage_start: [
+          { id: Date.now(), grad: "", pallets: "", bags: "", weights: "" },
+        ],
+        qty_issued: [
+          { id: Date.now(), grad: "", pallets: "", bags: "", weights: "" },
+        ],
+        qty_in_storage_end: [
+          { id: Date.now(), grad: "", pallets: "", bags: "", weights: "" },
+        ],
+        qty_returned: [
+          { id: Date.now(), grad: "", pallets: "", bags: "", weights: "" },
+        ],
+      })
       navigate("/dashboard/production")
     } catch (error) {
       console.error("Failed to add product:", error)
@@ -409,7 +160,7 @@ const Production = () => {
       ...prevFields,
       [fieldName]: [
         ...prevFields[fieldName],
-        { id: Date.now(), grad: "", test: "" },
+        { id: Date.now(), grad: "", pallets: "", bags: "", weights: "" },
       ],
     }))
   }
@@ -434,6 +185,14 @@ const Production = () => {
   return (
     <div className="container-fluid">
       <Breadcrumbs title="Smart-wrap" breadcrumbItem="Add Product" />
+      <div className="flex">
+        <button
+          onClick={() => navigate("/dashboard/production/details")}
+          className="px-4 py-2 ml-auto text-white mb-2 bg-green-400 justify-end rounded-md"
+        >
+          Production details
+        </button>
+      </div>
       <Row>
         <Col lg="12">
           <Card>
@@ -501,7 +260,7 @@ const Production = () => {
                   <div className="mb-4">
                     <label className="block text-gray-700">Size</label>
                     <input
-                      type="text"
+                      type="number"
                       name="size"
                       value={productiondata.size}
                       onChange={handleChange}
@@ -513,8 +272,8 @@ const Production = () => {
                     <label className="block text-gray-700">kg per roll</label>
                     <input
                       type="text"
-                      name="sqmPerRoll"
-                      value={productiondata.sqmPerRoll}
+                      name="kgPerRoll"
+                      value={productiondata.kgPerRoll}
                       onChange={handleChange}
                       className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
@@ -535,8 +294,8 @@ const Production = () => {
                     <label className="block text-gray-700">Total KG</label>
                     <input
                       type="text"
-                      name="totalSqm"
-                      value={productiondata.totalSqm}
+                      name="totalKg"
+                      value={productiondata.totalKg}
                       onChange={handleChange}
                       className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
@@ -646,7 +405,7 @@ const Production = () => {
                       <button
                         type="button"
                         onClick={() =>
-                          handleAddGradTestField("qtyInStorageStart")
+                          handleAddGradTestField("qty_in_storage_start")
                         }
                         className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
                       >
@@ -664,7 +423,7 @@ const Production = () => {
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
             /> */}
-                    {dynamicFields.qtyInStorageStart.map(field => (
+                    {dynamicFields.qty_in_storage_start.map(field => (
                       <div key={field.id} className="flex mb-2 gap-2">
                         <input
                           type="text"
@@ -672,7 +431,7 @@ const Production = () => {
                           value={field.grad}
                           onChange={e =>
                             handleDynamicFieldChange(
-                              "qtyInStorageStart",
+                              "qty_in_storage_start",
                               field.id,
                               e
                             )
@@ -682,23 +441,51 @@ const Production = () => {
                         />
                         <input
                           type="text"
-                          name="test"
+                          name="pallets"
                           value={field.test}
                           onChange={e =>
                             handleDynamicFieldChange(
-                              "qtyInStorageStart",
+                              "qty_in_storage_start",
                               field.id,
                               e
                             )
                           }
                           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Test"
+                          placeholder="Pallets"
+                        />
+                        <input
+                          type="text"
+                          name="bags"
+                          value={field.newField1}
+                          onChange={e =>
+                            handleDynamicFieldChange(
+                              "qty_in_storage_start",
+                              field.id,
+                              e
+                            )
+                          }
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="Bags"
+                        />
+                        <input
+                          type="text"
+                          name="weights"
+                          value={field.newField2}
+                          onChange={e =>
+                            handleDynamicFieldChange(
+                              "qty_in_storage_start",
+                              field.id,
+                              e
+                            )
+                          }
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="Weights"
                         />
                         <button
                           type="button"
                           onClick={() =>
                             handleRemoveDynamicField(
-                              "qtyInStorageStart",
+                              "qty_in_storage_start",
                               field.id
                             )
                           }
@@ -720,14 +507,14 @@ const Production = () => {
                       </label>
                       {/* <input
               type="text"
-              name="qtyIssued"
-              value={productiondata.qtyIssued}
+              name="qty_issued"
+              value={productiondata.qty_issued}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
             /> */}
                       <button
                         type="button"
-                        onClick={() => handleAddGradTestField("qtyIssued")}
+                        onClick={() => handleAddGradTestField("qty_issued")}
                         className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
                       >
                         <i
@@ -737,32 +524,52 @@ const Production = () => {
                         Add Grad & Test Fields
                       </button>
                     </div>
-                    {dynamicFields.qtyIssued.map(field => (
+                    {dynamicFields.qty_issued.map(field => (
                       <div key={field.id} className="flex mb-2 gap-2">
                         <input
                           type="text"
                           name="grad"
                           value={field.grad}
                           onChange={e =>
-                            handleDynamicFieldChange("qtyIssued", field.id, e)
+                            handleDynamicFieldChange("qty_issued", field.id, e)
                           }
                           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           placeholder="Grad"
                         />
                         <input
                           type="text"
-                          name="test"
+                          name="pallets"
                           value={field.test}
                           onChange={e =>
-                            handleDynamicFieldChange("qtyIssued", field.id, e)
+                            handleDynamicFieldChange("qty_issued", field.id, e)
                           }
                           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Test"
+                          placeholder="Pallets"
+                        />
+                        <input
+                          type="text"
+                          name="bags"
+                          value={field.test}
+                          onChange={e =>
+                            handleDynamicFieldChange("qty_issued", field.id, e)
+                          }
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="Bags"
+                        />
+                        <input
+                          type="text"
+                          name="weights"
+                          value={field.test}
+                          onChange={e =>
+                            handleDynamicFieldChange("qty_issued", field.id, e)
+                          }
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="Weights"
                         />
                         <button
                           type="button"
                           onClick={() =>
-                            handleRemoveDynamicField("qtyIssued", field.id)
+                            handleRemoveDynamicField("qty_issued", field.id)
                           }
                           className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
                         >
@@ -790,7 +597,7 @@ const Production = () => {
                       <button
                         type="button"
                         onClick={() =>
-                          handleAddGradTestField("qtyInStorageEnd")
+                          handleAddGradTestField("qty_in_storage_end")
                         }
                         className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
                       >
@@ -801,7 +608,7 @@ const Production = () => {
                         Add Grad & Test Fields
                       </button>
                     </div>
-                    {dynamicFields.qtyInStorageEnd.map(field => (
+                    {dynamicFields.qty_in_storage_end.map(field => (
                       <div key={field.id} className="flex mb-2 gap-2">
                         <input
                           type="text"
@@ -809,7 +616,7 @@ const Production = () => {
                           value={field.grad}
                           onChange={e =>
                             handleDynamicFieldChange(
-                              "qtyInStorageEnd",
+                              "qty_in_storage_end",
                               field.id,
                               e
                             )
@@ -819,23 +626,51 @@ const Production = () => {
                         />
                         <input
                           type="text"
-                          name="test"
+                          name="pallets"
                           value={field.test}
                           onChange={e =>
                             handleDynamicFieldChange(
-                              "qtyInStorageEnd",
+                              "qty_in_storage_end",
                               field.id,
                               e
                             )
                           }
                           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Test"
+                          placeholder="Pallets"
+                        />
+                        <input
+                          type="text"
+                          name="bags"
+                          value={field.test}
+                          onChange={e =>
+                            handleDynamicFieldChange(
+                              "qty_in_storage_end",
+                              field.id,
+                              e
+                            )
+                          }
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="Bags"
+                        />
+                        <input
+                          type="text"
+                          name="weights"
+                          value={field.test}
+                          onChange={e =>
+                            handleDynamicFieldChange(
+                              "qty_in_storage_end",
+                              field.id,
+                              e
+                            )
+                          }
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="Weights"
                         />
                         <button
                           type="button"
                           onClick={() =>
                             handleRemoveDynamicField(
-                              "qtyInStorageEnd",
+                              "qty_in_storage_end",
                               field.id
                             )
                           }
@@ -864,7 +699,7 @@ const Production = () => {
             /> */}
                       <button
                         type="button"
-                        onClick={() => handleAddGradTestField("qtyReturned")}
+                        onClick={() => handleAddGradTestField("qty_returned")}
                         className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
                       >
                         <i
@@ -874,32 +709,68 @@ const Production = () => {
                         Add Grad & Test Fields
                       </button>
                     </div>
-                    {dynamicFields.qtyReturned.map(field => (
+                    {dynamicFields.qty_returned.map(field => (
                       <div key={field.id} className="flex mb-2 gap-2">
                         <input
                           type="text"
                           name="grad"
                           value={field.grad}
                           onChange={e =>
-                            handleDynamicFieldChange("qtyReturned", field.id, e)
+                            handleDynamicFieldChange(
+                              "qty_returned",
+                              field.id,
+                              e
+                            )
                           }
                           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           placeholder="Grad"
                         />
                         <input
                           type="text"
-                          name="test"
+                          name="pallets"
                           value={field.test}
                           onChange={e =>
-                            handleDynamicFieldChange("qtyReturned", field.id, e)
+                            handleDynamicFieldChange(
+                              "qty_returned",
+                              field.id,
+                              e
+                            )
                           }
                           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Test"
+                          placeholder="Pallets"
+                        />
+                        <input
+                          type="text"
+                          name="bags"
+                          value={field.test}
+                          onChange={e =>
+                            handleDynamicFieldChange(
+                              "qty_returned",
+                              field.id,
+                              e
+                            )
+                          }
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="Bags"
+                        />
+                        <input
+                          type="text"
+                          name="weights"
+                          value={field.test}
+                          onChange={e =>
+                            handleDynamicFieldChange(
+                              "qty_returned",
+                              field.id,
+                              e
+                            )
+                          }
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="Weights"
                         />
                         <button
                           type="button"
                           onClick={() =>
-                            handleRemoveDynamicField("qtyReturned", field.id)
+                            handleRemoveDynamicField("qty_returned", field.id)
                           }
                           className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
                         >
@@ -915,7 +786,7 @@ const Production = () => {
                   <div className="mb-4">
                     <label className="block text-gray-700">Wastage</label>
                     <input
-                      type="text"
+                      type="number"
                       name="wastage"
                       value={productiondata.wastage}
                       onChange={handleChange}
@@ -928,7 +799,7 @@ const Production = () => {
                       Actual Qty Consumed
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       name="actualQtyConsumed"
                       value={productiondata.actualQtyConsumed}
                       onChange={handleChange}

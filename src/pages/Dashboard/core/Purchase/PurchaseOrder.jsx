@@ -251,6 +251,7 @@ import {
   getRawMaterials,
   updateRawMaterial,
   deleteRawMaterial,
+  getGradebyCompanyName,
 } from "services/operations/RawMaterialsOps/RawApi"
 import Breadcrumbs from "../../../../components/Common/Breadcrumb"
 import {
@@ -504,25 +505,23 @@ const PurchaseOrder = () => {
     }
   }
 
-  const handleCompanyChange = e => {
+  const handleCompanyChange = async (e) => {
     const selectedCompanyName = e.target.value
+
+    const getGradeName = await getGradebyCompanyName(selectedCompanyName, token)
+
+    if(getGradeName.grade && getGradeName.grade !== 'No grade found' ){
+      setNewCompany(prev => ({
+        ...prev,
+        grade: getGradeName?.grade,
+      }))
+    }
+
     const selectedCompany = companies.find(
       company => company.company_name === selectedCompanyName
     )
 
-    const getSelctedObj = companies?.find(
-      obj => obj.company_name === selectedCompanyName
-    )
-
-    if (getSelctedObj) {
-      setNewCompany(prev => ({
-        ...prev,
-        grade: getSelctedObj?.garde,
-      }))
-    }
-
     if (selectedCompany) {
-      // setIsUpdateMode(true)
       setNewCompany(prev => ({
         ...prev,
         id: selectedCompany?.id,
