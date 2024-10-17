@@ -1,6 +1,7 @@
 // const BASE_URL = "https://api.smartwrapfilms.com"
 // aws deployed url
-const BASE_URL = "http://3.109.158.73/smartwrap-api/public"
+// const BASE_URL = "http://3.109.158.73/smartwrap-api/public"
+const BASE_URL = "https://smartwrap-api.zenbyte.tech/smartwrap-api/public"
 
 // PROFILE ENDPOINTS
 export const profileEndpoints = {
