@@ -279,13 +279,12 @@ const PiExportForm = () => {
   const [companyProfile, setCompanyProfile] = useState(null)
   const [banks, setBanks] = useState(null)
 
-
   const totalAmountRef = useRef(totalAmountInUSD)
 
   const getCurrentDate = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  };
+    const today = new Date()
+    return today.toISOString().split("T")[0]
+  }
 
   // Initialize React Hook Form
   const { register, control, handleSubmit, setValue, watch } = useForm({
@@ -334,11 +333,11 @@ const PiExportForm = () => {
           size: "",
           type: "",
           packaging_description: "",
-          rolls_pallet: 0,
+          roll_per_pallet: 0,
           no_of_pallets: 0,
           total_rolls: 0,
-          container: "",
-          unit: "",
+          weight_per_roll: "",
+          core_weight: "",
           rate_in_usd: "",
           amount_in_usd: "",
           quanity: "",
@@ -365,7 +364,7 @@ const PiExportForm = () => {
       try {
         const response = await getBankDetails(token)
         if (response?.status === 200) {
-          setBanks(response.data.banks.filter((bank) => bank.bank_name))
+          setBanks(response.data.banks.filter(bank => bank.bank_name))
         }
       } catch (error) {
         console.error("Error fetching banks:", error)
@@ -374,8 +373,6 @@ const PiExportForm = () => {
 
     fetchBanks()
   }, [])
-
-
 
   const {
     fields: productFields,
@@ -407,7 +404,19 @@ const PiExportForm = () => {
   const token = localStorage.getItem("token")
 
   useEffect(() => {
-    getProfileDetails(token, setCompanyProfile)
+    async function fetchData() {
+      const token = localStorage.getItem("token")
+      try {
+        await getProfileDetails(token, setCompanyProfile)
+
+        const res = await getPiNo(token)
+        setValue("pi_no", res.pi_no)
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+
+    fetchData()
   }, [])
 
   useEffect(() => {
@@ -447,7 +456,7 @@ const PiExportForm = () => {
       console.log(formData, "@@formdata from the godd")
       try {
         const response = await axios.post(
-          "https://api.smartwrapfilms.com/api/pi-reports-export",
+          "https://smartwrap-api.zenbyte.tech/smartwrap-api/public/api/pi-reports-export",
           dataToSend,
           {
             headers: {
@@ -484,7 +493,7 @@ const PiExportForm = () => {
   }
 
   const calculateTotalRolls = index => {
-    const rollsPallet = watch(`products[${index}].rolls_pallet`) || 0
+    const rollsPallet = watch(`products[${index}].roll_per_pallet`) || 0
     const noOfPallets = watch(`products[${index}].no_of_pallets`) || 0
     const finalRolls = Number(noOfPallets) * Number(rollsPallet)
     setValue(`products.${index}.total_rolls`, finalRolls?.toString())
@@ -493,9 +502,9 @@ const PiExportForm = () => {
 
   const calculateCoreWeight = index => {
     const totalRolls = watch(`products[${index}].total_rolls`) || 0
-    const weightPerRoll = watch(`products[${index}].container`) || 0
+    const weightPerRoll = watch(`products[${index}].weight_per_roll`) || 0
     const finalCoreWeight = Number(totalRolls) * Number(weightPerRoll)
-    setValue(`products.${index}.unit`, finalCoreWeight?.toString())
+    setValue(`products.${index}.core_weight`, finalCoreWeight?.toString())
     return finalCoreWeight
   }
 
@@ -551,27 +560,26 @@ const PiExportForm = () => {
     return totalAmountInUSD
   }
 
-  const handleBankChange = (event) => {
-    const bankId = event.target.value;
-    const bank = banks.find((b) => b.id === bankId);
+  const handleBankChange = event => {
+    const bankId = event.target.value
+    const bank = banks.find(b => b.id === bankId)
 
     if (bank) {
-      setValue("bank_name", bank.bank_name);
-      setValue("bank_address", bank.bank_address);
-      setValue("bank_account_no", bank.account_no);
-      setValue("bank_ifsc_code", bank.ifsc_code);
-      setValue("bank_ad_code", bank.bank_ad_code_no);
-      setValue("bank_swift_code", bank.swift_code);
+      setValue("bank_name", bank.bank_name)
+      setValue("bank_address", bank.bank_address)
+      setValue("bank_account_no", bank.account_no)
+      setValue("bank_ifsc_code", bank.ifsc_code)
+      setValue("bank_ad_code", bank.bank_ad_code_no)
+      setValue("bank_swift_code", bank.swift_code)
     } else {
-      setValue("bank_name", "");
-      setValue("bank_address", "");
-      setValue("bank_account_no", "");
-      setValue("bank_ifsc_code", "");
-      setValue("bank_ad_code", "");
-      setValue("bank_swift_code", "");
+      setValue("bank_name", "")
+      setValue("bank_address", "")
+      setValue("bank_account_no", "")
+      setValue("bank_ifsc_code", "")
+      setValue("bank_ad_code", "")
+      setValue("bank_swift_code", "")
     }
-  };
-
+  }
 
   const cfrValue = watch("total_cfr_value")
   const insuranceChargesA = watch("insurance_charges")
@@ -870,7 +878,7 @@ const PiExportForm = () => {
                   <label className="block">Rolls Per Pallet:</label>
                   <input
                     type="number"
-                    {...register(`products[${index}].rolls_pallet`, {
+                    {...register(`products[${index}].roll_per_pallet`, {
                       onChange: e => calculateTotalRolls(index),
                     })}
                     className="w-full border border-gray-300 p-2"
@@ -890,7 +898,7 @@ const PiExportForm = () => {
                   <label className="block">Weight Per Roll:</label>
                   <input
                     type="text"
-                    {...register(`products[${index}].container`, {
+                    {...register(`products[${index}].weight_per_roll`, {
                       onChange: e => calculateCoreWeight(index),
                     })}
                     className="w-full border border-gray-300 p-2"
@@ -900,7 +908,7 @@ const PiExportForm = () => {
                   <label className="block">Core Weight:</label>
                   <input
                     type="text"
-                    {...register(`products[${index}].unit`)}
+                    {...register(`products[${index}].core_weight`)}
                     className="w-full border border-gray-300 p-2"
                     value={calculateCoreWeight(index)}
                   />
@@ -975,11 +983,11 @@ const PiExportForm = () => {
                   size: "",
                   type: "",
                   packaging_description: "",
-                  rolls_pallet: 0,
+                  roll_per_pallet: 0,
                   no_of_pallets: 0,
                   total_rolls: 0,
-                  container: "",
-                  unit: "",
+                  weight_per_roll: "",
+                  core_weight: "",
                   rate_in_usd: 0,
                   amount_in_usd: 0,
                   quantity: 0,
@@ -1055,14 +1063,14 @@ const PiExportForm = () => {
           <section className="mb-4">
             <h2 className="text-xl font-semibold mb-2">Bank Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+              <div>
                 <label className="block">Select Bank:</label>
                 <select
                   onChange={handleBankChange}
                   className="w-full border border-gray-300 p-2"
                 >
                   <option value="">-- Select a Bank --</option>
-                  {banks?.map((bank) => (
+                  {banks?.map(bank => (
                     <option key={bank?.id} value={bank.id}>
                       {bank.bank_name}
                     </option>

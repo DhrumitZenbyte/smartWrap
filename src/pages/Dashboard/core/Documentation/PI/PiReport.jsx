@@ -256,6 +256,7 @@ import logo from "../../../../../assets/images/brands/smartWrap.jpeg"
 import PiExportPdf from "./PiForms/PiExport/PiExportPdf"
 import axios from "axios"
 import PiDomesticPdf from "./PiForms/PiDomestic/PiDomesticPdf"
+import { generatePDFById } from "./PiForms/PiExport/PiExportApi"
 
 const styles = StyleSheet.create({
   page: {
@@ -711,16 +712,7 @@ const PiReport = () => {
     console.log(PiExpNumber, "@@#####@@")
     try {
       setLoading(true)
-      const response = await axios.post(
-        `https://api.smartwrapfilms.com/api/pi-reports-export-get?pi_no=${PiExpNumber}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Replace with your actual token
-          },
-        }
-      )
-
+      const response = await generatePDFById(PiExpNumber, token)
       setExpPiData(response.data.piReportsExport)
       // Generate PDF and trigger download
       const blob = await pdf(

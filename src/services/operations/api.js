@@ -48,6 +48,10 @@ export const dashboardndpoints = {
     DASHBOARD_API: `${BASE_URL}/api/dashboard`
 }
 
+export const piExportEndpoints = {
+    PI_NO_API: `${BASE_URL}/api/fetch-pi-no`,
+    GENERATE_BY_ID: (piNo) => `${BASE_URL}/api/pi-reports-export?pi_no=${piNo}`
+} 
 
 export const authEndpoints = {
     LOGIN_URL: `${BASE_URL}/api/login`,
