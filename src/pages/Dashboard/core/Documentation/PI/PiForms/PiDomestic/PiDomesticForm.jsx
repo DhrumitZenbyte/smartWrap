@@ -1,11 +1,17 @@
+import React from "react"
 import { PDFViewer, pdf } from "@react-pdf/renderer"
-import React, { useState, useEffect } from "react"
-import { useForm, Controller, useFieldArray } from "react-hook-form"
-import PiDomesticPdf from "./PiDomesticPdf"
 import axios from "axios"
+import numberToWords from "number-to-words"
+import { useEffect, useState } from "react"
+import { Controller, useFieldArray, useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import numberToWords from 'number-to-words';
-import { getBankDetails, getProfileDetails } from "services/operations/ProfileOps/ProfileApi"
+import { Card, CardBody, Col, Row } from "reactstrap"
+import {
+  getBankDetails,
+  getProfileDetails,
+} from "services/operations/ProfileOps/ProfileApi"
+import PiDomesticPdf from "./PiDomesticPdf"
+import Breadcrumb from "components/Common/Breadcrumb"
 
 const PiDomesticForm = () => {
   const [formData, setFormData] = useState(null)
@@ -14,9 +20,9 @@ const PiDomesticForm = () => {
   const [banks, setBanks] = useState(null)
 
   const getCurrentDate = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  };
+    const today = new Date()
+    return today.toISOString().split("T")[0]
+  }
 
   const { control, handleSubmit, watch, register, setValue } = useForm({
     defaultValues: {
@@ -67,7 +73,7 @@ const PiDomesticForm = () => {
           total_weight: "",
           rate: "",
           amount: "",
-          amount_in_words: ""
+          amount_in_words: "",
         },
       ],
     },
@@ -98,7 +104,7 @@ const PiDomesticForm = () => {
       try {
         const response = await getBankDetails(token)
         if (response?.status === 200) {
-          setBanks(response.data.banks.filter((bank) => bank.bank_name))
+          setBanks(response.data.banks.filter(bank => bank.bank_name))
         }
       } catch (error) {
         console.error("Error fetching banks:", error)
@@ -107,7 +113,6 @@ const PiDomesticForm = () => {
 
     fetchBanks()
   }, [])
-
 
   useEffect(() => {
     getProfileDetails(token, setCompanyProfile)
@@ -140,16 +145,16 @@ const PiDomesticForm = () => {
     console.log(data, "i am the ops")
 
     const totalAmount = data?.products?.reduce((sum, product) => {
-      const amount = parseFloat(product.amount);
-      return sum + (isNaN(amount) ? 0 : amount);
-    }, 0);
+      const amount = parseFloat(product.amount)
+      return sum + (isNaN(amount) ? 0 : amount)
+    }, 0)
 
     const amountInWord = totalAmount && numberToWords.toWords(totalAmount)
 
     const finaldata = {
       ...data,
-      amount_in_words: amountInWord
-    } 
+      amount_in_words: amountInWord,
+    }
     setFormData(finaldata)
 
     if (shouldHitApi) {
@@ -157,7 +162,7 @@ const PiDomesticForm = () => {
 
       const dataToSend = {
         ...data,
-        amount_in_words: amountInWord
+        amount_in_words: amountInWord,
       }
       console.log(formData, "@@formdata from the godd")
       try {
@@ -188,8 +193,7 @@ const PiDomesticForm = () => {
     }
   }
 
-    
-  const generatePdf = async (data) => {
+  const generatePdf = async data => {
     const doc = <PiDomesticPdf formData={data} />
     const blob = await pdf(doc).toBlob()
     return blob
@@ -204,7 +208,7 @@ const PiDomesticForm = () => {
       total_weight: "",
       rate: "",
       amount: "",
-      amount_in_words: ""
+      amount_in_words: "",
     })
   }
 
@@ -218,17 +222,17 @@ const PiDomesticForm = () => {
     setFormData(null)
   }
 
-  const calculateTotalWeight = (index) => {
+  const calculateTotalWeight = index => {
     const noOfBoxes = watch(`products[${index}].no_of_box`) || 0
     const weightPerBox = watch(`products[${index}].weight_per_box`) || 0
     const finalWeight = Number(noOfBoxes) * Number(weightPerBox)
     return finalWeight
   }
-  
-  const updateTotalWeight = (index) => {
-    const getTotalWeight = calculateTotalWeight(index)?.toString();
-    setValue(`products[${index}].total_weight`, getTotalWeight);
-  };
+
+  const updateTotalWeight = index => {
+    const getTotalWeight = calculateTotalWeight(index)?.toString()
+    setValue(`products[${index}].total_weight`, getTotalWeight)
+  }
 
   useEffect(() => {
     productFields?.forEach((_, index) => {
@@ -236,396 +240,442 @@ const PiDomesticForm = () => {
     })
   }, [watch(`products`)])
 
-  const handleBankChange = (event) => {
-    const bankId = event.target.value;
-    const bank = banks.find((b) => b.id === bankId);
+  const handleBankChange = event => {
+    const bankId = event.target.value
+    const bank = banks.find(b => b.id === bankId)
 
     if (bank) {
-      setValue("bank_name", bank.bank_name);
-      setValue("bank_address", bank.bank_address);
-      setValue("bank_account_no", bank.account_no);
-      setValue("bank_ifsc_code", bank.ifsc_code);
-      setValue("bank_ad_code", bank.bank_ad_code_no);
-      setValue("bank_swift_code", bank.swift_code);
+      setValue("bank_name", bank.bank_name)
+      setValue("bank_address", bank.bank_address)
+      setValue("bank_account_no", bank.account_no)
+      setValue("bank_ifsc_code", bank.ifsc_code)
+      setValue("bank_ad_code", bank.bank_ad_code_no)
+      setValue("bank_swift_code", bank.swift_code)
     } else {
-      setValue("bank_name", "");
-      setValue("bank_address", "");
-      setValue("bank_account_no", "");
-      setValue("bank_ifsc_code", "");
-      setValue("bank_ad_code", "");
-      setValue("bank_swift_code", "");
+      setValue("bank_name", "")
+      setValue("bank_address", "")
+      setValue("bank_account_no", "")
+      setValue("bank_ifsc_code", "")
+      setValue("bank_ad_code", "")
+      setValue("bank_swift_code", "")
     }
-  };
+  }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6">PI Domestic</h2>
+    <div>
+      <Breadcrumb title="Smart-wrap" breadcrumbItem="PI domestic" />
 
-      {formData ? (
-        <div>
-          <PDFViewer style={{ height: "500px" }} className="w-full">
-            <PiDomesticPdf formData={formData} />
-          </PDFViewer>
-          <div className="flex justify-end mt-6">
-            <button
-              onClick={handleEdit}
-              className="px-6 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 transition duration-200"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => onSubmit(formData, true)}
-              className="px-6 py-2 ml-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit(data => onSubmit(data, false))}>
-          {/* Proforma Invoice Section */}
-          <div className="mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 font-medium">PI No:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("pi_no")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Date:</label>
-                <input
-                  type="date"
-                  className="w-full p-2 border rounded"
-                  {...register("date")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">
-                  Buyer Order No:
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("buyer_order_no")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">
-                  Buyer Order Date:
-                </label>
-                <input
-                  type="date"
-                  className="w-full p-2 border rounded"
-                  {...register("buyer_order_date")}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Supplier Details Section */}
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Supplier Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 font-medium">Name:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("supplier_name")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Address:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("supplier_address")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">PAN:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("supplier_pan")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">GST:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("supplier_gst")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Mail:</label>
-                <input
-                  type="email"
-                  className="w-full p-2 border rounded"
-                  {...register("supplier_mail")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">
-                  Contact Person:
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("supplier_contact_person")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Contact No:</label>
-                <input
-                  type="tel"
-                  className="w-full p-2 border rounded"
-                  {...register("supplier_contact_no")}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Consignee Details Section */}
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Consignee Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 font-medium">Name:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("consignee_name")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Address:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("consignee_address")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">PAN:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("consignee_pan")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">IEC:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("consignee_iec")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">GST:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("consignee_gst")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Mail:</label>
-                <input
-                  type="email"
-                  className="w-full p-2 border rounded"
-                  {...register("consignee_mail")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">
-                  Contact Person:
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("consignee_contact_person")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Contact No:</label>
-                <input
-                  type="tel"
-                  className="w-full p-2 border rounded"
-                  {...register("consignee_contact_no")}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Products Section */}
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Products</h3>
-            {productFields.map((item, index) => (
-              <div key={item.id} className="border p-4 mb-4 rounded">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block mb-2 font-medium">
-                      Description:
-                    </label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].description`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 font-medium">HSN Code:</label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].hsn_code`}
-                      render={({ field }) => {
-                        return (
-                          <input
-                            type="text"
-                            className="w-full p-2 border rounded"
-                            {...field}
-                          />
-                        )
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 font-medium">No of Box:</label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].no_of_box`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
-                          onChange={e => {
-                            field.onChange(e)
-                            calculateTotalWeight(index) // Update total weight
-                          }}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 font-medium">
-                      Weight Per Box:
-                    </label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].weight_per_box`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
-                          onChange={e => {
-                            field.onChange(e)
-                            calculateTotalWeight(index) // Update total weight
-                          }}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 font-medium">
-                      Total Weight:
-                    </label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].total_weight`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
-                          value={calculateTotalWeight(index)}
-                          readOnly
-                        />
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 font-medium">Rate:</label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].rate`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 font-medium">Amount:</label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].amount`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
-                          onChange={(e) => {
-                            const value = (e.target.value)
-                            field.onChange(value);
-                            const amountInWords = numberToWords.toWords(Number(value));  
-                            setValue(`products[${index}].amount_in_words`, amountInWords); 
-                          }}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 font-medium">Amount in Words:</label>
-                    <Controller
-                      control={control}
-                      name={`products[${index}].amount_in_words`}
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          className="w-full p-2 border rounded"
-                          {...field}
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
+      <Row>
+        <Col lg="12">
+          <Card>
+            <CardBody className="border-bottom">
+              <div className="flex justify-between items-center mb-5">
+                <h3 className="text-xl font-semibold">PI Details</h3>
                 <button
-                  type="button"
-                  className="mt-4 bg-red-500 text-white p-2 rounded"
-                  onClick={() => removeProduct(index)}
+                  type="submit"
+                  className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200"
                 >
-                  Remove Product
+                  Preview Pdf
                 </button>
               </div>
-            ))}
-            <button
-              type="button"
-              className="bg-blue-500 text-white p-2 rounded"
-              onClick={handleAddProduct}
-            >
-              Add Product
-            </button>
-          </div>
+              {formData ? (
+                <div>
+                  <PDFViewer style={{ height: "500px" }} className="w-full">
+                    <PiDomesticPdf formData={formData} />
+                  </PDFViewer>
+                  <div className="flex justify-end mt-6">
+                    <button
+                      onClick={handleEdit}
+                      className="px-6 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 transition duration-200"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => onSubmit(formData, true)}
+                      className="px-6 py-2 ml-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+                    >
+                      OK
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit(data => onSubmit(data, false))}>
+                  {/* Proforma Invoice Section */}
+                  <div className="mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-2 font-medium">PI No:</label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("pi_no")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">Date:</label>
+                        <input
+                          type="date"
+                          className="w-full p-2 border rounded"
+                          {...register("date")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Buyer Order No:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("buyer_order_no")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Buyer Order Date:
+                        </label>
+                        <input
+                          type="date"
+                          className="w-full p-2 border rounded"
+                          {...register("buyer_order_date")}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-          {/* Tax Details Section */}
-          {/* <div className="mb-6">
+                  {/* Supplier Details Section */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-4">
+                      Supplier Details
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-2 font-medium">Name:</label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("supplier_name")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Address:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("supplier_address")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">PAN:</label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("supplier_pan")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">GST:</label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("supplier_gst")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">Mail:</label>
+                        <input
+                          type="email"
+                          className="w-full p-2 border rounded"
+                          {...register("supplier_mail")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Contact Person:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("supplier_contact_person")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Contact No:
+                        </label>
+                        <input
+                          type="tel"
+                          className="w-full p-2 border rounded"
+                          {...register("supplier_contact_no")}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Consignee Details Section */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-4">
+                      Consignee Details
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-2 font-medium">Name:</label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("consignee_name")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Address:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("consignee_address")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">PAN:</label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("consignee_pan")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">IEC:</label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("consignee_iec")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">GST:</label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("consignee_gst")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">Mail:</label>
+                        <input
+                          type="email"
+                          className="w-full p-2 border rounded"
+                          {...register("consignee_mail")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Contact Person:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("consignee_contact_person")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Contact No:
+                        </label>
+                        <input
+                          type="tel"
+                          className="w-full p-2 border rounded"
+                          {...register("consignee_contact_no")}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Products Section */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-4 w-[15%]">
+                      Products
+                    </h3>
+                    {productFields.map((item, index) => (
+                      <div key={item.id} className="border p-4 mb-4 rounded">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block mb-2 font-medium">
+                              Description:
+                            </label>
+                            <Controller
+                              control={control}
+                              name={`products[${index}].description`}
+                              render={({ field }) => (
+                                <input
+                                  type="text"
+                                  className="w-full p-2 border rounded"
+                                  {...field}
+                                />
+                              )}
+                            />
+                          </div>
+                          <div>
+                            <label className="block mb-2 font-medium">
+                              HSN Code:
+                            </label>
+                            <Controller
+                              control={control}
+                              name={`products[${index}].hsn_code`}
+                              render={({ field }) => {
+                                return (
+                                  <input
+                                    type="text"
+                                    className="w-full p-2 border rounded"
+                                    {...field}
+                                  />
+                                )
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <label className="block mb-2 font-medium">
+                              No of Box:
+                            </label>
+                            <Controller
+                              control={control}
+                              name={`products[${index}].no_of_box`}
+                              render={({ field }) => (
+                                <input
+                                  type="text"
+                                  className="w-full p-2 border rounded"
+                                  {...field}
+                                  onChange={e => {
+                                    field.onChange(e)
+                                    calculateTotalWeight(index) // Update total weight
+                                  }}
+                                />
+                              )}
+                            />
+                          </div>
+                          <div>
+                            <label className="block mb-2 font-medium">
+                              Weight Per Box:
+                            </label>
+                            <Controller
+                              control={control}
+                              name={`products[${index}].weight_per_box`}
+                              render={({ field }) => (
+                                <input
+                                  type="text"
+                                  className="w-full p-2 border rounded"
+                                  {...field}
+                                  onChange={e => {
+                                    field.onChange(e)
+                                    calculateTotalWeight(index) // Update total weight
+                                  }}
+                                />
+                              )}
+                            />
+                          </div>
+                          <div>
+                            <label className="block mb-2 font-medium">
+                              Total Weight:
+                            </label>
+                            <Controller
+                              control={control}
+                              name={`products[${index}].total_weight`}
+                              render={({ field }) => (
+                                <input
+                                  type="text"
+                                  className="w-full p-2 border rounded"
+                                  {...field}
+                                  value={calculateTotalWeight(index)}
+                                  readOnly
+                                />
+                              )}
+                            />
+                          </div>
+                          <div>
+                            <label className="block mb-2 font-medium">
+                              Rate:
+                            </label>
+                            <Controller
+                              control={control}
+                              name={`products[${index}].rate`}
+                              render={({ field }) => (
+                                <input
+                                  type="text"
+                                  className="w-full p-2 border rounded"
+                                  {...field}
+                                />
+                              )}
+                            />
+                          </div>
+                          <div>
+                            <label className="block mb-2 font-medium">
+                              Amount:
+                            </label>
+                            <Controller
+                              control={control}
+                              name={`products[${index}].amount`}
+                              render={({ field }) => (
+                                <input
+                                  type="text"
+                                  className="w-full p-2 border rounded"
+                                  {...field}
+                                  onChange={e => {
+                                    const value = e.target.value
+                                    field.onChange(value)
+                                    const amountInWords = numberToWords.toWords(
+                                      Number(value)
+                                    )
+                                    setValue(
+                                      `products[${index}].amount_in_words`,
+                                      amountInWords
+                                    )
+                                  }}
+                                />
+                              )}
+                            />
+                          </div>
+                          <div>
+                            <label className="block mb-2 font-medium">
+                              Amount in Words:
+                            </label>
+                            <Controller
+                              control={control}
+                              name={`products[${index}].amount_in_words`}
+                              render={({ field }) => (
+                                <input
+                                  type="text"
+                                  className="w-full p-2 border rounded"
+                                  {...field}
+                                />
+                              )}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-end">
+                          <button
+                            type="button"
+                            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200"
+                            onClick={() => removeProduct(index)}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="flex justify-end">
+                      <button
+                        type="button"
+                        className="px-4 py-2 bg-primary text-white rounded-lg shadow-md hover:bg-blue-900 transition duration-200"
+                        onClick={handleAddProduct}
+                      >
+                        Add Product
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Tax Details Section */}
+                  {/* <div className="mb-6">
             <h3 className="text-xl font-semibold mb-4">Tax Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
@@ -655,88 +705,104 @@ const PiDomesticForm = () => {
             </div>
           </div> */}
 
-          {/* Bank Details Section */}
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Bank Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label className="block">Select Bank:</label>
-                <select
-                  onChange={handleBankChange}
-                  className="w-full border border-gray-300 p-2"
-                >
-                  <option value="">-- Select a Bank --</option>
-                  {banks?.map(bank => (
-                    <option key={bank?.id} value={bank.id}>
-                      {bank.bank_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Bank Name:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_name")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Bank Address:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_address")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Account No:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_account_no")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">IFSC Code:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_ifsc_code")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">AD Code:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_ad_code")}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">Swift Code:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("bank_swift_code")}
-                />
-              </div>
-            </div>
-          </div>
+                  {/* Bank Details Section */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-4">Bank Details</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block">Select Bank:</label>
+                        <select
+                          onChange={handleBankChange}
+                          className="w-full border border-gray-300 p-2"
+                        >
+                          <option value="">-- Select a Bank --</option>
+                          {banks?.map(bank => (
+                            <option key={bank?.id} value={bank.id}>
+                              {bank.bank_name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Bank Name:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("bank_name")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Bank Address:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("bank_address")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Account No:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("bank_account_no")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          IFSC Code:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("bank_ifsc_code")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          AD Code:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("bank_ad_code")}
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Swift Code:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("bank_swift_code")}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-          {/* Payment Details Section */}
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Payment Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 font-medium">Payment Terms:</label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("payment_terms")}
-                />
-              </div>
-              {/* <div>
+                  {/* Payment Details Section */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-4">
+                      Payment Details
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Payment Terms:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("payment_terms")}
+                        />
+                      </div>
+                      {/* <div>
                 <label className="block mb-2 font-medium">Delivery Time:</label>
                 <input
                   type="text"
@@ -744,66 +810,64 @@ const PiDomesticForm = () => {
                   {...register("payment_delivery_time")}
                 />
               </div> */}
-              <div>
-                <label className="block mb-2 font-medium">
-                  Delivery Terms:
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  {...register("payment_delivery_terms")}
-                />
-              </div>
-            </div>
-          </div>
+                      <div>
+                        <label className="block mb-2 font-medium">
+                          Delivery Terms:
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded"
+                          {...register("payment_delivery_terms")}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-          {/* Notes Section */}
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-4">Notes</h3>
-            {noteFields.map((item, index) => (
-              <div key={item.id} className="mb-4">
-                <div className="flex gap-4 items-center">
-                  <Controller
-                    control={control}
-                    name={`notes[${index}].note`}
-                    render={({ field }) => (
-                      <input
-                        type="text"
-                        className="w-full p-2 border rounded"
-                        {...field}
-                      />
-                    )}
-                  />
-                  <button
-                    type="button"
-                    className="bg-red-500 text-white p-2 rounded"
-                    onClick={() => removeNote(index)}
-                  >
-                    Remove Note
-                  </button>
-                </div>
-              </div>
-            ))}
-            <button
-              type="button"
-              className="bg-blue-500 text-white p-2 rounded"
-              onClick={handleAddNote}
-            >
-              Add Note
-            </button>
-          </div>
+                  {/* Notes Section */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-4">Notes</h3>
+                    {noteFields.map((item, index) => (
+                      <div key={item.id} className="mb-4">
+                        <div className="flex gap-4 items-center">
+                          <Controller
+                            control={control}
+                            name={`notes[${index}].note`}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                className="w-full p-2 border rounded"
+                                {...field}
+                              />
+                            )}
+                          />
+                          <button
+                            type="button"
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200"
+                            onClick={() => removeNote(index)}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="flex justify-end">
+                      <button
+                        type="button"
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200"
+                        onClick={handleAddNote}
+                      >
+                        Add Note
+                      </button>
+                    </div>
+                  </div>
 
-          {/* Submit Button */}
-          <div className="text-right">
-            <button
-              type="submit"
-              className="bg-green-500 text-white p-2 rounded"
-            >
-              Preview Pdf
-            </button>
-          </div>
-        </form>
-      )}
+                  {/* Submit Button */}
+                </form>
+              )}
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
     </div>
   )
 }

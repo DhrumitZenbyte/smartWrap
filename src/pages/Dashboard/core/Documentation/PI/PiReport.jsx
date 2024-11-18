@@ -774,28 +774,25 @@ const PiReport = () => {
           <div className="flex space-x-2">
             <button
               onClick={handleGenerateDomestic}
-              className="mr-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+              className="mr-2 px-4 py-2 bg-primary text-white rounded hover:bg-blue-700 transition duration-200"
             >
               Create New PI Domestic
             </button>
             <button
               onClick={handleGenerateExport}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+              className="px-4 py-2 bg-primary text-white rounded hover:bg-blue-700 transition duration-200"
             >
               Create New PI Export
             </button>
-          </div>
-
-          <div className="flex space-x-2">
             <button
               onClick={openDomModal}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Search PI by Pi Dom
             </button>
             <button
               onClick={openModal}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+              className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               Search PI by Pi Exp
             </button>

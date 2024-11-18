@@ -185,21 +185,14 @@ const Production = () => {
   return (
     <div className="container-fluid">
       <Breadcrumbs title="Smart-wrap" breadcrumbItem="Add Product" />
-      <div className="flex">
-        <button
-          onClick={() => navigate("/dashboard/production/details")}
-          className="px-4 py-2 ml-auto text-white mb-2 bg-green-400 justify-end rounded-md"
-        >
-          Production details
-        </button>
-      </div>
+      <div className="flex"></div>
       <Row>
         <Col lg="12">
           <Card>
             <CardBody className="border-bottom">
               <div className="flex justify-between items-center mb-5 gap-2">
                 <h2 className="text-xl font-bold">Add Product</h2>
-                <div className="flex justify-end items-center  gap-2">
+                <div className="flex gap-2">
                   <Link
                     to="/dashboard/finish-goods"
                     className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700"
@@ -213,11 +206,17 @@ const Production = () => {
                   >
                     Save Product
                   </button>
+                  <button
+                    onClick={() => navigate("/dashboard/production/details")}
+                    className="px-4 py-2 text-white bg-green-400 justify-end rounded-md"
+                  >
+                    Production details
+                  </button>
                 </div>
               </div>
               <form onSubmit={handleSubmit}>
                 {/* Grid container for form fields */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="mb-4">
                     <label className="block text-gray-700">Product</label>
                     <select
@@ -395,416 +394,438 @@ const Production = () => {
               className="w-full px-4 py-2 border rounded"
             />
           </div> */}
-
+                </div>
+                <div>
                   {/* Dynamic Fields Section */}
-                  <div className="mb-4 col-12">
-                    <div className="d-flex align-items-center gap-2 mb-4">
-                      <label className="block text-gray-700 mb-0">
-                        Qty in Storage Start
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleAddGradTestField("qty_in_storage_start")
-                        }
-                        className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
-                      >
-                        <i
-                          className="bx bx-plus"
-                          style={{ fontSize: "18px" }}
-                        ></i>{" "}
-                        Add Grad & Test Fields
-                      </button>
-                    </div>
-                    {/* <input
+
+                  <div className="flex gap-2.5">
+                    <div className="mb-4">
+                      <div className="d-flex align-items-center gap-2 mb-4">
+                        <label className="block text-gray-700 mb-0">
+                          Qty in Storage Start
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleAddGradTestField("qty_in_storage_start")
+                          }
+                          className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
+                        >
+                          <i
+                            className="bx bx-plus"
+                            style={{ fontSize: "18px" }}
+                          ></i>{" "}
+                          Add Grad & Test Fields
+                        </button>
+                      </div>
+                      {/* <input
               type="text"
               name="qtyInStorageStart"
               value={productiondata.qtyInStorageStart}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
             /> */}
-                    {dynamicFields.qty_in_storage_start.map(field => (
-                      <div key={field.id} className="flex mb-2 gap-2">
-                        <input
-                          type="text"
-                          name="grad"
-                          value={field.grad}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_in_storage_start",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Grad"
-                        />
-                        <input
-                          type="text"
-                          name="pallets"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_in_storage_start",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Pallets"
-                        />
-                        <input
-                          type="text"
-                          name="bags"
-                          value={field.newField1}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_in_storage_start",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Bags"
-                        />
-                        <input
-                          type="text"
-                          name="weights"
-                          value={field.newField2}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_in_storage_start",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Weights"
-                        />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleRemoveDynamicField(
-                              "qty_in_storage_start",
-                              field.id
-                            )
-                          }
-                          className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
-                        >
-                          <i
-                            className="bx bxs-trash"
-                            style={{ fontSize: "18px" }}
-                          ></i>
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mb-4 col-12">
-                    <div className="d-flex align-items-center gap-2 mb-4">
-                      <label className="block text-gray-700 mb-0">
-                        Qty Issued
-                      </label>
-                      {/* <input
-              type="text"
-              name="qty_issued"
-              value={productiondata.qty_issued}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
-            /> */}
-                      <button
-                        type="button"
-                        onClick={() => handleAddGradTestField("qty_issued")}
-                        className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
-                      >
-                        <i
-                          className="bx bx-plus"
-                          style={{ fontSize: "18px" }}
-                        ></i>{" "}
-                        Add Grad & Test Fields
-                      </button>
+                      {dynamicFields.qty_in_storage_start.map(field => (
+                        <div key={field.id} className="flex mb-2 gap-2">
+                          <input
+                            type="text"
+                            name="grad"
+                            value={field.grad}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_in_storage_start",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Grad"
+                          />
+                          <input
+                            type="text"
+                            name="pallets"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_in_storage_start",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Pallets"
+                          />
+                          <input
+                            type="text"
+                            name="bags"
+                            value={field.newField1}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_in_storage_start",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Bags"
+                          />
+                          <input
+                            type="text"
+                            name="weights"
+                            value={field.newField2}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_in_storage_start",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Weights"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleRemoveDynamicField(
+                                "qty_in_storage_start",
+                                field.id
+                              )
+                            }
+                            className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
+                          >
+                            <i
+                              className="bx bxs-trash"
+                              style={{ fontSize: "18px" }}
+                            ></i>
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                    {dynamicFields.qty_issued.map(field => (
-                      <div key={field.id} className="flex mb-2 gap-2">
-                        <input
-                          type="text"
-                          name="grad"
-                          value={field.grad}
-                          onChange={e =>
-                            handleDynamicFieldChange("qty_issued", field.id, e)
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Grad"
-                        />
-                        <input
-                          type="text"
-                          name="pallets"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange("qty_issued", field.id, e)
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Pallets"
-                        />
-                        <input
-                          type="text"
-                          name="bags"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange("qty_issued", field.id, e)
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Bags"
-                        />
-                        <input
-                          type="text"
-                          name="weights"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange("qty_issued", field.id, e)
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Weights"
-                        />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleRemoveDynamicField("qty_issued", field.id)
-                          }
-                          className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
-                        >
-                          <i
-                            className="bx bxs-trash"
-                            style={{ fontSize: "18px" }}
-                          ></i>
-                        </button>
-                      </div>
-                    ))}
-                  </div>
 
-                  <div className="mb-4 col-12">
-                    <div className="d-flex align-items-center gap-2 mb-4">
-                      <label className="block text-gray-700 mb-0">
-                        Qty in Storage End
-                      </label>
-                      {/* <input
+                    <div className="mb-4">
+                      <div className="d-flex align-items-center gap-2 mb-4">
+                        <label className="block text-gray-700 mb-0">
+                          Qty in Storage End
+                        </label>
+                        {/* <input
               type="text"
               name="qtyInStorageEnd"
               value={productiondata.qtyInStorageEnd}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded"
             /> */}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleAddGradTestField("qty_in_storage_end")
-                        }
-                        className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
-                      >
-                        <i
-                          className="bx bx-plus"
-                          style={{ fontSize: "18px" }}
-                        ></i>{" "}
-                        Add Grad & Test Fields
-                      </button>
-                    </div>
-                    {dynamicFields.qty_in_storage_end.map(field => (
-                      <div key={field.id} className="flex mb-2 gap-2">
-                        <input
-                          type="text"
-                          name="grad"
-                          value={field.grad}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_in_storage_end",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Grad"
-                        />
-                        <input
-                          type="text"
-                          name="pallets"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_in_storage_end",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Pallets"
-                        />
-                        <input
-                          type="text"
-                          name="bags"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_in_storage_end",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Bags"
-                        />
-                        <input
-                          type="text"
-                          name="weights"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_in_storage_end",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Weights"
-                        />
                         <button
                           type="button"
                           onClick={() =>
-                            handleRemoveDynamicField(
-                              "qty_in_storage_end",
-                              field.id
-                            )
+                            handleAddGradTestField("qty_in_storage_end")
                           }
-                          className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
+                          className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
                         >
                           <i
-                            className="bx bxs-trash"
+                            className="bx bx-plus"
                             style={{ fontSize: "18px" }}
-                          ></i>
+                          ></i>{" "}
+                          Add Grad & Test Fields
                         </button>
                       </div>
-                    ))}
+                      {dynamicFields.qty_in_storage_end.map(field => (
+                        <div key={field.id} className="flex mb-2 gap-2">
+                          <input
+                            type="text"
+                            name="grad"
+                            value={field.grad}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_in_storage_end",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Grad"
+                          />
+                          <input
+                            type="text"
+                            name="pallets"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_in_storage_end",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Pallets"
+                          />
+                          <input
+                            type="text"
+                            name="bags"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_in_storage_end",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Bags"
+                          />
+                          <input
+                            type="text"
+                            name="weights"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_in_storage_end",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Weights"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleRemoveDynamicField(
+                                "qty_in_storage_end",
+                                field.id
+                              )
+                            }
+                            className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
+                          >
+                            <i
+                              className="bx bxs-trash"
+                              style={{ fontSize: "18px" }}
+                            ></i>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="mb-4 col-12">
-                    <div className="d-flex align-items-center gap-2 mb-4">
-                      <label className="block text-gray-700 mb-0">
-                        Qty Returned
+                  <div className="flex gap-2.5">
+                    <div className="mb-4">
+                      <div className="d-flex align-items-center gap-2 mb-4">
+                        <label className="block text-gray-700 mb-0">
+                          Qty Issued
+                        </label>
+                        {/* <input
+                                  type="text"
+                                  name="qty_issued"
+                                  value={productiondata.qty_issued}
+                                  onChange={handleChange}
+                                  className="w-full px-4 py-2 border rounded"
+                                /> */}
+                        <button
+                          type="button"
+                          onClick={() => handleAddGradTestField("qty_issued")}
+                          className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
+                        >
+                          <i
+                            className="bx bx-plus"
+                            style={{ fontSize: "18px" }}
+                          ></i>{" "}
+                          Add Grad & Test Fields
+                        </button>
+                      </div>
+                      {dynamicFields.qty_issued.map(field => (
+                        <div key={field.id} className="flex mb-2 gap-2">
+                          <input
+                            type="text"
+                            name="grad"
+                            value={field.grad}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_issued",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Grad"
+                          />
+                          <input
+                            type="text"
+                            name="pallets"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_issued",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Pallets"
+                          />
+                          <input
+                            type="text"
+                            name="bags"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_issued",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Bags"
+                          />
+                          <input
+                            type="text"
+                            name="weights"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_issued",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Weights"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleRemoveDynamicField("qty_issued", field.id)
+                            }
+                            className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
+                          >
+                            <i
+                              className="bx bxs-trash"
+                              style={{ fontSize: "18px" }}
+                            ></i>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mb-4">
+                      <div className="d-flex align-items-center gap-2 mb-4">
+                        <label className="block text-gray-700 mb-0">
+                          Qty Returned
+                        </label>
+                        {/* <input
+                                  type="text"
+                                  name="qtyReturned"
+                                  value={productiondata.qtyReturned}
+                                  onChange={handleChange}
+                                  className="w-full px-4 py-2 border rounded"
+                                /> */}
+                        <button
+                          type="button"
+                          onClick={() => handleAddGradTestField("qty_returned")}
+                          className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
+                        >
+                          <i
+                            className="bx bx-plus"
+                            style={{ fontSize: "18px" }}
+                          ></i>{" "}
+                          Add Grad & Test Fields
+                        </button>
+                      </div>
+                      {dynamicFields.qty_returned.map(field => (
+                        <div key={field.id} className="flex mb-2 gap-2">
+                          <input
+                            type="text"
+                            name="grad"
+                            value={field.grad}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_returned",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Grad"
+                          />
+                          <input
+                            type="text"
+                            name="pallets"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_returned",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Pallets"
+                          />
+                          <input
+                            type="text"
+                            name="bags"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_returned",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Bags"
+                          />
+                          <input
+                            type="text"
+                            name="weights"
+                            value={field.test}
+                            onChange={e =>
+                              handleDynamicFieldChange(
+                                "qty_returned",
+                                field.id,
+                                e
+                              )
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Weights"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleRemoveDynamicField("qty_returned", field.id)
+                            }
+                            className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
+                          >
+                            <i
+                              className="bx bxs-trash"
+                              style={{ fontSize: "18px" }}
+                            ></i>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 w-full">
+                    <div className="mb-4 w-full">
+                      <label className="block text-gray-700">Wastage</label>
+                      <input
+                        type="number"
+                        name="wastage"
+                        value={productiondata.wastage}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                    <div className="mb-4 w-full">
+                      <label className="block text-gray-700">
+                        Actual Qty Consumed
                       </label>
-                      {/* <input
-              type="text"
-              name="qtyReturned"
-              value={productiondata.qtyReturned}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
-            /> */}
-                      <button
-                        type="button"
-                        onClick={() => handleAddGradTestField("qty_returned")}
-                        className="bg-none text-primary px-4 py-2 d-flex gap-1 rounded"
-                      >
-                        <i
-                          className="bx bx-plus"
-                          style={{ fontSize: "18px" }}
-                        ></i>{" "}
-                        Add Grad & Test Fields
-                      </button>
+                      <input
+                        type="number"
+                        name="actualQtyConsumed"
+                        value={productiondata.actualQtyConsumed}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
                     </div>
-                    {dynamicFields.qty_returned.map(field => (
-                      <div key={field.id} className="flex mb-2 gap-2">
-                        <input
-                          type="text"
-                          name="grad"
-                          value={field.grad}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_returned",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Grad"
-                        />
-                        <input
-                          type="text"
-                          name="pallets"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_returned",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Pallets"
-                        />
-                        <input
-                          type="text"
-                          name="bags"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_returned",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Bags"
-                        />
-                        <input
-                          type="text"
-                          name="weights"
-                          value={field.test}
-                          onChange={e =>
-                            handleDynamicFieldChange(
-                              "qty_returned",
-                              field.id,
-                              e
-                            )
-                          }
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Weights"
-                        />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleRemoveDynamicField("qty_returned", field.id)
-                          }
-                          className="bg-red-500 text-white px-2  ml-2 rounded hover:bg-red-700"
-                        >
-                          <i
-                            className="bx bxs-trash"
-                            style={{ fontSize: "18px" }}
-                          ></i>
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-gray-700">Wastage</label>
-                    <input
-                      type="number"
-                      name="wastage"
-                      value={productiondata.wastage}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-gray-700">
-                      Actual Qty Consumed
-                    </label>
-                    <input
-                      type="number"
-                      name="actualQtyConsumed"
-                      value={productiondata.actualQtyConsumed}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
                   </div>
                 </div>
               </form>
