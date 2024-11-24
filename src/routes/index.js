@@ -27,6 +27,10 @@ import PiExportForm from "pages/Dashboard/core/Documentation/PI/PiForms/PiExport
 import PiDomesticForm from "pages/Dashboard/core/Documentation/PI/PiForms/PiDomestic/PiDomesticForm"
 import { ProductionDetails } from "pages/Dashboard/core/Production/ProductionDetails"
 import { MainDashboardPage } from "pages/Dashboard/MainDashboardPage"
+import { SalesCustomer } from "pages/Dashboard/core/Sales/SalesCustomer"
+import { CustomerForm } from "pages/Dashboard/core/Sales/CustomerForm"
+import { SalesExport } from "pages/Dashboard/core/Sales/SalesExport"
+import { ExportForm } from "pages/Dashboard/core/Sales/ExportForm"
 
 const authProtectedRoutes = [
   {
@@ -47,6 +51,11 @@ const authProtectedRoutes = [
       { path: "pi-report", element: <PiReport /> },
       { path: "pi-export-report/generate", element: <PiExportForm /> },
       { path: "pi-domestic-report/generate", element: <PiDomesticForm /> },
+      { path: "customer", element: <SalesCustomer /> },
+      { path: "export", element: <SalesExport /> },
+      { path: "customer/generate", element: <CustomerForm /> },
+      { path: "export/generate", element: <ExportForm /> },
+
     ],
   },
   { path: "/profile", element: <UserProfile /> },
