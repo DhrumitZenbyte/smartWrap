@@ -9,7 +9,6 @@ import {
 } from "@react-pdf/renderer"
 import React from "react"
 import logo from "../../../../assets/images/brands/smartWrap.jpeg"
-import { Table, TableRow, TableCell } from "reactstrap"
 
 Font.register({
   family: "Times-Bold",
