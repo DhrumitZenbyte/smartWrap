@@ -1,9 +1,25 @@
 import React from "react"
 import Breadcrumb from "../../../../components/Common/Breadcrumb"
 import { Card, CardBody, Col, Row } from "reactstrap"
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
 export const SalesCustomer = props => {
+  const navigate = useNavigate()
+
+  const handleActionChange = e => {
+    const value = e.target.value
+    if (value === "commercialInvoiceForm") {
+      navigate("/dashboard/customer/commercial-invoice/generate")
+    }
+
+    if (value === "packagingListForm") {
+      navigate("/dashboard/customer/packaging-list-invoice/generate")
+    }
+
+    if (value === "StandardPackagingListForm") {
+      navigate("/dashboard/customer/standard-packaging-list/generate")
+    }
+  }
   return (
     <div className="container-fluid">
       <Breadcrumb title="Smart-wrap" breadcrumbItem="View customer" />
@@ -75,11 +91,25 @@ export const SalesCustomer = props => {
                         $ 0 Debit
                       </td>
                       <td className="py-3 px-6 text-left text-sm text-gray-700 border-b">
-                        <select className="w-full border border-gray-300 p-2">
+                        <select
+                          onChange={handleActionChange}
+                          className="w-full border border-gray-300 p-2"
+                        >
                           <option value="">Action</option>
-                          <option>View invoice PDF </option>
-                          <option>View packaging list PDF</option>
-                          <option>View ANNEXURE PDF</option>
+                          <option value="commercialInvoiceForm">
+                            Create Commercial Invoice
+                          </option>
+                          <option value="packagingListForm">
+                            Create Packaging List Invoice
+                          </option>
+                          <option value="StandardPackagingListForm">
+                            Create Standard Packaging List
+                          </option>
+                          <option value="invoicePDF">View invoice PDF </option>
+                          <option value="packagingList">
+                            View packaging list PDF
+                          </option>
+                          <option value="annexurePDF">View ANNEXURE PDF</option>
                         </select>
                       </td>
                     </tr>

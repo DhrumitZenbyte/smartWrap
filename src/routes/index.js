@@ -31,6 +31,9 @@ import { SalesCustomer } from "pages/Dashboard/core/Sales/SalesCustomer"
 import { CustomerForm } from "pages/Dashboard/core/Sales/CustomerForm"
 import { SalesExport } from "pages/Dashboard/core/Sales/SalesExport"
 import { ExportForm } from "pages/Dashboard/core/Sales/ExportForm"
+import CommercialInvoiceForm from "pages/Dashboard/core/Sales/Action/CommercialInvoiceForm"
+import PackagingListInvoiceForm from "pages/Dashboard/core/Sales/Action/PackagingListInvoiceForm"
+import StandardPackagingListForm from "pages/Dashboard/core/Sales/Action/StandardPackagingListForm"
 
 const authProtectedRoutes = [
   {
@@ -55,18 +58,29 @@ const authProtectedRoutes = [
       { path: "export", element: <SalesExport /> },
       { path: "customer/generate", element: <CustomerForm /> },
       { path: "export/generate", element: <ExportForm /> },
-
+      {
+        path: "customer/commercial-invoice/generate",
+        element: <CommercialInvoiceForm />,
+      },
+      {
+        path: "customer/packaging-list-invoice/generate",
+        element: <PackagingListInvoiceForm />,
+      },
+      {
+        path: "customer/standard-packaging-list/generate",
+        element: <StandardPackagingListForm />,
+      },
     ],
   },
   { path: "/profile", element: <UserProfile /> },
   { path: "/", exact: true, element: <Navigate to="/dashboard" /> },
-];
+]
 
 const publicRoutes = [
   { path: "/logout", element: <Logout /> },
   { path: "/login", element: <Login /> },
   { path: "/forgot-password", element: <ForgetPwd /> },
   { path: "/register", element: <Register /> },
-];
+]
 
-export { authProtectedRoutes, publicRoutes };
+export { authProtectedRoutes, publicRoutes }
