@@ -167,7 +167,8 @@ const PiDomesticForm = () => {
       console.log(formData, "@@formdata from the godd")
       try {
         const response = await axios.post(
-          "https://api.smartwrapfilms.com/api/pi-reports-domestic",
+          // "https://api.smartwrapfilms.com/api/pi-reports-domestic",
+          "https://smartwrap-api.zenbyte.tech/smartwrap-api/public/api/pi-reports-domestic",
           dataToSend,
           {
             headers: {
@@ -269,15 +270,6 @@ const PiDomesticForm = () => {
         <Col lg="12">
           <Card>
             <CardBody className="border-bottom">
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="text-xl font-semibold">PI Details</h3>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200"
-                >
-                  Preview Pdf
-                </button>
-              </div>
               {formData ? (
                 <div>
                   <PDFViewer style={{ height: "500px" }} className="w-full">
@@ -300,8 +292,17 @@ const PiDomesticForm = () => {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit(data => onSubmit(data, false))}>
+                  <div className="flex justify-between items-center mb-5">
+                    <h3 className="text-xl font-semibold">PI Details</h3>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200"
+                    >
+                      Preview Pdf
+                    </button>
+                  </div>
                   {/* Proforma Invoice Section */}
-                  <div className="mb-6">
+                  <div className="mb-6 ">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block mb-2 font-medium">PI No:</label>
